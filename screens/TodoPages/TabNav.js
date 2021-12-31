@@ -10,16 +10,15 @@ const renderScene = SceneMap({
   second: todo,
 });
 
-const renderTabBar = () => {
-  return(
+const renderTabBar = props => (
   <TabBar
-    style = {styles.activeBar}
-    activeColor='#4D3636'
-    inactiveColor='#332424'
+    {...props}
+    indicatorStyle={{ backgroundColor: 'white' }}
+    style={{ backgroundColor: "#4D3636" }}
+    labelStyle = {{color: "white"}}
+    
   />
-  );
-}
-
+);
 export default function TabViewExample() {
   const layout = useWindowDimensions();
 
@@ -33,7 +32,7 @@ export default function TabViewExample() {
     <TabView
       navigationState={{ index, routes }} 
       tabBarPosition='top' 
-      // renderTabBar = {<TabBar style = {styles.activeBar}/>}
+      renderTabBar = {renderTabBar}
       swipeEnabled = {false} 
       renderScene={renderScene} 
       onIndexChange={setIndex} 
