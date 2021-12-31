@@ -18,7 +18,7 @@ import {
 } from '../../styles/AppStyles'
 
 import {AntDesign} from "@expo/vector-icons"
-// import DateTimePickerModal from "react-native-modal-datetime-picker";
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { TapGestureHandler } from 'react-native-gesture-handler';
 
 
@@ -56,8 +56,8 @@ const InputModal = ({
     const [isTimeFrom, setIsTimeFrom] = useState(false)
 
 
-    const handleConfirmFrom = (selectedTime) => {
-
+    const handleConfirmFrom = (event, selectedTime) => {
+        setIsTimeFrom(false)
         const time = new Date(selectedTime)
         let hours = time.getHours()
         let minutes = time.getMinutes()
@@ -71,10 +71,11 @@ const InputModal = ({
         const format = hours + ":" + minutes
         setRoutineFrom(format)
         setFromNum(fromNumMin)
-        setIsTimeFrom(false)
+        
     }
 
-    const handleConfirmTo = (selectedTime) => {
+    const handleConfirmTo = (event, selectedTime) => {
+        setIsTimeTo(false)
         const time = new Date(selectedTime)
         let hours = time.getHours()
         let minutes = time.getMinutes()
@@ -88,7 +89,7 @@ const InputModal = ({
         const format = hours + ":" + minutes
         setRoutineTo(format)
         setToNum(toNumMin)
-        setIsTimeTo(false)
+        
     }
 
     const hideTimePicker = () => {
@@ -202,7 +203,7 @@ const InputModal = ({
                         value = {routineFrom}
                     />
 
-                    <AntDesign name = "clockcircle" size = {35} color={colors.tertiary} onPress = {() => {alert("yes pressed")}}/>
+                    <AntDesign name = "clockcircle" size = {35} color={colors.tertiary} onPress = {() => {setIsTimeFrom(true)}}/>
                     </ModalLeftview>
 
                     <ModalLeftview>
@@ -215,23 +216,29 @@ const InputModal = ({
                         value = {routineTo}
                     />
                     
-                    <AntDesign name = "clockcircle" size = {35} color={colors.tertiary} onPress = {() => {alert("yes pressed")}}/>
+                    <AntDesign name = "clockcircle" size = {35} color={colors.tertiary} onPress = {() => {setIsTimeTo(true)}}/>
                     </ModalLeftview>
          
                     
 
-                    {/* <DateTimePickerModal
-                        isVisible={isTimeTo}
-                        mode= "time"
-                        onConfirm={(Time) => handleConfirmTo(Time)}
-                        onCancel={hideTimePicker}
-                    />
-                    <DateTimePickerModal
-                        isVisible={isTimeFrom}
-                        mode= "time"
-                        onConfirm={(Time) => handleConfirmFrom(Time)}
-                        onCancel={hideTimePicker}
-                    /> */}
+                    {isTimeTo && (
+                        <DateTimePicker
+                            testID="dateTimePicker"
+                            value={new Date()}
+                            mode='time'
+                            display="default"
+                            onChange={handleConfirmTo}
+                        />)}
+
+                    {isTimeFrom && (
+                        <DateTimePicker
+                            testID="dateTimePicker"
+                            value={new Date()}
+                            mode='time'
+                            display="default"
+                            onChange={handleConfirmFrom}
+                        />)}
+
                     <ModalActionGroup>
                         <ModalAction color = {colors.primary} onPress = {handleCloseModal}>
                             <AntDesign name = "close" size = {28} color={colors.tertiary}/>

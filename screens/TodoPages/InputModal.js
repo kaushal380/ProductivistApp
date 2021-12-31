@@ -21,9 +21,10 @@ import {
 } from '../../styles/AppStyles'
 
 import {AntDesign} from "@expo/vector-icons"
-// import DateTimePickerModal from "react-native-modal-datetime-picker";
+import DatePicker from 'react-native-date-picker'
 import { TapGestureHandler } from 'react-native-gesture-handler';
-
+import DateTimePicker from '@react-native-community/datetimepicker';
+import NumberPlease from "react-native-number-please";
 
 const InputModal = ({
     modalVisible, 
@@ -62,7 +63,14 @@ const InputModal = ({
 
     const newTodos = todos;
     const [isDatePickerVisible, setisDatePickerVisible] = useState(false)
-    const handleConfirm = (selectedDate) => {
+    const onChange = (event, selectedDate) => {
+        const currentDate = selectedDate
+        console.log(currentDate)
+        setisDatePickerVisible(false)
+        // console.log(currentDate)
+    }
+    const handleConfirm = (event, selectedDate) => {
+        setisDatePickerVisible(false)
         const selectDate = new Date(selectedDate)
         const currentDate = new Date()
         const timeleft = selectDate.getTime() - currentDate.getTime();
@@ -106,7 +114,7 @@ const InputModal = ({
 
         }
 
-        setisDatePickerVisible(false)
+
     }
 
     const hideDatePicker = () => {
@@ -218,15 +226,14 @@ const InputModal = ({
                         value = {todoInputvalue}
                         // onSubmitEditing = {handleSubmit}
                     />
-
+                    
                     <StyledInput_imp
                         placeholder = "importance"                        
                         placeholderTextColor = {colors.alternative}
                         selectionColor = {colors.secondary}
                         autoFocus = {true}
                         onChangeText = {(text) => setImportance(text)}
-                        value = {todoImportance}
-                        
+                        value = {todoImportance} 
                     />
 
                     <TextRowStyle>
@@ -251,16 +258,21 @@ const InputModal = ({
                         // onSubmitEditing = {handleSubmit}
                     />
                     
-                    <AntDesign name = "calendar" size = {35} color={colors.tertiary} onPress = {() => {alert("cal pressed, will see later")}}/>
+                    <AntDesign name = "calendar" size = {35} color={colors.tertiary} onPress = {() => {setisDatePickerVisible(true)}}/>
                     </ModalLeftview>
                     </TextRowStyle>
 
-                    {/* <DateTimePickerModal
-                        isVisible={isDatePickerVisible}
-                        mode= "date"
-                        onConfirm={(Date, date) => handleConfirm(Date)}
-                        onCancel={hideDatePicker}
-                    /> */}
+
+                    
+
+                    {isDatePickerVisible && (
+                            <DateTimePicker
+                                testID="dateTimePicker"
+                                value={new Date()}
+                                mode='date'
+                                display="default"
+                                onChange={handleConfirm}
+                            />)} 
 
                     <ModalActionGroup>
                         <ModalAction color = {colors.primary} onPress = {handleCloseModal}>
