@@ -1,0 +1,32 @@
+1) setting up the expo project using "expo init projectName"
+2) running the app using "expo start"
+  
+    dependencies for this project
+
+1) npm install @react-navigation/native
+2) expo install react-native-screens react-native-safe-area-context
+3) expo install @react-navigation/native-stack
+4) expo install @react-navigation/drawer
+5) expo install react-native-gesture-handler react-native-reanimated
+6) expo install expo-sqlite
+7) expo install styled-components expo-constants
+8) expo install react-native-swipe-list-view
+9) expo install react-native-modal-datetime-picker 
+10) expo install @react-native-community/datetimepicker
+10) npm add firebase
+11) expo install @react-navigation/bottom-tabs
+---------------------------------------------------
+13) expo install react-native-svg
+14) npm install @react-native-community/slider --save
+15) npm install native-base
+16) npm install react-native-elements
+17) npm i react-native-events-calendar
+18) npm add react-native-tab-view
+19) expo install react-native-pager-view
+
+--> add from and to in the todo as well
+
+
+
+
+
