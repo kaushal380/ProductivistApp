@@ -13,6 +13,7 @@ const CalendarDisplay = () => {
   alert("hel")
   let calendarInpu1 = []
   let initialTodos
+  let Date1
   
   // console.log(date.getMonth())
 
@@ -25,10 +26,17 @@ const CalendarDisplay = () => {
             initialTodos = Object.values(Object.seal(documentSnapshot.data()))
 
             for (let index = 0; index < initialTodos.length; index++) {
+            
               let month = date.getMonth()+1
+              if(month < 10){
+                  month = '0' + month
+              }
               let title = initialTodos[index].title
-              let from = date.getFullYear() + '-' + month + '-' + date.getDate() + " " +initialTodos[index].from +":00"
-              let to = date.getFullYear() + '-' + month + '-' + date.getDate() + " " +initialTodos[index].to + ":00"
+              if(date.getDate()< 10){
+                Date1 = '0'+date.getDate()
+              }
+              let from = date.getFullYear() + '-' + month + '-' + Date1 + " " +initialTodos[index].from +":00"
+              let to = date.getFullYear() + '-' + month + '-' + Date1 + " " +initialTodos[index].to + ":00"
               let mylist = {start: from, end: to, title: title, summary: ""}
 
               calendarInpu1 = [...calendarInpu1,mylist]
@@ -40,12 +48,12 @@ const CalendarDisplay = () => {
   useEffect(() => {
     getInit()
   }, [])
-  let mylist1 = {"end": "2021-12-23 02:30:00", "start": '2021-12-23 01:30:00', "summary": '3412 Piedmont Rd NE, GA 3032', "title": 'Dr. Mariana Joseph',}
-  let mylist2 = {"end": "2021-12-23 05:00:00", "start": '2021-12-23 04:30:00', "summary": '3412 Piedmont Rd NE, GA 3032', "title": 'Dr. Mariana Joseph',}
+  let mylist1 = {"end": "2022-01-02 02:30:00", "start": '2022-01-02 01:30:00', "summary": '3412 Piedmont Rd NE, GA 3032', "title": 'Dr. Mariana Joseph',}
+  let mylist2 = {"end": "2022-01-02 05:00:00", "start": '2022-01-02 04:30:00', "summary": '3412 Piedmont Rd NE, GA 3032', "title": 'Dr. Mariana Joseph',}
   const [calendarInput, setCalendar] = useState([])
-  // const events = [mylist1, mylist2]
+  const events = [mylist1, mylist2]
   // console.log("array")
-  // console.log(calendarInput)
+//   console.log(calendarInput)
   // const events = calendarInput
   // console.log(events)
 
@@ -57,9 +65,9 @@ const CalendarDisplay = () => {
     </View>
     <EventCalendar
       eventTapped={true}
-      events={calendarInput}
+      events={calendarInput} 
       width={400}
-      initDate= {'2021-12-30'}
+      initDate= {'2022-01-02'}
       
     />
   </>    
