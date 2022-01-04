@@ -27,6 +27,8 @@
 20) expo install react-native-date-picker expo-dev-client :  https://nicedoc.io/henninghall/react-native-date-picker
 21) npm uninstall react-native-number-please: https://www.npmjs.com/package/react-native-number-please
 22) npm install react-datepicker --save: https://reactdatepicker.com/#example-select-time
+23) expo install react-native-modal-datetime-picker@10.0.0
+    - update the package.json file if it doesn't do it automatically
 
 --> add from and to in the todo as well
 
