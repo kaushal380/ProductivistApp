@@ -2,7 +2,6 @@ import React, {useState} from 'react'
 import { Button, View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { firebase } from '../firebase/config';
 import { useNavigation } from '@react-navigation/core';
-
 const Home = () => {
   const navigation = useNavigation()
   // const {state} = props.navigation

@@ -24,7 +24,7 @@ import {AntDesign} from "@expo/vector-icons"
 import DatePicker from 'react-native-date-picker'
 import { TapGestureHandler } from 'react-native-gesture-handler';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import NumberPlease from "react-native-number-please";
+import DateTimePickerModal from 'react-native-modal-datetime-picker'
 
 const InputModal = ({
     modalVisible, 
@@ -69,7 +69,7 @@ const InputModal = ({
         setisDatePickerVisible(false)
         // console.log(currentDate)
     }
-    const handleConfirm = (event, selectedDate) => {
+    const handleConfirm = ( selectedDate) => {
         setisDatePickerVisible(false)
         const selectDate = new Date(selectedDate)
         const currentDate = new Date()
@@ -265,14 +265,20 @@ const InputModal = ({
 
                     
 
-                    {isDatePickerVisible && (
+                    {/* {isDatePickerVisible && (
                             <DateTimePicker
                                 testID="dateTimePicker"
                                 value={new Date()}
                                 mode='date'
                                 display="default"
                                 onChange={handleConfirm}
-                            />)} 
+                            />)}  */}
+                    <DateTimePickerModal
+                        isVisible = {isDatePickerVisible}
+                        mode='date'
+                        onConfirm = {(date) => {handleConfirm(date)}}
+                        onCancel = {hideDatePicker}
+                    />
 
                     <ModalActionGroup>
                         <ModalAction color = {colors.primary} onPress = {handleCloseModal}>

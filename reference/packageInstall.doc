@@ -25,6 +25,8 @@
 18) npm add react-native-tab-view : https://www.npmjs.com/package/react-native-tab-view
 19) expo install react-native-pager-view
 20) expo install react-native-date-picker expo-dev-client :  https://nicedoc.io/henninghall/react-native-date-picker
-21) npm i react-native-number-please: https://www.npmjs.com/package/react-native-number-please
+21) npm uninstall react-native-number-please: https://www.npmjs.com/package/react-native-number-please
+22) npm install react-datepicker --save: https://reactdatepicker.com/#example-select-time
+
 --> add from and to in the todo as well
 

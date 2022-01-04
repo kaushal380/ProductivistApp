@@ -21,6 +21,7 @@ import {AntDesign} from "@expo/vector-icons"
 // import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { TapGestureHandler } from 'react-native-gesture-handler';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
 
 
@@ -57,7 +58,7 @@ const InputModal = ({
     const [isTimeFrom, setIsTimeFrom] = useState(false)
 
 
-    const handleConfirmFrom = (event, selectedTime) => {
+    const handleConfirmFrom = (selectedTime) => {
         setIsTimeFrom(false)
         const time = new Date(selectedTime)
         let hours = time.getHours()
@@ -75,7 +76,7 @@ const InputModal = ({
         
     }
 
-    const handleConfirmTo = (event, selectedTime) => {
+    const handleConfirmTo = (selectedTime) => {
         setIsTimeTo(false)
         const time = new Date(selectedTime)
         let hours = time.getHours()
@@ -220,25 +221,21 @@ const InputModal = ({
                     <AntDesign name = "clockcircle" size = {35} color={colors.tertiary} onPress = {() => {setIsTimeTo(true)}}/>
                     </ModalLeftview>
          
+                    <DateTimePickerModal
+                        isVisible = {isTimeTo}
+                        mode='time'
+                        onConfirm = {(date) => {handleConfirmTo(date)}}
+                        onCancel = {hideTimePicker} 
+                    />
+                    <DateTimePickerModal
+                        isVisible = {isTimeFrom}
+                        mode='time'
+                        onConfirm = {(date)=> {handleConfirmFrom(date)}}
+                        onCancel = {hideTimePicker}
+                    />
                     
 
-                    {isTimeTo && (
-                        <DateTimePicker
-                            testID="dateTimePicker"
-                            value={new Date()}
-                            mode='time'
-                            display="inline"
-                            onChange={handleConfirmTo}
-                        />)}
 
-                    {isTimeFrom && (
-                        <DateTimePicker
-                            testID="dateTimePicker"
-                            value={new Date()}
-                            mode='time'
-                            display="inline"
-                            onChange={handleConfirmFrom}
-                        />)}
                     <ModalActionGroup>
                         <ModalAction color = {colors.primary} onPress = {handleCloseModal}>
                             <AntDesign name = "close" size = {28} color={colors.tertiary}/>

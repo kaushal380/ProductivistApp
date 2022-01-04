@@ -9,13 +9,27 @@ import {AntDesign, Entypo} from "@expo/vector-icons"
 
 const CalendarDisplay = () => {
   let date = new Date()
+  let dateFormat = ""
   const getInit = async() => {
-  alert("hel")
+
   let calendarInpu1 = []
   let initialTodos
   let Date1
+  let month = date.getMonth() + 1
+  let dateCheck = date.getDate()
   
-  // console.log(date.getMonth())
+  console.log(dateCheck)
+  if(month < 10){
+     month = "0"+ month
+  }
+  if(dateCheck < 10){
+    dateCheck = '0' + dateCheck
+  }
+  
+  // console.log(dateCheck)
+  dateFormat = date.getFullYear() + '-' + month + '-' + dateCheck;
+  
+  console.log(dateFormat)
 
   const documentSnapshot = await firebase.firestore()
             .collection('users')
@@ -48,6 +62,7 @@ const CalendarDisplay = () => {
   useEffect(() => {
     getInit()
   }, [])
+
   let mylist1 = {"end": "2022-01-02 02:30:00", "start": '2022-01-02 01:30:00', "summary": '3412 Piedmont Rd NE, GA 3032', "title": 'Dr. Mariana Joseph',}
   let mylist2 = {"end": "2022-01-02 05:00:00", "start": '2022-01-02 04:30:00', "summary": '3412 Piedmont Rd NE, GA 3032', "title": 'Dr. Mariana Joseph',}
   const [calendarInput, setCalendar] = useState([])
@@ -63,12 +78,11 @@ const CalendarDisplay = () => {
       <Text style = {styles.headerItem}>Let's see what you got today :)</Text>
       <AntDesign name='reload1' size={25} onPress={getInit} />
     </View>
-    <EventCalendar
+    <EventCalendar  
       eventTapped={true}
       events={calendarInput} 
       width={400}
-      initDate= {'2022-01-02'}
-      
+      initDate= {{dateFormat}} 
     />
   </>    
   )
