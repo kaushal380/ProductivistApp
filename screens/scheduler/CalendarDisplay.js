@@ -13,7 +13,8 @@ const CalendarDisplay = () => {
   const getInit = async() => {
 
   let calendarInpu1 = []
-  let initialTodos
+  let initialRoutines
+  let initialApps
   let Date1
   let month = date.getMonth() + 1
   let dateCheck = date.getDate()
@@ -37,20 +38,32 @@ const CalendarDisplay = () => {
             .collection('userData')
             .doc('routines')
             .get()
-            initialTodos = Object.values(Object.seal(documentSnapshot.data()))
+            initialRoutines = Object.values(Object.seal(documentSnapshot.data()))
 
-            for (let index = 0; index < initialTodos.length; index++) {
+  const documentSnapshot1 = await firebase.firestore()
+            .collection('users')
+            .doc(firebase.auth().currentUser.uid)
+            .collection('userData')
+            .doc('shortTerm')
+            .get()
+            initialApps = Object.values(Object.seal(documentSnapshot1.data()))
+
+          for(let i = 0; i < initialApps.length; i++){
+            initialRoutines = [...initialRoutines, initialApps[i]]
+          }
+
+            for (let index = 0; index < initialRoutines.length; index++) {
             
               let month = date.getMonth()+1
               if(month < 10){
                   month = '0' + month
               }
-              let title = initialTodos[index].title
+              let title = initialRoutines[index].title
               if(date.getDate()< 10){
                 Date1 = '0'+date.getDate()
               }
-              let from = date.getFullYear() + '-' + month + '-' + Date1 + " " +initialTodos[index].from +":00"
-              let to = date.getFullYear() + '-' + month + '-' + Date1 + " " +initialTodos[index].to + ":00"
+              let from = date.getFullYear() + '-' + month + '-' + Date1 + " " +initialRoutines[index].from +":00"
+              let to = date.getFullYear() + '-' + month + '-' + Date1 + " " +initialRoutines[index].to + ":00"
               let mylist = {start: from, end: to, title: title, summary: ""}
 
               calendarInpu1 = [...calendarInpu1,mylist]
@@ -79,7 +92,7 @@ const CalendarDisplay = () => {
       <AntDesign name='reload1' size={25} onPress={getInit} />
     </View>
     <EventCalendar  
-      eventTapped={true}
+      eventTapped={(value) => {alert(value.title)}}
       events={calendarInput} 
       width={400}
       initDate= {{dateFormat}} 

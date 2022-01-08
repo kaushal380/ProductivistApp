@@ -1,11 +1,12 @@
 import React, {useState} from 'react'
 import { useNavigation } from '@react-navigation/core';
-import { KeyboardAvoidingView, StyleSheet, Text, View, TextInput, TouchableOpacity, Alert } from 'react-native'
+import { Platform, KeyboardAvoidingView, StyleSheet, Text, View, TextInput, TouchableOpacity, Alert } from 'react-native'
 import { firebase } from '../../firebase/config';
 import { doc, setDoc, Timestamp } from "firebase/firestore"; 
 
 
 const SignupScreen = () => {
+    let type = "";
     const [password, setPassword] = useState('')
     const [confirm_password, setconfirm_password] = useState('')
     const [email, setEmail] = useState('')
@@ -14,7 +15,13 @@ const SignupScreen = () => {
     const [userName, setUserName] = useState('')
 
     const navigation = useNavigation()
-
+    if(Platform.OS === 'ios'){
+        type = "padding";
+    }
+    else if(Platform.OS === 'android'){
+        type = "height";
+    }
+    else{type = "height"}
     const registerUser = (firstName, lastName, userName, email, password, confirm_password) => {
         // alert("clicked register!")
         if (password !== confirm_password) {
@@ -91,7 +98,7 @@ const SignupScreen = () => {
 
         <KeyboardAvoidingView
             style = {styles.container}
-            behavior = "padding"
+            behavior = {type}
         >
             <View style = {styles.inputContainer}>
                 <TextInput

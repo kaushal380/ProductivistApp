@@ -235,7 +235,6 @@ const InputModal = ({
                     />
                     
 
-
                     <ModalActionGroup>
                         <ModalAction color = {colors.primary} onPress = {handleCloseModal}>
                             <AntDesign name = "close" size = {28} color={colors.tertiary}/>

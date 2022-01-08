@@ -1,7 +1,7 @@
 // import 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, LogBox} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import LoginScreen from './screens/loginsScreens/LoginScreen';
@@ -11,6 +11,7 @@ import SignupScreen from './screens/loginsScreens/SignupScreen';
 const Stack = createNativeStackNavigator();
 
 export default function loginUI() {
+  LogBox.ignoreAllLogs(true);
   return(
   <NavigationContainer>
     <Stack.Navigator>

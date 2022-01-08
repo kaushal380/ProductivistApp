@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import { KeyboardAvoidingView, StyleSheet, Text, View, TextInput, TouchableOpacity, Alert } from 'react-native'
+import { Platform, KeyboardAvoidingView, StyleSheet, Text, View, TextInput, TouchableOpacity, Alert } from 'react-native'
 
 import { useNavigation } from '@react-navigation/core';
 
@@ -12,9 +12,17 @@ const LoginScreen = (props) => {
     const [password, setPassword] = useState('')
     const [email, setEmail] = useState('')
     const navigation = useNavigation()
+    let type = "";
     // const { navigate } = props.navigation
     
-
+    if(Platform.OS === 'ios'){
+        type = "padding";
+    }
+    else if(Platform.OS === 'android'){
+        type = "height";
+    }
+    else{type = "height"}
+    
     const handleLogin = (email, password) => {
         // alert("clicked register!")
 
@@ -38,10 +46,11 @@ const LoginScreen = (props) => {
 
         <KeyboardAvoidingView
             style = {styles.container}
-            behavior = "padding"
-        >
+            behavior = {type} // try padding for ios maybe?
+        >   
+            
             <View style = {styles.inputContainer}>
- 
+            
                 <TextInput
                     placeholder = "Email"
                     value = {email}
