@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import { View, Text, Modal, Alert, KeyboardAvoidingView, StyleSheet } from 'react-native'
+import { View, Text, Modal, Alert, KeyboardAvoidingView, StyleSheet, TouchableOpacity } from 'react-native'
 import {
     ModalButton,
     ModalContainer,
@@ -21,7 +21,7 @@ import {AntDesign} from "@expo/vector-icons"
 import DateTimePicker from '@react-native-community/datetimepicker';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { TapGestureHandler } from 'react-native-gesture-handler';
-
+import { Slider } from 'react-native-elements';
 
 
 const InputModal = ({
@@ -40,6 +40,8 @@ const InputModal = ({
     setToNum,
     todoToBeEdited, 
     setTodoToBeEdited, 
+    routineImportance,
+    setImportance,
     handleEditTodo,
     todos}) => {
 
@@ -48,6 +50,7 @@ const InputModal = ({
         setTodoInputValue()
         setRoutineFrom("select start time")
         setRoutineTo("select end time")
+        setImportance(1)
         setTodoToBeEdited(null);
     }
 
@@ -125,9 +128,11 @@ const InputModal = ({
                 from: routineFrom,
                 fromNum: fromNum,
                 toNum: toNum,
-                key: key
+                key: key,
+                importance: routineImportance
             })
             setTodoInputValue()
+            setImportance(1)
             setRoutineFrom("select start time")
             setRoutineTo("select end time")        
         } else {
@@ -150,9 +155,11 @@ const InputModal = ({
                 from: routineFrom,
                 fromNum: fromNum,
                 toNum: toNum,                
-                key: todoToBeEdited.key
+                key: todoToBeEdited.key,
+                importance: routineImportance
             })
             setTodoInputValue()
+            setImportance(1)
             setRoutineFrom("select start time")
             setRoutineTo("select end time")       
         }
@@ -163,12 +170,12 @@ const InputModal = ({
     return (
         <>
 
-            <ModalActionGroup>
+            <View style = {{justifyContent: 'flex-end', flexDirection: 'row'}}>
 
                 <ModalAction color = {colors.tertiary} onPress = {() => {setModalVisible(true)}}>
                     <AntDesign name = "pluscircle" size = {28} color = {colors.secondary}/>
                 </ModalAction>
-            </ModalActionGroup>
+            </View>
             <Modal
                 animationType= "slide"
                 transparent = {true}
@@ -194,33 +201,35 @@ const InputModal = ({
                         value = {todoInputvalue}
                     />
 
-        
-                    <ModalLeftview>
-                    <StyledInput_Time                        
-                        placeholder = {routineFrom}                        
-                        placeholderTextColor = {colors.alternative}
-                        selectionColor = {colors.secondary}
-                        autoFocus = {true}
-                        value = {routineFrom}
-                    />
+                    <View style = {{marginTop: 45}}>
+                    <Text style = {{fontSize: 25, color: "white", fontWeight: '700', letterSpacing: 1}}>
+                        importance : {routineImportance}
+                    </Text>
 
-                    <AntDesign name = "clockcircle" size = {35} color={colors.tertiary} onPress = {() => {setIsTimeFrom(true)}}/>
-                    </ModalLeftview>
-
-                    <ModalLeftview>
-                    <StyledInput_Time
-                    
-                        placeholder = {routineTo}
-                        placeholderTextColor = {colors.alternative}
-                        selectionColor = {colors.secondary}
-                        autoFocus = {true}
-                        value = {routineTo}
+                    <Slider
+                        value={routineImportance}
+                        onValueChange = {(num) => {setImportance(num)}}
+                        maximumValue={10}
+                        minimumValue={1}
+                        step={1}
+                        onSlidingComplete = {(num) => {setImportance(num)}}
+                        allowTouchTrack
+                        trackStyle={{ height: 10}}
+                        thumbStyle={{ height: 20, width: 20, backgroundColor: 'white' }}                    
                     />
-                    
-                    <AntDesign name = "clockcircle" size = {35} color={colors.tertiary} onPress = {() => {setIsTimeTo(true)}}/>
-                    </ModalLeftview>
-         
-                    
+                    </View>
+                    <View style = {{flexDirection: 'row', marginTop: 45, marginBottom: 45}}>
+                        <View style = {{marginRight: 10}}>
+                        <TouchableOpacity style = {styles.DateButton} onPress= {()=>{setIsTimeFrom(true)}}>
+                            <Text>{routineFrom}</Text>
+                        </TouchableOpacity>
+                        </View>
+                        <View style = {{marginLeft: 10}}>
+                        <TouchableOpacity style = {styles.DateButton} onPress= {()=>{setIsTimeTo(true)}}>
+                            <Text>{routineTo}</Text>
+                        </TouchableOpacity>
+                        </View>                        
+                    </View>           
                     <DateTimePickerModal
                         isVisible = {isTimeTo}
                         mode='time'
@@ -257,4 +266,36 @@ const InputModal = ({
 }
 
 
+const styles = StyleSheet.create({
+    DateButton: {
+        flexDirection: 'row',
+        backgroundColor: 'white',
+        borderColor: colors.primary,
+        width: 160,
+        borderRadius: 10,
+        height: 40,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    DateButtonText: {
+        alignSelf: 'center',
+        alignContent: 'center',
+        alignItems: 'center',
+        fontWeight: '100',
+        fontSize: 15
+    },
+
+    input: {
+        width: 100,
+        height: 50,
+        marginRight: 60,
+        backgroundColor: colors.secondary,
+        padding: 10,
+        fontSize: 12,
+        borderRadius: 10,
+        color: colors.secondary,
+        letterSpacing: 1
+    },
+
+})
 export default InputModal

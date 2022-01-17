@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import { View, Text, Button } from 'react-native'
+import { View, Text, Button, Alert } from 'react-native'
 //components
 import Header from './ShortHeader'
 import Listitems from './ShortList'
@@ -55,6 +55,8 @@ const RoutineSub = () => {
     const [routineFrom, setRoutineFrom] = useState("select start time");
     const [fromNum, setFromNum] = useState(0)
     const [toNum, setToNum] = useState(0)
+    const [shortImportance, setImportance] = useState(0);
+    const [shortDate, setDate] = useState("select the day of the appointment")
  
     const handleAddTodo = (todo) =>{
         const newTodos = [...todos, todo];
@@ -67,6 +69,21 @@ const RoutineSub = () => {
             .doc('shortTerm')
             .set(addTodo)
         setModalVisible(false)
+    }
+     
+    const createDeleteAlert = () => {
+        Alert.alert(
+            "Delete Alert",
+            "Are you sure you want to delete all the tasks?",
+            [
+                {
+                    text: "cancel",
+                    onPress: () => {return},
+                    style: 'cancel'
+                },
+                {text: "yes", onPress: () => {handleClearTodos()}} 
+            ]
+        );
     }
 
     const handleEditTodo = (editedTodo) =>{
@@ -95,11 +112,13 @@ const RoutineSub = () => {
         setRoutineFrom((item.from) + "")
         setFromNum(item.fromNum)
         setToNum(item.toNum)
+        setImportance(item.importance)
+        setDate(item.date)
     }
     return (
         <>
         <Header 
-            handleClearTodos = {handleClearTodos}
+            handleClearTodos = {createDeleteAlert}
             getInit = {getInit}
             />
         <Listitems 
@@ -124,6 +143,10 @@ const RoutineSub = () => {
             setFromNum={setFromNum}
             toNum={toNum}
             setToNum={setToNum}
+            shortImportance={shortImportance}
+            setImportance= {setImportance}
+            shortDate={shortDate}
+            setDate={setDate}
             handleEditTodo = {handleEditTodo}
             todos = {todos}
 

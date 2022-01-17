@@ -1,5 +1,5 @@
-import React, {useState} from 'react'
-import { View, Text, Modal, Alert, KeyboardAvoidingView, StyleSheet } from 'react-native'
+import React, {useRef, useState} from 'react'
+import { TextInput, View, Text, Modal, Alert, KeyboardAvoidingView, StyleSheet, TouchableOpacity, Button } from 'react-native'
 import {
     ModalButton,
     ModalContainer,
@@ -20,11 +20,14 @@ import {
 
 } from '../../styles/AppStyles'
 
-import {AntDesign} from "@expo/vector-icons"
+
+import {AntDesign, Entypo} from "@expo/vector-icons"
 import DatePicker from 'react-native-date-picker'
 import { TapGestureHandler } from 'react-native-gesture-handler';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import DateTimePickerModal from 'react-native-modal-datetime-picker'
+import { Slider } from 'react-native-elements'
+import { color } from 'react-native-reanimated'
 
 const InputModal = ({
     modalVisible, 
@@ -51,11 +54,12 @@ const InputModal = ({
     const handleCloseModal = () => {
         setModalVisible(false);
         setTodoInputValue("")
-        setImportance("")
+        setImportance(0)
         setDate("select a date")
-        setTimeTaken("")
+        setTimeTaken(0)
         setTodoToBeEdited(null);
     }
+
 
     const sortModalClose = () => {
         setSortModal(false);
@@ -73,25 +77,26 @@ const InputModal = ({
         setisDatePickerVisible(false)
         const selectDate = new Date(selectedDate)
         const currentDate = new Date()
-        const timeleft = selectDate.getTime() - currentDate.getTime();
+        let timeleft = selectDate.getTime() - currentDate.getTime();
+        let daysLeft = Math.round(timeleft/ ((1000 * 3600 * 24)));
 
         // alert("timeleft: " + timeleft)
         if(selectedDate.getFullYear() > currentDate.getFullYear()){
             setDate(selectDate.toDateString())
-            settodoTimeLeft(timeleft)
+            settodoTimeLeft(daysLeft)
             
             
         }
         else if (selectedDate.getFullYear() === currentDate.getFullYear()){
             if(selectDate.getMonth() > currentDate.getMonth()){
                 setDate(selectDate.toDateString())
-                settodoTimeLeft(timeleft)
+                settodoTimeLeft(daysLeft)
                 
             }
             else if(selectDate.getMonth() === currentDate.getMonth()){
                 if(selectDate.getDate() >= currentDate.getDate()){
                     setDate(selectDate.toDateString())
-                    settodoTimeLeft(timeleft)
+                    settodoTimeLeft(daysLeft)
                     
                 }
                 // else if(selectDate.getDate() === currentDate.getDate()){
@@ -131,8 +136,8 @@ const InputModal = ({
                 alert("enter a valid time")
                 return;
             }
-            if( isNaN(parseInt(todoImportance))  || parseInt(todoImportance) > 5){
-                alert("importance should be ranked between 1 to 5")
+            if( isNaN(parseInt(todoImportance))  || parseInt(todoImportance) > 10){
+                alert("importance should be ranked between 1 to 10")
                 return;
             }
             if(todoDate === "select a date"){
@@ -150,13 +155,14 @@ const InputModal = ({
                 date: todoDate,
                 time: parseInt(todoTimeTaken),
                 timeleft: todoTimeLeft,
-                importance: parseInt(todoImportance),
+                importance: todoImportance,
+                status: 'pending',
                 key: key
             })
             setTodoInputValue("")
-            setImportance("")
+            setImportance(1)
             setDate("select a date")
-            setTimeTaken("")
+            setTimeTaken(0)
         } else {
 
             if(todoInputvalue + "" === ""){
@@ -167,7 +173,7 @@ const InputModal = ({
                 alert("enter a valid time")
                 return;
             }
-            if(isNaN(parseInt(todoImportance))  || parseInt(todoImportance) > 5){
+            if(isNaN(parseInt(todoImportance))  || parseInt(todoImportance) > 10){
                 alert("importance should be ranked between 1 to 5")
                 return;
             }
@@ -180,13 +186,14 @@ const InputModal = ({
                 date: todoDate,
                 time: parseInt(todoTimeTaken),
                 timeleft: todoTimeLeft,
-                importance: parseInt(todoImportance),
+                importance: todoImportance,
+                status: 'pending',
                 key: todoToBeEdited.key
             })
             setTodoInputValue("")
-            setImportance("")
+            setImportance(1)
             setDate("select a date")
-            setTimeTaken("")        
+            setTimeTaken(0)        
         }
         }
 
@@ -195,12 +202,12 @@ const InputModal = ({
     return (
         <>
 
-            <ModalActionGroup>
+            <View style = {{justifyContent: 'flex-end', flexDirection: 'row'}}>
 
                 <ModalAction color = {colors.tertiary} onPress = {() => {setModalVisible(true)}}>
                     <AntDesign name = "pluscircle" size = {28} color = {colors.secondary}/>
                 </ModalAction>
-            </ModalActionGroup>
+            </View>
             <Modal
                 animationType= "slide"
                 transparent = {true}
@@ -227,52 +234,50 @@ const InputModal = ({
                         // onSubmitEditing = {handleSubmit}
                     />
                     
-                    <StyledInput_imp
-                        placeholder = "importance"                        
-                        placeholderTextColor = {colors.alternative}
-                        selectionColor = {colors.secondary}
-                        autoFocus = {true}
-                        onChangeText = {(text) => setImportance(text)}
-                        value = {todoImportance} 
+                    <View style = {{marginTop: 20}}>
+                    <Text style = {{fontSize: 25, color: "white", fontWeight: '700', letterSpacing: 1}}>
+                        importance : {todoImportance}
+                    </Text>
+
+                    <Slider
+                        value={todoImportance}
+                        onValueChange = {(num) => {setImportance(num)}}
+                        maximumValue={10}
+                        minimumValue={1}
+                        step={1}
+                        onSlidingComplete = {(num) => {setImportance(num)}}
+                        allowTouchTrack
+                        trackStyle={{ height: 10}}
+                        thumbStyle={{ height: 20, width: 20, backgroundColor: 'white' }}                    
                     />
 
-                    <TextRowStyle>
-                    <StyledInput_imp     
-                        placeholder = "time taken: "
-                        placeholderTextColor = {colors.alternative}
-                        selectionColor = {colors.secondary}
-                        autoFocus = {true}
-                        onChangeText = {(text) => setTimeTaken(text)}
-                        value = {todoTimeTaken}                   
 
+                    <View style = {{marginTop: 20}}>
+                    <Text style = {{fontSize: 25, color: "white", fontWeight: '700', letterSpacing: 1}}>
+                        time taken (mins) : {todoTimeTaken}
+                    </Text>
+
+                    <Slider
+                        value={todoTimeTaken}
+                        onValueChange = {(num) => {setTimeTaken(num)}}
+                        maximumValue={90}
+                        minimumValue={5}
+                        step={5}
+                        onSlidingComplete = {(num) => {setTimeTaken(num)}}
+                        allowTouchTrack
+                        trackStyle={{ height: 10}}
+                        thumbStyle={{ height: 20, width: 20, backgroundColor: 'white' }}                    
                     />
-                    <ModalLeftview>
-                    <StyledInput_Date
-                    
-                        placeholder = {todoDate}
-                        placeholderTextColor = {colors.alternative}
-                        selectionColor = {colors.secondary}
-                        autoFocus = {true}
-                        // onChangeText = {}
-                        value = {todoDate}
-                        // onSubmitEditing = {handleSubmit}
-                    />
-                    
-                    <AntDesign name = "calendar" size = {35} color={colors.tertiary} onPress = {() => {setisDatePickerVisible(true)}}/>
-                    </ModalLeftview>
-                    </TextRowStyle>
+                    </View>
+                <View style = {{flexDirection: 'row'}}>
 
+                    <TouchableOpacity style = {styles.DateButton} onPress={() => {setisDatePickerVisible(true)}}>
+                        <Text>{todoDate}</Text>
+                    </TouchableOpacity>
+                </View>
 
-                    
+                    </View>
 
-                    {/* {isDatePickerVisible && (
-                            <DateTimePicker
-                                testID="dateTimePicker"
-                                value={new Date()}
-                                mode='date'
-                                display="default"
-                                onChange={handleConfirm}
-                            />)}  */}
                     <DateTimePickerModal
                         isVisible = {isDatePickerVisible}
                         mode='date'
@@ -312,6 +317,41 @@ const InputModal = ({
     )
 }
 
+const styles = StyleSheet.create({
+    DateButton: {
+        flexDirection: 'row',
+        backgroundColor: 'white',
+        borderColor: colors.primary,
+        marginTop: 45,
+        width: 160,
+        marginBottom: 30,
+        borderRadius: 10,
+        height: 40,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    DateButtonText: {
+        alignSelf: 'center',
+        alignContent: 'center',
+        alignItems: 'center',
+        fontWeight: '100',
+        fontSize: 15
+    },
+
+    input: {
+        width: 100,
+        height: 50,
+        marginRight: 60,
+        backgroundColor: colors.secondary,
+        padding: 10,
+        fontSize: 12,
+        borderRadius: 10,
+        color: colors.secondary,
+        letterSpacing: 1
+    },
+
+
+})
 
 export default InputModal
 

@@ -6,8 +6,8 @@ import ShortMaker from './TodoShortTerm/ShortMaker';
 import { colors } from '../../styles/AppStyles';
 
 const renderScene = SceneMap({
-  first: ShortMaker,
-  second: todo,
+  first: todo,
+  second: ShortMaker,
 });
 
 const renderTabBar = props => (
@@ -24,8 +24,8 @@ export default function TabViewExample() {
 
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
-    { key: 'first', title: 'Appointments' },
-    { key: 'second', title: 'Tasks' },
+    { key: 'first', title: 'Tasks' },
+    { key: 'second', title: 'Appointments' },
   ]);
 
   return (

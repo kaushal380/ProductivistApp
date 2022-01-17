@@ -1,125 +1,141 @@
-import { StatusBar } from 'expo-status-bar';
-import React, {useState, useEffect} from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import EventCalendar from 'react-native-events-calendar';
+
+import React, { useState, useEffect } from 'react';
+
+import { SafeAreaView, StyleSheet, View, Dimensions } from 'react-native';
 import { firebase } from '../../firebase/config';
-import {Container, HeaderView} from '../../styles/AppStyles';
-import {AntDesign, Entypo} from "@expo/vector-icons"
 
+import EventCalendar from 'react-native-events-calendar';
 
-const CalendarDisplay = () => {
+let { width } = Dimensions.get('window');
+
+const App = () => {
   let date = new Date()
+  let date1 = date.getDate()
+  let month = date.getMonth()+1
+  let year = date.getFullYear()
   let dateFormat = ""
-  const getInit = async() => {
 
-  let calendarInpu1 = []
-  let initialRoutines
-  let initialApps
-  let Date1
-  let month = date.getMonth() + 1
-  let dateCheck = date.getDate()
-  
-  console.log(dateCheck)
-  if(month < 10){
-     month = "0"+ month
+  if(month <10){
+    month = '0' + month
   }
-  if(dateCheck < 10){
-    dateCheck = '0' + dateCheck
+  if(date1 < 10){
+    date1 = '0' + date1
   }
-  
-  // console.log(dateCheck)
-  dateFormat = date.getFullYear() + '-' + month + '-' + dateCheck;
-  
-  console.log(dateFormat)
+  dateFormat = year+'-'+month+'-'+date1
+  const getEvents = async () => {
+    setInitEvents([])
+    let initalRoutines
+    let initialApps
+    let initialEvents = []
+    
+    const documentSnapshot = await firebase.firestore()
+        .collection('users')
+        .doc(firebase.auth().currentUser.uid)
+        .collection('userData')
+        .doc('routines')
+        .get()
+    
+        initalRoutines = Object.values(Object.seal(documentSnapshot.data()))
 
-  const documentSnapshot = await firebase.firestore()
-            .collection('users')
-            .doc(firebase.auth().currentUser.uid)
-            .collection('userData')
-            .doc('routines')
-            .get()
-            initialRoutines = Object.values(Object.seal(documentSnapshot.data()))
+    const documentSnapshot1 = await firebase.firestore()
+    .collection('users')
+    .doc(firebase.auth().currentUser.uid)
+    .collection('userData')
+    .doc('shortTerm')
+    .get()
 
-  const documentSnapshot1 = await firebase.firestore()
-            .collection('users')
-            .doc(firebase.auth().currentUser.uid)
-            .collection('userData')
-            .doc('shortTerm')
-            .get()
-            initialApps = Object.values(Object.seal(documentSnapshot1.data()))
+    initialApps = Object.values(Object.seal(documentSnapshot1.data()))
 
-          for(let i = 0; i < initialApps.length; i++){
-            initialRoutines = [...initialRoutines, initialApps[i]]
-          }
+    initialEvents = initialApps.concat(initalRoutines)
 
-            for (let index = 0; index < initialRoutines.length; index++) {
-            
-              let month = date.getMonth()+1
-              if(month < 10){
-                  month = '0' + month
-              }
-              let title = initialRoutines[index].title
-              if(date.getDate()< 10){
-                Date1 = '0'+date.getDate()
-              }
-              let from = date.getFullYear() + '-' + month + '-' + Date1 + " " +initialRoutines[index].from +":00"
-              let to = date.getFullYear() + '-' + month + '-' + Date1 + " " +initialRoutines[index].to + ":00"
-              let mylist = {start: from, end: to, title: title, summary: ""}
+        let calendarInpu1 = []
+        let month = date.getMonth()+1
+        let Date1 = date.getDate()
+        let year = date.getFullYear()
 
-              calendarInpu1 = [...calendarInpu1,mylist]
-          }
-    // console.log(calendarInput)
-    setCalendar(calendarInpu1)
-  } 
-
-  useEffect(() => {
-    getInit()
-  }, [])
-
-  let mylist1 = {"end": "2022-01-02 02:30:00", "start": '2022-01-02 01:30:00', "summary": '3412 Piedmont Rd NE, GA 3032', "title": 'Dr. Mariana Joseph',}
-  let mylist2 = {"end": "2022-01-02 05:00:00", "start": '2022-01-02 04:30:00', "summary": '3412 Piedmont Rd NE, GA 3032', "title": 'Dr. Mariana Joseph',}
-  const [calendarInput, setCalendar] = useState([])
-  const events = [mylist1, mylist2]
-  // console.log("array")
-//   console.log(calendarInput)
-  // const events = calendarInput
-  // console.log(events)
-
-  return (
-    <>
-    <View style = {styles.header}>
-      <Text style = {styles.headerItem}>Let's see what you got today :)</Text>
-      <AntDesign name='reload1' size={25} onPress={getInit} />
-    </View>
-    <EventCalendar  
-      eventTapped={(value) => {alert(value.title)}}
-      events={calendarInput} 
-      width={400}
-      initDate= {{dateFormat}} 
-    />
-  </>    
-  )
+        if(month < 10){
+          month = '0' + month
+        }
+      
+        if(Date1< 10){
+          Date1 = '0'+date.getDate()
+        }
+        for (let index = 0; index < initialEvents.length; index++) {
+                
+      
+          let title = initialEvents[index].title
+      
+          let from = year + '-' + month + '-' + Date1 + " " +initialEvents[index].from +":00"
+          let to = year + '-' + month + '-' + Date1 + " " +initialEvents[index].to + ":00"
+          let mylist = {start: from, end: to, title: title, summary: ""}
+      
+          calendarInpu1 = [...calendarInpu1,mylist]
+      }
+        // console.log(calendarInpu1)
+        setEvents(calendarInpu1)
+        console.log(events)
 }
 
+    useEffect(() => {
+      getEvents()
+    }, [])
+
+
+  
+  const [initialEvents, setInitEvents] = useState([])
+  const [events, setEvents] = useState([
+    {
+      start: '2020-01-01 00:00:00',
+      end: '2020-01-01 02:00:00',
+      title: 'New Year Party',
+      summary: 'xyz Location',
+    },    {
+      start: '2020-01-01 03:00:00',
+      end: '2020-01-01 04:00:00',
+      title: 'New Year Party',
+      summary: 'xyz Location',
+    },    {
+      start: '2020-01-01 04:00:00',
+      end: '2020-01-01 05:00:00',
+      title: 'New Year Party',
+      summary: 'xyz Location',
+    }, 
+  ]);
+
+ 
+  const eventClicked = (event) => {
+    //On Click oC a event showing alert from here
+    alert(JSON.stringify(event));
+  };
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <View style={styles.container}>
+        <EventCalendar
+          eventTapped={getEvents}
+          //Function on event press
+          events={events}
+          //passing the Array of event
+          width={width}
+          //Container width
+          size={60}
+          //number of date will render before and after initDate
+          //(default is 30 will render 30 day before initDate and 29 day after initDate)
+          initDate={{dateFormat}}
+          //show initial date (default is today)
+          scrollToFirst
+          //scroll to first event of the day (default true)
+        />
+      </View>
+    </SafeAreaView>
+  );
+};
+export default App;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  header: {
-    flexDirection: 'row',
-    alignSelf: 'center',
-    alignContent: 'space-between',
-    height: 30
-  },
-  headerItem: {
-    fontSize: 20,
-    marginRight: 30,
-    
-  }
 });
-
-export default CalendarDisplay;

@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import { View, Text, Modal, Alert, KeyboardAvoidingView, StyleSheet } from 'react-native'
+import { View, Text, Modal, Alert, KeyboardAvoidingView, StyleSheet, TouchableOpacity } from 'react-native'
 import {
     ModalButton,
     ModalContainer,
@@ -22,6 +22,7 @@ import {AntDesign} from "@expo/vector-icons"
 import { TapGestureHandler } from 'react-native-gesture-handler';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import { Slider } from 'react-native-elements'
 
 
 
@@ -39,6 +40,10 @@ const InputModal = ({
     setFromNum,
     toNum,
     setToNum,
+    shortImportance,
+    setImportance,
+    shortDate,
+    setDate,
     todoToBeEdited, 
     setTodoToBeEdited, 
     handleEditTodo,
@@ -49,6 +54,8 @@ const InputModal = ({
         setTodoInputValue()
         setRoutineFrom("select start time")
         setRoutineTo("select end time")
+        setImportance(0)
+        setDate("select the day of the appointment")
         setTodoToBeEdited(null);
     }
 
@@ -56,7 +63,52 @@ const InputModal = ({
     const newTodos = todos;
     const [isTimeTo, setIsTimeTo] = useState(false)
     const [isTimeFrom, setIsTimeFrom] = useState(false)
+    const [isDateOpen, setDateOpen] = useState(false)
 
+    const handleConfirm = ( selectedDate) => {
+        setDateOpen(false)
+        const selectDate = new Date(selectedDate)
+        const currentDate = new Date()
+        const timeleft = selectDate.getTime() - currentDate.getTime();
+
+        // alert("timeleft: " + timeleft)
+        if(selectedDate.getFullYear() > currentDate.getFullYear()){
+            setDate(selectDate.toDateString())
+            
+            
+            
+        }
+        else if (selectedDate.getFullYear() === currentDate.getFullYear()){
+            if(selectDate.getMonth() > currentDate.getMonth()){
+                setDate(selectDate.toDateString())
+                
+                
+            }
+            else if(selectDate.getMonth() === currentDate.getMonth()){
+                if(selectDate.getDate() >= currentDate.getDate()){
+                    setDate(selectDate.toDateString())
+                    
+                    
+                }
+
+                else{
+                    alert("check your date! you cannot be in the past")
+                    setDate("select the day of the appointment")
+                }
+            }
+            else {
+                alert("check your month! you cannot be in the past")
+                setDate("select the day of the appointment")
+            }
+        }
+        else{
+        alert("check your year! you cannot be in the past")
+        setDate("select the day of the appointment")
+
+        }
+
+
+    }
 
     const handleConfirmFrom = (selectedTime) => {
         setIsTimeFrom(false)
@@ -97,6 +149,7 @@ const InputModal = ({
     const hideTimePicker = () => {
         setIsTimeTo(false)
         setIsTimeFrom(false)
+        setDateOpen(false)
     }
     const handleSubmit = () => {
         let key = 0
@@ -126,9 +179,13 @@ const InputModal = ({
                 from: routineFrom,
                 fromNum: fromNum,
                 toNum: toNum,
+                importance: shortImportance,
+                date: shortDate,
                 key: key
             })
             setTodoInputValue()
+            setImportance(0)
+            setDate("select the day of the appointment")
             setRoutineFrom("select start time")
             setRoutineTo("select end time")        
         } else {
@@ -150,12 +207,16 @@ const InputModal = ({
                 to: routineTo,
                 from: routineFrom,
                 fromNum: fromNum,
-                toNum: toNum,                
+                toNum: toNum,       
+                importance: shortImportance,   
+                date: shortDate,      
                 key: todoToBeEdited.key
             })
             setTodoInputValue()
             setRoutineFrom("select start time")
-            setRoutineTo("select end time")       
+            setRoutineTo("select end time")  
+            setImportance(0)    
+            setDate("select the day of the appointment") 
         }
         }
 
@@ -163,13 +224,12 @@ const InputModal = ({
 
     return (
         <>
-
-            <ModalActionGroup>
+            <View style = {{justifyContent: 'flex-end', flexDirection: 'row'}}>
 
                 <ModalAction color = {colors.tertiary} onPress = {() => {setModalVisible(true)}}>
                     <AntDesign name = "pluscircle" size = {28} color = {colors.secondary}/>
                 </ModalAction>
-            </ModalActionGroup>
+            </View>
             <Modal
                 animationType= "slide"
                 transparent = {true}
@@ -194,32 +254,43 @@ const InputModal = ({
                         onChangeText = {(text) => setTodoInputValue(text)}
                         value = {todoInputvalue}
                     />
-
-        
-                    <ModalLeftview>
-                    <StyledInput_Time                        
-                        placeholder = {routineFrom}                        
-                        placeholderTextColor = {colors.alternative}
-                        selectionColor = {colors.secondary}
-                        autoFocus = {true}
-                        value = {routineFrom}
+                    <View style = {{marginTop: 35}}>
+                    <Text style = {{fontSize: 25, color: "white", fontWeight: '700', letterSpacing: 1}}>
+                        importance : {shortImportance}
+                    </Text>
+                    </View>
+                    <Slider
+                        value={shortImportance}
+                        onValueChange = {(num) => {setImportance(num)}}
+                        maximumValue={10}
+                        minimumValue={1}
+                        step={1}
+                        onSlidingComplete = {(num) => {setImportance(num)}}
+                        allowTouchTrack
+                        trackStyle={{ height: 10}}
+                        thumbStyle={{ height: 20, width: 20, backgroundColor: 'white' }}                    
                     />
+                    <View style = {{marginTop: 25}}>
+                        <TouchableOpacity
+                            style = {styles.DateButton1}
+                            onPress={() => {setDateOpen(true)}}
+                        > 
+                        <Text>{shortDate}</Text>
+                        </TouchableOpacity>
 
-                    <AntDesign name = "clockcircle" size = {35} color={colors.tertiary} onPress = {() => {setIsTimeFrom(true)}}/>
-                    </ModalLeftview>
-
-                    <ModalLeftview>
-                    <StyledInput_Time
-                    
-                        placeholder = {routineTo}
-                        placeholderTextColor = {colors.alternative}
-                        selectionColor = {colors.secondary}
-                        autoFocus = {true}
-                        value = {routineTo}
-                    />
-                    
-                    <AntDesign name = "clockcircle" size = {35} color={colors.tertiary} onPress = {() => {setIsTimeTo(true)}}/>
-                    </ModalLeftview>
+                    </View>
+                    <View style = {{flexDirection: 'row', marginTop: 30, marginBottom: 30}}>
+                        <View style = {{marginRight: 10}}>
+                        <TouchableOpacity style = {styles.DateButton} onPress= {()=>{setIsTimeFrom(true)}}>
+                            <Text>{routineFrom}</Text>
+                        </TouchableOpacity>
+                        </View>
+                        <View style = {{marginLeft: 10}}>
+                        <TouchableOpacity style = {styles.DateButton} onPress= {()=>{setIsTimeTo(true)}}>
+                            <Text>{routineTo}</Text>
+                        </TouchableOpacity>
+                        </View>                        
+                    </View>
          
                     <DateTimePickerModal
                         isVisible = {isTimeTo}
@@ -234,6 +305,12 @@ const InputModal = ({
                         onCancel = {hideTimePicker}
                     />
                     
+                    <DateTimePickerModal
+                        isVisible = {isDateOpen}
+                        mode='date'
+                        onConfirm = {(date)=> {handleConfirm(date)}}
+                        onCancel = {hideTimePicker}
+                    />
 
                     <ModalActionGroup>
                         <ModalAction color = {colors.primary} onPress = {handleCloseModal}>
@@ -255,6 +332,50 @@ const InputModal = ({
 
     )
 }
+
+
+const styles = StyleSheet.create({
+    DateButton: {
+        flexDirection: 'row',
+        backgroundColor: 'white',
+        borderColor: colors.primary,
+        width: 160,
+        borderRadius: 10,
+        height: 40,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    DateButton1: {
+        flexDirection: 'row',
+        backgroundColor: 'white',
+        borderColor: colors.primary,
+        width: 280,
+        borderRadius: 10,
+        height: 40,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    DateButtonText: {
+        alignSelf: 'center',
+        alignContent: 'center',
+        alignItems: 'center',
+        fontWeight: '100',
+        fontSize: 15
+    },
+
+    input: {
+        width: 100,
+        height: 50,
+        marginRight: 60,
+        backgroundColor: colors.secondary,
+        padding: 10,
+        fontSize: 12,
+        borderRadius: 10,
+        color: colors.secondary,
+        letterSpacing: 1
+    },
+
+})
 
 
 export default InputModal

@@ -35,7 +35,7 @@ const Listitems = ({todos, setTodos, handleTriggerEdit}) => {
     }
     return (
         <>
-        {todos.length == 0 && <RoutineText>You have not added any routines</RoutineText>}
+        {todos.length == 0 && <RoutineText>You haven't added any appointments</RoutineText>}
         {todos.length != 0 &&<SwipeListView 
             data = {todos}
             renderItem = {(data) => {
@@ -51,6 +51,8 @@ const Listitems = ({todos, setTodos, handleTriggerEdit}) => {
                         <RowText>{data.item.title}</RowText>
                         <RoutineTime>{data.item.from} - {data.item.to}</RoutineTime>
                         <TodoDate>{data.item.fromNum} - {data.item.toNum}</TodoDate>
+                        <TodoDate>importance: {data.item.importance}</TodoDate>
+                        <TodoDate>date: {data.item.date}</TodoDate>
                         
                     </>
                 </ListView>

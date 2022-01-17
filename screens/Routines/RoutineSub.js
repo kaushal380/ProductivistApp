@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react'
-import { View, Text, Button } from 'react-native'
+import { View, Text, Button, Alert } from 'react-native'
+import { Slider } from 'react-native-elements'
 //components
 import Header from './RoutineHeader'
 import Listitems from './RoutineList'
@@ -54,6 +55,7 @@ const RoutineSub = () => {
     const [routineFrom, setRoutineFrom] = useState("select start time");
     const [fromNum, setFromNum] = useState(0)
     const [toNum, setToNum] = useState(0)
+    const [routineImportance, setImportance] = useState(1);
  
     const handleAddTodo = (todo) =>{
         const newTodos = [...todos, todo];
@@ -85,6 +87,21 @@ const RoutineSub = () => {
         setModalVisible(false)
     }
 
+    const createDeleteAlert = () => {
+        Alert.alert(
+            "Delete Alert",
+            "Are you sure you want to delete all the tasks?",
+            [
+                {
+                    text: "cancel",
+                    onPress: () => {return},
+                    style: 'cancel'
+                },
+                {text: "yes", onPress: () => {handleClearTodos()}} 
+            ]
+        );
+    }
+
     const [todoToBeEdited, setTodoToBeEdited] = useState(null)
     const handleTriggerEdit = (item) => {
         setTodoToBeEdited(item);
@@ -93,12 +110,13 @@ const RoutineSub = () => {
         setRoutineTo((item.to) + "")
         setRoutineFrom((item.from) + "")
         setFromNum(item.fromNum)
+        setImportance(item.importance)
         setToNum(item.toNum)
     }
     return (
         <>
         <Header 
-            handleClearTodos = {handleClearTodos}
+            handleClearTodos = {createDeleteAlert}
             getInit = {getInit}
             />
         <Listitems 
@@ -123,6 +141,8 @@ const RoutineSub = () => {
             setFromNum={setFromNum}
             toNum={toNum}
             setToNum={setToNum}
+            routineImportance={routineImportance}
+            setImportance= {setImportance}
             handleEditTodo = {handleEditTodo}
             todos = {todos}
 
