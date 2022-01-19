@@ -109,7 +109,7 @@ const App = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} onTouchStart={getEvents}>
       <View style={styles.container}>
         <EventCalendar
           eventTapped={getEvents}

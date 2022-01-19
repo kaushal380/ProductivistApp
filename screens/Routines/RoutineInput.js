@@ -116,6 +116,10 @@ const InputModal = ({
                 alert("please select the end time")
                 return;
             }
+            // if(fromNum >= toNum){
+            //     alert("your end time has to be greater")
+            //     return;
+            // }
             try {
                 key = newTodos[newTodos.length - 1].key + 1
             } catch (error) {
@@ -147,6 +151,10 @@ const InputModal = ({
             }
             if(routineTo === "select end time"){
                 alert("please select the end time")
+                return;
+            }
+            if(fromNum >= toNum){
+                alert("your end time has to be greater")
                 return;
             }
             handleEditTodo({
@@ -251,6 +259,7 @@ const InputModal = ({
 
                         <ModalAction color = {colors.tertiary} onPress = {handleSubmit}>
                             <AntDesign name = "check" size = {28} color = {colors.secondary}/>
+
                         </ModalAction>
                     </ModalActionGroup>
                     </ModalView>

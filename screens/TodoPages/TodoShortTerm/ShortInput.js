@@ -17,7 +17,7 @@ import {
 
 } from '../../../styles/AppStyles'
 
-import {AntDesign} from "@expo/vector-icons"
+import {AntDesign, Entypo} from "@expo/vector-icons"
 // import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { TapGestureHandler } from 'react-native-gesture-handler';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -167,6 +167,10 @@ const InputModal = ({
                 alert("please select the end time")
                 return;
             }
+            if(fromNum >= toNum){
+                alert("your end time has to be greater")
+                return;
+            }
             try {
                 key = newTodos[newTodos.length - 1].key + 1
             } catch (error) {
@@ -200,6 +204,10 @@ const InputModal = ({
             }
             if(routineTo === "select end time"){
                 alert("please select the end time")
+                return;
+            }
+            if(fromNum >= toNum){
+                alert("your end time has to be greater")
                 return;
             }
             handleEditTodo({

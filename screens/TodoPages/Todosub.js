@@ -225,10 +225,10 @@ const Todosub = () => {
         );
     }
     const handleAddTodo = (todo) =>{
-        console.log(todo)
         const newTodos = [...todos, todo];
-        setTodos(newTodos)
-        const addTodo = Object.assign({}, newTodos)
+        let newSortedTodos = sortThings(newTodos)
+        setTodos(newSortedTodos)
+        const addTodo = Object.assign({}, newSortedTodos)
         firebaseAccess
             .collection('users')
             .doc(firebase.auth().currentUser.uid)
@@ -239,12 +239,12 @@ const Todosub = () => {
     }
 
     const handleEditTodo = (editedTodo) =>{
-        console.log(editedTodo)
         const newTodos = [...todos]
         const todoIndex = todos.findIndex((todo) => todo.key === editedTodo.key)
         newTodos.splice(todoIndex, 1, editedTodo)
-        setTodos(newTodos)
-        const editTodo = Object.assign({}, newTodos)
+        let newSortedTodos = sortThings(newTodos)
+        setTodos(newSortedTodos)
+        const editTodo = Object.assign({}, newSortedTodos)
         firebaseAccess
             .collection('users')
             .doc(firebase.auth().currentUser.uid)
@@ -280,7 +280,7 @@ const Todosub = () => {
         />
 
         {/* <AntDesign style = {{marginBottom: 20, marginTop:0}} name= 'pluscircle' size={25} color={'white'}/> */}
-        {/* <View style = {{flexDirection: 'row', justifyContent: 'flex-start'}}>
+        {/* <View style = {{flexDirection: 'row', justifyContent: 'flex-end'}}>
             <AntDesign style = {{marginBottom: 5, marginTop: -70}} name= 'pluscircle' size={55} color={'white'}/>
         </View> */}
         <InputModal

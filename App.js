@@ -1,25 +1,18 @@
-// import 'react-native-gesture-handler';
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import {View, Text, StyleSheet, LogBox} from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import LoginScreen from './screens/loginsScreens/LoginScreen';
-import DrawerNav from './routing/DrawerNav';
-// import Home from './screens/Home';
-import SignupScreen from './screens/loginsScreens/SignupScreen';
-const Stack = createNativeStackNavigator();
+import React from 'react'
+import { LogBox, StyleSheet, Text, View } from 'react-native'
+import { NavigationContainer } from '@react-navigation/native'
+import Tabs from './routing/BottamTab'
+import LoginStack from './routing/loginNav/LoginStack';
 
-export default function loginUI() {
-  LogBox.ignoreAllLogs(true);
-  return(
-  <NavigationContainer>
-    <Stack.Navigator>
-      <Stack.Screen options = {{headerShown: false}} name = "Login" component = {LoginScreen} />
-      <Stack.Screen options = {{headerShown: false}} name = "Signup" component = {SignupScreen} />
-      <Stack.Screen options = {{headerShown: false}} name = "AppRoute" component = {DrawerNav} />
-    </Stack.Navigator>
-  </NavigationContainer> 
-  );
+const App = () => {
+  LogBox.ignoreAllLogs(true)
+  return (
+    <NavigationContainer>
+      <LoginStack/>
+    </NavigationContainer>
+  )
 }
 
+export default App
+
+const styles = StyleSheet.create({})
