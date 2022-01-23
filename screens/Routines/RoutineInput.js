@@ -116,10 +116,10 @@ const InputModal = ({
                 alert("please select the end time")
                 return;
             }
-            // if(fromNum >= toNum){
-            //     alert("your end time has to be greater")
-            //     return;
-            // }
+            if(fromNum >= toNum){
+                alert("your end time has to be greater")
+                return;
+            }
             try {
                 key = newTodos[newTodos.length - 1].key + 1
             } catch (error) {
@@ -133,7 +133,8 @@ const InputModal = ({
                 fromNum: fromNum,
                 toNum: toNum,
                 key: key,
-                importance: routineImportance
+                importance: routineImportance,
+                type: 'routine'
             })
             setTodoInputValue()
             setImportance(1)
@@ -164,7 +165,8 @@ const InputModal = ({
                 fromNum: fromNum,
                 toNum: toNum,                
                 key: todoToBeEdited.key,
-                importance: routineImportance
+                importance: routineImportance,
+                type: 'routine'
             })
             setTodoInputValue()
             setImportance(1)

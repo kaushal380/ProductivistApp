@@ -123,6 +123,10 @@ const Todosub = () => {
         })
 
         finalList = finalList.concat(rankingList)
+        for (let index = 0; index < finalList.length; index++) {
+            finalList[index].key = index+1;
+        }
+
         console.log(finalList)
         return finalList;
     }
@@ -179,6 +183,7 @@ const Todosub = () => {
         finalTodos[index].key = index+1;
         // finalTodos[index].timeleft = Math.round(finalTodos[index].timeleft)
     }
+    console.log(finalTodos)
     setTodos(finalTodos)
            
     }

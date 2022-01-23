@@ -51,7 +51,9 @@ const Listitems = ({todos, setTodos, handleTriggerEdit}) => {
                         <RowText>{data.item.title}</RowText>
                         <RoutineTime>{data.item.from} - {data.item.to}</RoutineTime>
                         <TodoDate>{data.item.fromNum} - {data.item.toNum}</TodoDate>
-                        <TodoDate>{data.item.key}</TodoDate>
+                        <TodoDate>type: {data.item.type}</TodoDate>
+                        <TodoDate>importance: {data.item.importance}</TodoDate>
+                        <TodoDate>key: {data.item.key}</TodoDate>
                         
                     </>
                 </ListView>

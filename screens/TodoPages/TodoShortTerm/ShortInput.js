@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import { View, Text, Modal, Alert, KeyboardAvoidingView, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, Modal, Alert, KeyboardAvoidingView, StyleSheet, TouchableOpacity, AppState } from 'react-native'
 import {
     ModalButton,
     ModalContainer,
@@ -185,7 +185,8 @@ const InputModal = ({
                 toNum: toNum,
                 importance: shortImportance,
                 date: shortDate,
-                key: key
+                key: key,
+                type: 'apps'
             })
             setTodoInputValue()
             setImportance(0)
@@ -218,7 +219,8 @@ const InputModal = ({
                 toNum: toNum,       
                 importance: shortImportance,   
                 date: shortDate,      
-                key: todoToBeEdited.key
+                key: todoToBeEdited.key,
+                type: 'apps'
             })
             setTodoInputValue()
             setRoutineFrom("select start time")

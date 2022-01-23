@@ -3,17 +3,25 @@ import { useNavigation } from '@react-navigation/core';
 import { Platform, KeyboardAvoidingView, StyleSheet, Text, View, TextInput, TouchableOpacity, Alert } from 'react-native'
 import { firebase } from '../../firebase/config';
 import { doc, setDoc, Timestamp } from "firebase/firestore"; 
+import * as SQLite from 'expo-sqlite';
 
+const db = SQLite.openDatabase("user.db");
 
 const SignupScreen = () => {
     let type = "";
     const [password, setPassword] = useState('')
     const [confirm_password, setconfirm_password] = useState('')
     const [email, setEmail] = useState('')
-    const [firstName, setFirstName] = useState('')
-    const [lastName, setlastName] = useState('')
-    const [userName, setUserName] = useState('')
-
+    const [Name, setName] = useState('')
+    const createTable = () => {
+        db.transaction((tx) => {
+            tx.executeSql(
+                "CREATE TABLE IF NOT EXISTS "
+                +"users "
+                +"(ID INTEGER PRIMARY KEY AUTOINCREMENT, Email TEXT, Password TEXT);"
+            )
+        })
+    }
     const navigation = useNavigation()
     if(Platform.OS === 'ios'){
         type = "padding";
@@ -22,7 +30,14 @@ const SignupScreen = () => {
         type = "height";
     }
     else{type = "height"}
-    const registerUser = (firstName, lastName, userName, email, password, confirm_password) => {
+    const registerUser = (Name, email, password, confirm_password) => {
+        createTable();
+
+        db.transaction((tx) => {
+            tx.executeSql(
+                "DELETE FROM users"
+            )
+        })
         // alert("clicked register!")
         if (password !== confirm_password) {
             alert("Passwords don't match.")
@@ -34,21 +49,21 @@ const SignupScreen = () => {
             .then((response) => {
                 // alert("creater a user")
                 const uid = response.user.uid
-                const data = {
-                    id: uid,
+                const data = [
+                    uid,
                     email,
-                    firstName,
-                    lastName,
-                    userName,
+                    Name,
                     password,
-                };
+                ];
                 const vData = {}
                 
                 const usersRef = firebase.firestore()
                 usersRef
                     .collection('users')
                     .doc(uid)
-                    .set(data)
+                    .collection('userData')
+                    .doc('authInfo')
+                    .set(Object.assign({}, data))
                 usersRef
                     .collection('users')
                     .doc(uid)
@@ -80,6 +95,11 @@ const SignupScreen = () => {
                     .doc('currentTime')
                     .set(vData)
                     .then(() => {
+                        db.transaction((tx) => {
+                            tx.executeSql(
+                                "INSERT INTO users (Email, Password) VALUES ('" + email + "', '" + password + "')"
+                            )
+                        })
                         navigation.navigate('AppRoute')
                     })
                     .catch((error) => {
@@ -102,15 +122,9 @@ const SignupScreen = () => {
         >
             <View style = {styles.inputContainer}>
                 <TextInput
-                    placeholder = "firstname"
-                    value = {firstName}
-                    onChangeText = {text => setFirstName(text)}
-                    style = {styles.input}                   
-                />
-                <TextInput
-                    placeholder = "lastname"
-                    value = {lastName}
-                    onChangeText = {text => setlastName(text)}
+                    placeholder = "name"
+                    value = {Name}
+                    onChangeText = {text => setName(text)}
                     style = {styles.input}                   
                 />
                 <TextInput
@@ -118,12 +132,6 @@ const SignupScreen = () => {
                     value = {email}
                     onChangeText = {text => setEmail(text)}
                     style = {styles.input}                   
-                />
-                <TextInput
-                    placeholder = "user-name"
-                    value = {userName}
-                    onChangeText = {text => setUserName(text)}
-                    style = {styles.input}
                 />
                 <TextInput
                     placeholder = "Password"
@@ -144,7 +152,7 @@ const SignupScreen = () => {
             <View style = {styles.buttonContainer}>
 
                 <TouchableOpacity
-                    onPress = {() => {registerUser(firstName, lastName, userName, email, password, confirm_password)}}
+                    onPress = {() => {registerUser(Name, email, password, confirm_password)}}
                     style = {styles.button}
                 >
                    <Text style = {styles.buttonText}>Register</Text>

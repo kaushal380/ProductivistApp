@@ -9,7 +9,7 @@ import About from "../screens/About";
 import { View, Button, Text } from "react-native";
 import {Entypo, AntDesign, Ionicons} from "@expo/vector-icons"
 const Tab = createBottomTabNavigator();
-
+import {colors} from '../styles/AppStyles'
 const Tabs = () => {
     return(
         <Tab.Navigator
@@ -17,8 +17,8 @@ const Tabs = () => {
                 tabBarIcon: ({focused, color, size}) => {
                     let iconName = "menu";
                     if(route.name === 'Home'){
-                        iconName = "home"
-                        size = 40
+                        return <Entypo name='home' size={40} color={color}/>
+                        
                     }
                     else if(route.name === "Todo"){
                         iconName = "profile"
@@ -36,7 +36,7 @@ const Tabs = () => {
                     return <AntDesign name={iconName} size={size} color={color}/>             
                 },
                 tabBarShowLabel: true,
-                tabBarActiveTintColor: 'tomato',
+                tabBarActiveTintColor: "black",
                 tabBarInactiveTintColor: 'grey',
 
             })}

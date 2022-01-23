@@ -49,7 +49,12 @@ const Listitems = ({todos, setTodos, handleTriggerEdit, editStatus}) => {
             timeleft: rowkey.timeleft,
             importance: rowkey.importance,
             status: status,
-            key: rowkey.key
+            key: rowkey.key,
+            type: 'todo',
+            toNum: 0,
+            fromNum: 0,
+            from: '00:00',
+            to: '00:00'
         })
     }
 
@@ -84,6 +89,9 @@ const Listitems = ({todos, setTodos, handleTriggerEdit, editStatus}) => {
                         <TodoDate>importance: {data.item.importance}</TodoDate>
                         <TodoDate>key: {data.item.key}</TodoDate> 
                         <TodoDate>status: {data.item.status}</TodoDate>
+                        <TodoDate>type: {data.item.type}</TodoDate>
+                        <TodoDate>{data.item.fromNum} - {data.item.toNum}</TodoDate>
+                        <TodoDate>{data.item.from} - {data.item.to}</TodoDate>
                     </>
                 </ListView>
             )

@@ -53,6 +53,7 @@ const Listitems = ({todos, setTodos, handleTriggerEdit}) => {
                         <TodoDate>{data.item.fromNum} - {data.item.toNum}</TodoDate>
                         <TodoDate>importance: {data.item.importance}</TodoDate>
                         <TodoDate>key: {data.item.key}</TodoDate>
+                        <TodoDate>type: {data.item.type}</TodoDate>
                         
                     </>
                 </ListView>

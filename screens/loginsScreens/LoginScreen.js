@@ -1,13 +1,16 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import { Platform, KeyboardAvoidingView, StyleSheet, Text, View, TextInput, TouchableOpacity, Alert } from 'react-native'
 
 import { useNavigation } from '@react-navigation/core';
-
 import { firebase } from '../../firebase/config';
+import * as SQLite from 'expo-sqlite';
+import { render } from 'react-dom';
+import AppLoading from 'expo-app-loading';
 
 
+const db = SQLite.openDatabase("user.db");
 const LoginScreen = (props) => {
-
+    const [isNavigate, setNavigate] = useState(false);
 
     const [password, setPassword] = useState('')
     const [email, setEmail] = useState('')
@@ -23,15 +26,63 @@ const LoginScreen = (props) => {
     }
     else{type = "height"}
     
+    const CheckLogIn = () => {
+        alert("checkLog")
+        firebase.auth().onAuthStateChanged(function(user) {
+            console.log(user);
+        })
+    }
+    const createTable = () => {
+        db.transaction((tx) => {
+            tx.executeSql(
+                "CREATE TABLE IF NOT EXISTS "
+                +"users "
+                +"(ID INTEGER PRIMARY KEY AUTOINCREMENT, Email TEXT, Password TEXT);"
+            )
+        })
+    }
+    const InitLogin = () => {
+        db.transaction((tx) => {
+            tx.executeSql(
+                'SELECT Email, Password FROM users', [],
+                (tx, results) => {
+                console.log('results length: ', results.rows.length); 
+                console.log("Query successful")
+                if (results.rows.length > 0) {
+                  console.log(results.rows.Email);
+                  firebase
+                    .auth()
+                    .signInWithEmailAndPassword(results.rows.item(0)['Email'], results.rows.item(0)['Password'])
+                    .then((response) => {
+                        const uid = response.user.uid
+                        console.log(uid)
+                        navigation.navigate('AppRoute')
+                })
+            }
+        })
+    })
+}
     const handleLogin = (email, password) => {
         // alert("clicked register!")
-
-        alert("logged in")
+        createTable()
+        // alert("logged in")
+        // firebase.auth().onAuthStateChanged(function(user) {
+        //     if (user) {
+        //       // currentUser should be non null.
+        //     } else {
+        //       // no user logged in. currentUser is null.
+        //     }
+        //   });
 
         firebase
             .auth()
             .signInWithEmailAndPassword(email, password)
             .then((response) => {
+                db.transaction((tx) => {
+                    tx.executeSql(
+                        "INSERT INTO users (Email, Password) VALUES ('" + email + "', '" + password + "')"
+                    )
+                })
                 const uid = response.user.uid
                 console.log(uid)
                 navigation.navigate('AppRoute')
@@ -41,16 +92,19 @@ const LoginScreen = (props) => {
         });
       }
      
+      useEffect(() => {
+        InitLogin()
+      }, [])
+
     
     return (
-
+        
         <KeyboardAvoidingView
             style = {styles.container}
             behavior = {type} // try padding for ios maybe?
         >   
-            
             <View style = {styles.inputContainer}>
-            
+
                 <TextInput
                     placeholder = "Email"
                     value = {email}

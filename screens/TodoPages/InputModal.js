@@ -157,7 +157,12 @@ const InputModal = ({
                 timeleft: todoTimeLeft,
                 importance: todoImportance,
                 status: 'pending',
-                key: key
+                key: key,
+                type: 'todo',
+                toNum: 0,
+                fromNum: 0,
+                from: '00:00',
+                to: '00:00'
             })
             setTodoInputValue("")
             setImportance(1)
@@ -188,7 +193,13 @@ const InputModal = ({
                 timeleft: todoTimeLeft,
                 importance: todoImportance,
                 status: 'pending',
-                key: todoToBeEdited.key
+                key: todoToBeEdited.key,                
+                type: 'todo',
+                toNum: 0,
+                fromNum: 0,
+                from: '00:00',
+                to: '00:00'
+
             })
             setTodoInputValue("")
             setImportance(1)
