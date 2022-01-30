@@ -272,8 +272,7 @@ const Todosub = () => {
     return (
         <>
         <View 
-        style= {{height: '100%'}}
-        onTouchStart={getInit}
+        style= {{height: '100%', width: "100%", justifyContent: 'center'}}
         >
         <Header 
             handleClearTodos = {createDeleteAlert}

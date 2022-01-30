@@ -123,7 +123,7 @@ const RoutineSub = () => {
     return (
         <>
         <View style = {{height: '100%', width: '100%'}}
-        onTouchStart={getInit}
+        
         >
         <Header 
             handleClearTodos = {createDeleteAlert}
