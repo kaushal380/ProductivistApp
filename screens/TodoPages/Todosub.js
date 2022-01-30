@@ -173,7 +173,7 @@ const Todosub = () => {
                 dateCheck = false;
             }
 
-            if(dateCheck && (element.status === "pending")){
+            if(dateCheck){
                 finalTodos = [...finalTodos, element]
             }
         });
@@ -271,6 +271,10 @@ const Todosub = () => {
     }
     return (
         <>
+        <View 
+        style= {{height: '100%'}}
+        onTouchStart={getInit}
+        >
         <Header 
             handleClearTodos = {createDeleteAlert}
             getInit = {getInit}
@@ -289,6 +293,7 @@ const Todosub = () => {
             <AntDesign style = {{marginBottom: 5, marginTop: -70}} name= 'pluscircle' size={55} color={'white'}/>
         </View> */}
         <InputModal
+            getInit={getInit} 
             modalVisible = {modalVisible}
             setModalVisible = {setModalVisible}
             sortModalVisible = {sortModalVisible}
@@ -312,7 +317,7 @@ const Todosub = () => {
 
         /> 
 
-
+        </View>
         </>
     )
 }

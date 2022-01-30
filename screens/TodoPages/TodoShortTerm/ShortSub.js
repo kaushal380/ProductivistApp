@@ -25,8 +25,13 @@ const RoutineSub = () => {
         
             initialTodos = Object.values(Object.seal(documentSnapshot.data()))
     
-            console.log(initialTodos)
-            setTodos(initialTodos);
+            // console.log(initialTodos)
+        for (let index = 0; index < initialTodos.length; index++) {
+            initialTodos[index].key = index+1;
+        }
+        // disregard past appointments
+        
+        setTodos(initialTodos);
             
     }
     
@@ -117,6 +122,9 @@ const RoutineSub = () => {
     }
     return (
         <>
+        <View style = {{height: '100%', width: '100%'}}
+        onTouchStart={getInit}
+        >
         <Header 
             handleClearTodos = {createDeleteAlert}
             getInit = {getInit}
@@ -128,6 +136,7 @@ const RoutineSub = () => {
             
         />
         <InputModal
+            getInit= {getInit}
             modalVisible = {modalVisible}
             setModalVisible = {setModalVisible}
             todoInputvalue = {todoInputvalue}
@@ -151,7 +160,7 @@ const RoutineSub = () => {
             todos = {todos}
 
         />
-
+        </View>
 
         </>
     )

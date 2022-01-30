@@ -29,6 +29,7 @@
 22) npm install react-datepicker --save: https://reactdatepicker.com/#example-select-time
 23) expo install react-native-modal-datetime-picker@10.0.0
     - update the package.json file if it doesn't do it automatically
+24) npm i react-native-circular-progress-indicator
 
 --> add from and to in the todo as well
 

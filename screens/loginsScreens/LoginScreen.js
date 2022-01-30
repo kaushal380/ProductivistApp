@@ -54,6 +54,7 @@ const LoginScreen = (props) => {
                     .auth()
                     .signInWithEmailAndPassword(results.rows.item(0)['Email'], results.rows.item(0)['Password'])
                     .then((response) => {
+                        // alert("success")
                         const uid = response.user.uid
                         console.log(uid)
                         navigation.navigate('AppRoute')
@@ -63,16 +64,14 @@ const LoginScreen = (props) => {
     })
 }
     const handleLogin = (email, password) => {
-        // alert("clicked register!")
+        
         createTable()
-        // alert("logged in")
-        // firebase.auth().onAuthStateChanged(function(user) {
-        //     if (user) {
-        //       // currentUser should be non null.
-        //     } else {
-        //       // no user logged in. currentUser is null.
-        //     }
-        //   });
+
+        db.transaction((tx) => {
+            tx.executeSql(
+                "DELETE FROM users"
+            )
+        })
 
         firebase
             .auth()

@@ -30,6 +30,7 @@ import { Slider } from 'react-native-elements'
 import { color } from 'react-native-reanimated'
 
 const InputModal = ({
+    getInit,
     modalVisible, 
     setModalVisible,
     sortModalVisible,
@@ -207,7 +208,10 @@ const InputModal = ({
             setTimeTaken(0)        
         }
         }
-
+        const plusHandle = () => {
+            getInit
+            setModalVisible(true)
+        }
 
 
     return (
@@ -215,7 +219,7 @@ const InputModal = ({
 
             <View style = {{justifyContent: 'flex-end', flexDirection: 'row'}}>
 
-                <ModalAction color = {colors.tertiary} onPress = {() => {setModalVisible(true)}}>
+                <ModalAction color = {colors.tertiary} onPress = {() => {plusHandle()}}>
                     <AntDesign name = "pluscircle" size = {28} color = {colors.secondary}/>
                 </ModalAction>
             </View>

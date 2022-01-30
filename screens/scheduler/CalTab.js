@@ -24,7 +24,7 @@ export default function TabViewExample() {
 
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
-    { key: 'first', title: 'calendar view' },
+    { key: 'first', title: 'calendar' },
     { key: 'second', title: 'list view' },
   ]);
 

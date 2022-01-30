@@ -54,6 +54,7 @@ const Listitems = ({todos, setTodos, handleTriggerEdit}) => {
                         <TodoDate>importance: {data.item.importance}</TodoDate>
                         <TodoDate>key: {data.item.key}</TodoDate>
                         <TodoDate>type: {data.item.type}</TodoDate>
+                        <TodoDate>status: {data.item.status}</TodoDate>
                         
                     </>
                 </ListView>

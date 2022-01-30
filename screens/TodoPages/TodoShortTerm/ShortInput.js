@@ -27,6 +27,7 @@ import { Slider } from 'react-native-elements'
 
 
 const InputModal = ({
+    getInit,
     modalVisible, 
     setModalVisible,
     todoInputvalue, 
@@ -186,7 +187,8 @@ const InputModal = ({
                 importance: shortImportance,
                 date: shortDate,
                 key: key,
-                type: 'apps'
+                type: 'apps', 
+                status: "pending"
             })
             setTodoInputValue()
             setImportance(0)
@@ -220,7 +222,8 @@ const InputModal = ({
                 importance: shortImportance,   
                 date: shortDate,      
                 key: todoToBeEdited.key,
-                type: 'apps'
+                type: 'apps',
+                status: "pending"
             })
             setTodoInputValue()
             setRoutineFrom("select start time")
@@ -230,13 +233,16 @@ const InputModal = ({
         }
         }
 
-
+        const plusHandle = () => {
+            getInit
+            setModalVisible(true)
+        }
 
     return (
         <>
             <View style = {{justifyContent: 'flex-end', flexDirection: 'row'}}>
 
-                <ModalAction color = {colors.tertiary} onPress = {() => {setModalVisible(true)}}>
+                <ModalAction color = {colors.tertiary} onPress = {() => {plusHandle()}}>
                     <AntDesign name = "pluscircle" size = {28} color = {colors.secondary}/>
                 </ModalAction>
             </View>

@@ -134,7 +134,8 @@ const InputModal = ({
                 toNum: toNum,
                 key: key,
                 importance: routineImportance,
-                type: 'routine'
+                type: 'routine',
+                status: "pending"
             })
             setTodoInputValue()
             setImportance(1)
@@ -166,7 +167,8 @@ const InputModal = ({
                 toNum: toNum,                
                 key: todoToBeEdited.key,
                 importance: routineImportance,
-                type: 'routine'
+                type: 'routine',
+                status: "pending"
             })
             setTodoInputValue()
             setImportance(1)
