@@ -271,9 +271,7 @@ const Todosub = () => {
     }
     return (
         <>
-        <View 
-        style= {{height: '100%', width: "100%", justifyContent: 'center'}}
-        >
+
         <Header 
             handleClearTodos = {createDeleteAlert}
             getInit = {getInit}
@@ -316,7 +314,7 @@ const Todosub = () => {
 
         /> 
 
-        </View>
+     
         </>
     )
 }

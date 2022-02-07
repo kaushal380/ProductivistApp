@@ -44,7 +44,9 @@
     "react-native-swipe-list-view": "^3.2.9",
     "react-native-tab-view": "^3.1.1",
     "react-native-web": "0.17.1",
-    "styled-components": "^5.3.3"
+    "styled-components": "^5.3.3",
+    "expo-notifications": "~0.14.0",
+    "expo-device": "~4.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"
