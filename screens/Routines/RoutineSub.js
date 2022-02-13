@@ -9,7 +9,15 @@ import { DrawerContent } from '@react-navigation/drawer'
 import {colors} from '../../styles/AppStyles';
 import {AntDesign} from "@expo/vector-icons"
 import { firebase } from '../../firebase/config'
+import * as Notifications from 'expo-notifications';
 
+Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+      shouldShowAlert: true,
+      shouldPlaySound: true,
+      shouldSetBadge: false,
+    }),
+  });
 
 const RoutineSub = () => {
     const firebaseAccess = firebase.firestore()
@@ -32,10 +40,49 @@ const RoutineSub = () => {
     
     useEffect(() => {
         getInit()
+        
       }, [])
     
     const [todos, setTodos] = useState([{}])
 
+    async function schedulePushNotification(list) {
+        alert("scheduled!")
+        let hours = new Date().getHours();
+        let min = new Date().getMinutes();
+        let secs = new Date().getSeconds();
+        let seconds = (((hours*60)+min) * 60)+secs;
+        let secondsOfRoutines = (list.fromNum - 5) * 60
+        let title = list.title;
+        let triggerSeconds = secondsOfRoutines - seconds
+        await Notifications.scheduleNotificationAsync({
+          content: {
+            title: title,//"You've got routines! 📬",
+            body: 'there is a routine due!',
+            data: { data: 'goes here' },
+          },
+          trigger: {seconds: triggerSeconds},
+        });
+      }
+
+      async function scheduleEditedNotification(list) {
+        let hours = new Date().getHours();
+        let min = new Date().getMinutes();
+        let secs = new Date().getSeconds();
+        let seconds = (((hours*60)+min) * 60)+secs;
+        let secondsOfRoutines = (list.fromNum - 5) * 60
+        let title = list.title;
+        let triggerSeconds = secondsOfRoutines - seconds
+
+          alert(list.title)
+          await Notifications.scheduleNotificationAsync({
+              content: {
+                  title: list.title,
+                  body: 'there is a routine due!',
+                  data: {data: 'goes here'},
+              },
+              trigger: {seconds: triggerSeconds},
+          });
+      }
     
     // clearing all todos
     const handleClearTodos = () => {
@@ -58,6 +105,7 @@ const RoutineSub = () => {
     const [routineImportance, setImportance] = useState(1);
  
     const handleAddTodo = (todo) =>{
+        schedulePushNotification(todo)
         const newTodos = [...todos, todo];
         setTodos(newTodos)
         const addTodo = Object.assign({}, newTodos)
@@ -71,6 +119,7 @@ const RoutineSub = () => {
     }
 
     const handleEditTodo = (editedTodo) =>{
+        scheduleEditedNotification(editedTodo)
         console.log(editedTodo)
         const newTodos = [...todos]
         const todoIndex = todos.findIndex((todo) => todo.key === editedTodo.key)

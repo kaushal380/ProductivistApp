@@ -18,6 +18,7 @@ Notifications.setNotificationHandler({
 });
 
 const Home = () => {
+  const firebaseAccess = firebase.firestore();
   const [expoPushToken, setExpoPushToken] = useState('');
   const [notification, setNotification] = useState(false);
   const notificationListener = useRef();
@@ -75,6 +76,14 @@ const getCompletedTasks = (array) => {
     return filteredArray;
 }
   const configProgress = async () => {
+    const timeSnap = await firebase.firestore()
+      .collection('users')
+      .doc(firebase.auth().currentUser.uid)
+      .collection('userData')
+      .doc('currentTime')
+      .get()
+    
+    let time = Object.values(Object.seal(timeSnap.data()))
 
     const documentSnapshot = await firebase.firestore()
       .collection('users')
@@ -94,6 +103,7 @@ const getCompletedTasks = (array) => {
 
     let routines = Object.values(Object.seal(documentSnapshot1.data()))
 
+    routines = unMarkDone(routines, time)
     const documentSnapshot2 = await firebase.firestore()
     .collection('users')
     .doc(firebase.auth().currentUser.uid)
@@ -126,7 +136,34 @@ const getCompletedTasks = (array) => {
     
 
   }
+  const unMarkDone = (routines, time) => {
+    console.log(time[0])
+    let currentTime = new Date()
+    let setTime = currentTime.toDateString()
+    let firebaseTime = new Date(time[0])
 
+    console.log(firebaseTime.getFullYear() + "-" + firebaseTime.getMonth() + "-" + firebaseTime.getDate());
+    if((firebaseTime.getFullYear() != currentTime.getFullYear()) || (firebaseTime.getMonth() != currentTime.getMonth()) || (firebaseTime.getDate() != currentTime.getDate())){
+      for (let index = 0; index < routines.length; index++) {
+        routines[index].status = "pending";
+      }
+      const upDateRoutine = Object.assign({}, routines)
+      firebaseAccess
+        .collection('users')
+        .doc(firebase.auth().currentUser.uid)
+        .collection('userData')
+        .doc('routines')
+        .set(upDateRoutine)
+
+      firebaseAccess
+        .collection('users')
+        .doc(firebase.auth().currentUser.uid)
+        .collection('userData')
+        .doc('currentTime')
+        .set({setTime})
+    }
+    return routines;
+  }  
   const getDbDate =()=> {
     // console.log("db")
     db.transaction((tx) => {
@@ -139,6 +176,7 @@ const getCompletedTasks = (array) => {
             console.log(results.rows.item(0)['Password']);
           }
   })})}
+
 
   const getUser = async () => {
     // alert("pressed!")
@@ -161,6 +199,8 @@ const getCompletedTasks = (array) => {
   };
   
   useEffect(() => {
+    getUser()
+    configProgress()
     registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
 
     notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
@@ -281,7 +321,7 @@ const getCompletedTasks = (array) => {
             
         />
         <TouchableOpacity
-          onPress = {schedulePushNotification}
+          onPress = {getDbDate}
           style = {styles.button}
         >
             <Text style = {styles.buttonText}>GetUserInfo</Text>

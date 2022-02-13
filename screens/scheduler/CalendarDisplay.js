@@ -237,6 +237,7 @@ const App = () => {
       let schedule = initSchedule
       let todo = SortBasedOnTime(GetDaysApps(Alltodo)); // gets today's tasks that are due and sorts them
       
+      
       let finalCombo = []
       let pastEvents = pastArray
       let missedList = []

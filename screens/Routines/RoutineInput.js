@@ -182,7 +182,7 @@ const InputModal = ({
     return (
         <>
 
-            <View style = {{justifyContent: 'flex-end', flexDirection: 'row'}}>
+            <View style = {{justifyContent: 'flex-end', flexDirection: 'row', marginTop: -100}}>
 
                 <ModalAction color = {colors.tertiary} onPress = {() => {setModalVisible(true)}}>
                     <AntDesign name = "pluscircle" size = {28} color = {colors.secondary}/>
