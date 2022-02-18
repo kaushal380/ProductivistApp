@@ -11,10 +11,10 @@ import Constants from "expo-constants";
 
 // Colors
 export const colors = {
-  primary: "#332424",
-  secondary: "#4D3636",
-  tertiary: "#E6E6E6",
-  alternative: "#999999",
+  primary: "#F1EBD9", //#332424
+  secondary: "#94A285", //#4D3636
+  tertiary: "black",//"#E6E6E6"
+  alternative: "#999999", //
 };
 
 
@@ -81,7 +81,7 @@ export const ScheduleList = styled.TouchableHighlight`
   border-radius: 10px;
 `;
 
-
+//
 export const ListViewHidden = styled.View`
   background-color: ${colors.tertiary};
   min-height: 85px;

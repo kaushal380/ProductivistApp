@@ -42,7 +42,7 @@ const Listitems = ({todos, setTodos, handleTriggerEdit}) => {
                 const RowText = data.item.key == swipedRow? SwipedTodoText: RoutineText;
             return(
                 <ListView
-                    underlayColor = {colors.primary}
+                    underlayColor = {colors.primary}//
                     onPress = {() => {
                         handleTriggerEdit(data.item)
                     }}

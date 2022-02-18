@@ -8,11 +8,13 @@ import LoginScreen from '../../screens/loginsScreens/LoginScreen';
 import DrawerNav from '../TabNav';
 // import Home from './screens/Home';
 import SignupScreen from '../../screens/loginsScreens/SignupScreen';
+import Welcome from '../../screens/welcomeScreens/Welcome';
 const Stack = createNativeStackNavigator();
 
 export default function loginUI() {
   return(
     <Stack.Navigator>
+      <Stack.Screen options = {{headerShown: false}} name = "welcome" component = {Welcome} />
       <Stack.Screen options = {{headerShown: false}} name = "Login" component = {LoginScreen} />
       <Stack.Screen options = {{headerShown: false}} name = "Signup" component = {SignupScreen} />
       <Stack.Screen options = {{headerShown: false}} name = "AppRoute" component = {DrawerNav} />

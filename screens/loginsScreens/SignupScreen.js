@@ -1,12 +1,13 @@
 import React, {useState} from 'react'
 import { useNavigation } from '@react-navigation/core';
-import { Platform, KeyboardAvoidingView, StyleSheet, Text, View, TextInput, TouchableOpacity, Alert } from 'react-native'
+import { Platform, KeyboardAvoidingView, StyleSheet, Text, View, TextInput, TouchableOpacity, Image, Dimensions } from 'react-native'
 import { firebase } from '../../firebase/config';
 import { doc, setDoc, Timestamp } from "firebase/firestore"; 
 import * as SQLite from 'expo-sqlite';
+import { colors } from '../../styles/AppStyles';
 
 const db = SQLite.openDatabase("user.db");
-
+let { width } = Dimensions.get('window');
 const SignupScreen = () => {
     let type = "";
     const [password, setPassword] = useState('')
@@ -121,6 +122,10 @@ const SignupScreen = () => {
             behavior = {type}
         >
             <View style = {styles.inputContainer}>
+                <Image
+                    style = {styles.appName}
+                    source = {require("../../assets/appName.png")}
+                />
                 <TextInput
                     placeholder = "name"
                     value = {Name}
@@ -200,7 +205,7 @@ const styles = StyleSheet.create({
         marginTop: 40,
     }, 
     button: {
-        backgroundColor: '#0782F9',
+        backgroundColor: colors.secondary,//#0782F9 -> blue
         width: '100%',
         padding: 15,
         borderRadius: 10,
@@ -216,12 +221,17 @@ const styles = StyleSheet.create({
     buttonOutline:{
         backgroundColor: 'white',
         marginTop: 5,
-        borderColor: '#0782F9',
+        borderColor: colors.secondary,
         borderWidth: 2,
     },
     buttonOutlineText: {
-        color: '#0782F9',
+        color: colors.secondary,
         fontWeight: '700',
         fontSize: 16,
+    },
+    appName: {
+        width: width,
+        height: 150,
+        alignSelf: 'center',
     }
 })

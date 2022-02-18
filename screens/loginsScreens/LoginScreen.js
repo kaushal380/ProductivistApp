@@ -1,13 +1,13 @@
 import React, {useState, useEffect} from 'react'
-import { Platform, KeyboardAvoidingView, StyleSheet, Text, View, TextInput, TouchableOpacity, Alert } from 'react-native'
+import { Platform, KeyboardAvoidingView, StyleSheet, Text, View, TextInput, TouchableOpacity, Image, Dimensions } from 'react-native'
 
 import { useNavigation } from '@react-navigation/core';
 import { firebase } from '../../firebase/config';
 import * as SQLite from 'expo-sqlite';
 import { render } from 'react-dom';
 import AppLoading from 'expo-app-loading';
-
-
+import {colors} from '../../styles/AppStyles'
+let { width } = Dimensions.get('window');
 const db = SQLite.openDatabase("user.db");
 const LoginScreen = (props) => {
     const [isNavigate, setNavigate] = useState(false);
@@ -103,7 +103,10 @@ const LoginScreen = (props) => {
             behavior = {type} // try padding for ios maybe?
         >   
             <View style = {styles.inputContainer}>
-
+                <Image
+                    style = {styles.appName}
+                    source = {require("../../assets/appName.png")}
+                />
                 <TextInput
                     placeholder = "Email"
                     value = {email}
@@ -133,12 +136,6 @@ const LoginScreen = (props) => {
                 >
                     <Text style = {styles.buttonOutlineText}>Signup</Text>
                 </TouchableOpacity>
-                <TouchableOpacity
-                    onPress = {() => {navigation.navigate('AppRoute')}}
-                    style = {[styles.button, styles.buttonOutline]}
-                >
-                    <Text style = {styles.buttonOutlineText}>DatabaseInteraction</Text>
-                </TouchableOpacity>
             </View>
         </KeyboardAvoidingView> 
     )
@@ -156,7 +153,7 @@ const styles = StyleSheet.create({
         width: "80%"
     },
     input: {
-        backgroundColor: 'white',
+        backgroundColor: "white",
         paddingHorizontal: 15,
         paddingVertical: 10,
         borderRadius: 10,
@@ -169,7 +166,7 @@ const styles = StyleSheet.create({
         marginTop: 40,
     }, 
     button: {
-        backgroundColor: '#0782F9',
+        backgroundColor: colors.secondary, // #0782F9
         width: '100%',
         padding: 15,
         borderRadius: 10,
@@ -177,20 +174,25 @@ const styles = StyleSheet.create({
     },
 
     buttonText: {
-        color: 'white',
+        color: "white",
         fontWeight: '700',
         fontSize: 16,
     },
 
     buttonOutline:{
-        backgroundColor: 'white',
+        backgroundColor: "white",
         marginTop: 5,
-        borderColor: '#0782F9',
+        borderColor: colors.secondary,
         borderWidth: 2,
     },
     buttonOutlineText: {
-        color: '#0782F9',
+        color: colors.secondary,
         fontWeight: '700',
         fontSize: 16,
-    }
+    },
+    appName: {
+        width: width,
+        height: 150,
+        alignSelf: 'center',
+      }
 })

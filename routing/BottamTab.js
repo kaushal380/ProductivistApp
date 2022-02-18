@@ -2,11 +2,11 @@ import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import Home from "../screens/Home";
-import scheduler from "../screens/scheduler/CalTab";
+import scheduler from "../screens/scheduler/CalendarDisplay";
 import todo from "../screens/TodoPages/TabNav";
 import RoutineMaker from "../screens/Routines/RoutineMaker";
 import About from "../screens/About";
-import { View, Button, Text } from "react-native";
+import { View, Button, Text, StyleSheet } from "react-native";
 import {Entypo, AntDesign, Ionicons} from "@expo/vector-icons"
 const Tab = createBottomTabNavigator();
 import {colors} from '../styles/AppStyles'
@@ -36,7 +36,8 @@ const Tabs = () => {
                     return <AntDesign name={iconName} size={size} color={color}/>             
                 },
                 tabBarShowLabel: true,
-                tabBarActiveTintColor: "black",
+                tabBarActiveTintColor: colors.secondary,
+                tabBarActiveBackgroundColor: 'black',
                 tabBarInactiveTintColor: 'grey',
 
             })}
@@ -44,8 +45,8 @@ const Tabs = () => {
         >
 
             <Tab.Screen name="Schedule" component = {scheduler}/>
-            <Tab.Screen name="Todo" component = {todo}/>
-            <Tab.Screen name="Home" component = {Home}/> 
+            <Tab.Screen name="Todo" component = {todo} />
+            <Tab.Screen name="Home" component = {Home} /> 
             <Tab.Screen name="Routines" component = {RoutineMaker}/>
             <Tab.Screen name="Settings" component = {About}/>
         </Tab.Navigator>
@@ -53,3 +54,9 @@ const Tabs = () => {
 }
 
 export default Tabs;
+
+const styles = StyleSheet.create({
+    bar: {
+        backgroundColor: 'black'
+    }
+})
