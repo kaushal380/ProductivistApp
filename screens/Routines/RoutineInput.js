@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import { View, Text, Modal, Alert, KeyboardAvoidingView, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, Modal, Alert, KeyboardAvoidingView, StyleSheet, TouchableOpacity, Dimensions } from 'react-native'
 import {
     ModalButton,
     ModalContainer,
@@ -23,7 +23,8 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { TapGestureHandler } from 'react-native-gesture-handler';
 import { Slider } from 'react-native-elements';
 
-
+let  width  = Dimensions.get('window').width;
+let height = Dimensions.get("window").height;
 const InputModal = ({
     modalVisible, 
     setModalVisible,
@@ -182,11 +183,19 @@ const InputModal = ({
     return (
         <>
 
-            <View style = {{justifyContent: 'flex-end', flexDirection: 'row', marginTop: -100}}>
+            <View style = {{justifyContent: 'flex-end', flexDirection: 'row', marginTop: -100}} onTouchStart = {() => console.log(width, height)}>
 
-                <ModalAction color = {'black'} onPress = {() => {setModalVisible(true)}}>
-                    <AntDesign name = "pluscircle" size = {28} color = {'#94A285'}/>
-                </ModalAction>
+            {todos.length == 0 && 
+                <TouchableOpacity style = {styles.modalAction} onPress = {() => {setModalVisible(true)}}>
+                    <AntDesign name = "pluscircle" size = {28} color = {colors.secondary}/>
+                </TouchableOpacity>
+            }
+
+            {todos.length != 0 && 
+                <TouchableOpacity style = {styles.modalActionText} onPress = {() => {setModalVisible(true)}}>
+                    <AntDesign name = "pluscircle" size = {28} color = {colors.secondary}/>
+                </TouchableOpacity>
+            }       
             </View>
             <Modal
                 animationType= "slide"
@@ -206,15 +215,15 @@ const InputModal = ({
 
                     <StyledInput
                         placeholder = "title: Add a routine"
-                        placeholderTextColor = {colors.alternative}
-                        selectionColor = {colors.secondary}
+                        placeholderTextColor = {colors.modalText}
+                        selectionColor = {colors.modalText}
                         autoFocus = {true}
                         onChangeText = {(text) => setTodoInputValue(text)}
                         value = {todoInputvalue}
                     />
 
                     <View style = {{marginTop: 45}}>
-                    <Text style = {{fontSize: 25, color: "white", fontWeight: '700', letterSpacing: 1}}>
+                    <Text style = {{fontSize: 25, color: colors.tertiary, fontWeight: '700', letterSpacing: 1}}>
                         importance : {routineImportance}
                     </Text>
 
@@ -226,19 +235,19 @@ const InputModal = ({
                         step={1}
                         onSlidingComplete = {(num) => {setImportance(num)}}
                         allowTouchTrack
-                        trackStyle={{ height: 10}}
-                        thumbStyle={{ height: 20, width: 20, backgroundColor: 'white' }}                    
+                        trackStyle={{ height: 10, borderRadius: 10, borderWidth: 5, borderColor: colors.secondary, backgroundColor: colors.secondary}}
+                        thumbStyle={{ height: 30, width: 30, backgroundColor: colors.secondary }}                    
                     />
                     </View>
                     <View style = {{flexDirection: 'row', marginTop: 45, marginBottom: 45}}>
                         <View style = {{marginRight: 10}}>
                         <TouchableOpacity style = {styles.DateButton} onPress= {()=>{setIsTimeFrom(true)}}>
-                            <Text>{routineFrom}</Text>
+                            <Text style = {{color: 'white'}}>{routineFrom}</Text>
                         </TouchableOpacity>
                         </View>
                         <View style = {{marginLeft: 10}}>
                         <TouchableOpacity style = {styles.DateButton} onPress= {()=>{setIsTimeTo(true)}}>
-                            <Text>{routineTo}</Text>
+                            <Text style = {{color: 'white'}}>{routineTo}</Text>
                         </TouchableOpacity>
                         </View>                        
                     </View>           
@@ -256,16 +265,14 @@ const InputModal = ({
                     />
 
 
-                    <ModalActionGroup>
-                        <ModalAction color = {colors.primary} onPress = {handleCloseModal}>
-                            <AntDesign name = "close" size = {28} color={colors.tertiary}/>
-                        </ModalAction>
-
-                        <ModalAction color = {colors.tertiary} onPress = {handleSubmit}>
-                            <AntDesign name = "check" size = {28} color = {colors.secondary}/>
-
-                        </ModalAction>
-                    </ModalActionGroup>
+                    <View style = {styles.closeCheckContainer}>
+                        <TouchableOpacity style = {styles.Close} onPress = {handleCloseModal}>
+                            <AntDesign name = "close" size = {28} color={colors.primary}/>
+                        </TouchableOpacity>
+                        <TouchableOpacity style = {styles.Close} onPress = {handleSubmit}>
+                            <AntDesign name = 'check' size = {28} color={colors.primary}/>
+                        </TouchableOpacity>
+                    </View>
                     </ModalView>
                     </KeyboardAvoidingView>
                 </ModalContainer>
@@ -282,7 +289,7 @@ const InputModal = ({
 const styles = StyleSheet.create({
     DateButton: {
         flexDirection: 'row',
-        backgroundColor: 'white',
+        backgroundColor: colors.secondary,
         borderColor: colors.primary,
         width: 160,
         borderRadius: 10,
@@ -309,6 +316,45 @@ const styles = StyleSheet.create({
         color: colors.secondary,
         letterSpacing: 1
     },
+    modalAction: {
+        width: 60,
+        height: 60,
+        backgroundColor: 'black',
+        borderRadius: 50,
+        justifyContent: 'center',
+        alignItems: 'center',
+        alignItems: 'center',
+        position: 'absolute',
+        left: width - 104, 
+        top:  height - 260  
+    },
+    modalActionText: {
+        width: 60,
+        height: 60,
+        backgroundColor: 'black',
+        borderRadius: 50,
+        justifyContent: 'center',
+        alignItems: 'center',
+        alignItems: 'center',
+        position: 'relative',
+        marginBottom: 20
+    },
+    closeCheckContainer: {
+        flexDirection: 'row',
+        alignContent: 'center',
+        justifyContent: 'space-around'
+    },
+    Close:{
+        width: 60,
+        height: 60,
+        backgroundColor: colors.secondary,
+        borderRadius: 50,
+        justifyContent: 'center',
+        alignItems: 'center',
+        alignSelf: 'center',
+        margin: 30
+        
+    }
 
 })
 export default InputModal

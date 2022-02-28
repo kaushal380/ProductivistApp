@@ -235,8 +235,8 @@ const App = () => {
       let Starttime = (date.getHours() * 60) + (date.getMinutes()); // current time in minutes
       let endTime = 1439; //11:59
       let schedule = initSchedule
-      let todo = SortBasedOnTime(GetDaysApps(Alltodo)); // gets today's tasks that are due and sorts them
-      
+      //let todo = SortBasedOnTime(GetDaysApps(Alltodo)); // gets today's tasks that are due and sorts them
+      let todo = Alltodo
       
       let finalCombo = []
       let pastEvents = pastArray

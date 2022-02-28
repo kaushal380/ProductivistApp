@@ -56,12 +56,12 @@ const RoutineSub = () => {
 
     const [modalVisible, setModalVisible] = useState(false);
     const [todoInputvalue, setTodoInputValue] = useState();
-    const [routineTo, setRoutineTo] = useState("select end time");
-    const [routineFrom, setRoutineFrom] = useState("select start time");
+    const [routineTo, setRoutineTo] = useState("end time");
+    const [routineFrom, setRoutineFrom] = useState("start time");
     const [fromNum, setFromNum] = useState(0)
     const [toNum, setToNum] = useState(0)
     const [shortImportance, setImportance] = useState(0);
-    const [shortDate, setDate] = useState("select the day of the appointment")
+    const [shortDate, setDate] = useState("select date")
  
     const handleAddTodo = (todo) =>{
         const newTodos = [...todos, todo];

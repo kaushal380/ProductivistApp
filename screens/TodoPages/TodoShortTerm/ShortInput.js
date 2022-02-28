@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import { View, Text, Modal, Alert, KeyboardAvoidingView, StyleSheet, TouchableOpacity, AppState } from 'react-native'
+import { View, Text, Modal, Alert, KeyboardAvoidingView, StyleSheet, TouchableOpacity, Dimensions, } from 'react-native'
 import {
     ModalButton,
     ModalContainer,
@@ -24,7 +24,8 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { Slider } from 'react-native-elements'
 
-
+let  width  = Dimensions.get('window').width;
+let height = Dimensions.get("window").height;
 
 const InputModal = ({
     getInit,
@@ -53,10 +54,10 @@ const InputModal = ({
     const handleCloseModal = () => {
         setModalVisible(false);
         setTodoInputValue()
-        setRoutineFrom("select start time")
-        setRoutineTo("select end time")
+        setRoutineFrom("start time")
+        setRoutineTo("end time")
         setImportance(0)
-        setDate("select the day of the appointment")
+        setDate("select date")
         setTodoToBeEdited(null);
     }
 
@@ -94,17 +95,17 @@ const InputModal = ({
 
                 else{
                     alert("check your date! you cannot be in the past")
-                    setDate("select the day of the appointment")
+                    setDate("select date")
                 }
             }
             else {
                 alert("check your month! you cannot be in the past")
-                setDate("select the day of the appointment")
+                setDate("select date")
             }
         }
         else{
         alert("check your year! you cannot be in the past")
-        setDate("select the day of the appointment")
+        setDate("select date")
 
         }
 
@@ -160,11 +161,11 @@ const InputModal = ({
                 alert("please enter the task")
                 return;
             }
-            if(routineFrom === "select start time"){
+            if(routineFrom === "start time"){
                 alert("please select the start time")
                 return;
             }
-            if(routineTo === "select end time"){
+            if(routineTo === "end time"){
                 alert("please select the end time")
                 return;
             }
@@ -192,20 +193,20 @@ const InputModal = ({
             })
             setTodoInputValue()
             setImportance(0)
-            setDate("select the day of the appointment")
-            setRoutineFrom("select start time")
-            setRoutineTo("select end time")        
+            setDate("select date")
+            setRoutineFrom("start time")
+            setRoutineTo("end time")        
         } else {
 
             if(todoInputvalue + "" === ""){
                 alert("please enter the task")
                 return;
             }
-            if(routineFrom === "select start time"){
+            if(routineFrom === "start time"){
                 alert("please select the start time")
                 return;
             }
-            if(routineTo === "select end time"){
+            if(routineTo === "end time"){
                 alert("please select the end time")
                 return;
             }
@@ -226,10 +227,10 @@ const InputModal = ({
                 status: "pending"
             })
             setTodoInputValue()
-            setRoutineFrom("select start time")
-            setRoutineTo("select end time")  
+            setRoutineFrom("start time")
+            setRoutineTo("end time")  
             setImportance(0)    
-            setDate("select the day of the appointment") 
+            setDate("select date") 
         }
         }
 
@@ -240,11 +241,20 @@ const InputModal = ({
 
     return (
         <>
-            <View style = {{justifyContent: 'flex-end', flexDirection: 'row'}}>
+            <View style = {{justifyContent: 'flex-end', flexDirection: 'row', marginTop: -100}}>
+ 
+                {todos.length == 0 && 
+                    <TouchableOpacity style = {styles.modalAction} onPress = {() => {setModalVisible(true)}}>
+                        <AntDesign name = "pluscircle" size = {28} color = {colors.secondary}/>
+                    </TouchableOpacity>
+                }
 
-                <ModalAction color = {colors.tertiary} onPress = {() => {plusHandle()}}>
-                    <AntDesign name = "pluscircle" size = {28} color = {colors.secondary}/>
-                </ModalAction>
+                {todos.length != 0 && 
+                    <TouchableOpacity style = {styles.modalActionText} onPress = {() => {setModalVisible(true)}}>
+                        <AntDesign name = "pluscircle" size = {28} color = {colors.secondary}/>
+                    </TouchableOpacity>
+                }
+
             </View>
             <Modal
                 animationType= "slide"
@@ -264,14 +274,14 @@ const InputModal = ({
 
                     <StyledInput
                         placeholder = "title: Add an appointment"
-                        placeholderTextColor = {colors.alternative}
-                        selectionColor = {colors.secondary}
+                        placeholderTextColor = {colors.modalText}
+                        selectionColor = {colors.modalText}
                         autoFocus = {true}
                         onChangeText = {(text) => setTodoInputValue(text)}
                         value = {todoInputvalue}
                     />
-                    <View style = {{marginTop: 35}}>
-                    <Text style = {{fontSize: 25, color: "white", fontWeight: '700', letterSpacing: 1}}>
+                    <View style = {{marginTop: 40}}>
+                    <Text style = {{fontSize: 25, color: colors.tertiary, fontWeight: '700', letterSpacing: 1}}>
                         importance : {shortImportance}
                     </Text>
                     </View>
@@ -283,27 +293,28 @@ const InputModal = ({
                         step={1}
                         onSlidingComplete = {(num) => {setImportance(num)}}
                         allowTouchTrack
-                        trackStyle={{ height: 10}}
-                        thumbStyle={{ height: 20, width: 20, backgroundColor: 'white' }}                    
+                        trackStyle={{ height: 10, borderRadius: 10, borderWidth: 5, borderColor: colors.secondary, backgroundColor: colors.secondary}}
+                        thumbStyle={{ height: 30, width: 30, backgroundColor: colors.secondary }}                    
                     />
-                    <View style = {{marginTop: 25}}>
+                    <View style = {{marginTop: 35, flexDirection: 'row'}}>
+                        <AntDesign name= 'calendar' size={40} color = {colors.secondary} style = {{marginRight: 20}}/>
                         <TouchableOpacity
                             style = {styles.DateButton1}
                             onPress={() => {setDateOpen(true)}}
                         > 
-                        <Text>{shortDate}</Text>
+                        <Text style = {{color: 'white'}}>{shortDate}</Text>
                         </TouchableOpacity>
 
                     </View>
-                    <View style = {{flexDirection: 'row', marginTop: 30, marginBottom: 30}}>
-                        <View style = {{marginRight: 10}}>
+                    <View style = {{flexDirection: 'row', marginTop: 60, alignSelf: 'center'}}>
+                        <View style = {{marginRight: 10, flexDirection: 'row'}}>
                         <TouchableOpacity style = {styles.DateButton} onPress= {()=>{setIsTimeFrom(true)}}>
-                            <Text>{routineFrom}</Text>
+                            <Text style = {{color: 'white'}}>{routineFrom}</Text>
                         </TouchableOpacity>
                         </View>
-                        <View style = {{marginLeft: 10}}>
+                        <View style = {{marginLeft: 10, flexDirection: 'row'}}>
                         <TouchableOpacity style = {styles.DateButton} onPress= {()=>{setIsTimeTo(true)}}>
-                            <Text>{routineTo}</Text>
+                            <Text style = {{color: 'white'}}>{routineTo}</Text>
                         </TouchableOpacity>
                         </View>                        
                     </View>
@@ -328,15 +339,14 @@ const InputModal = ({
                         onCancel = {hideTimePicker}
                     />
 
-                    <ModalActionGroup>
-                        <ModalAction color = {colors.primary} onPress = {handleCloseModal}>
-                            <AntDesign name = "close" size = {28} color={colors.tertiary}/>
-                        </ModalAction>
-
-                        <ModalAction color = {colors.tertiary} onPress = {handleSubmit}>
-                            <AntDesign name = "check" size = {28} color = {colors.secondary}/>
-                        </ModalAction>
-                    </ModalActionGroup>
+                <View style = {styles.closeCheckContainer}>
+                    <TouchableOpacity style = {styles.Close} onPress = {handleCloseModal}>
+                        <AntDesign name = "close" size = {28} color={colors.primary}/>
+                    </TouchableOpacity>
+                    <TouchableOpacity style = {styles.Close} onPress = {handleSubmit}>
+                        <AntDesign name = 'check' size = {28} color={colors.primary}/>
+                    </TouchableOpacity>
+                </View>
                     </ModalView>
                     </KeyboardAvoidingView>
                 </ModalContainer>
@@ -353,19 +363,19 @@ const InputModal = ({
 const styles = StyleSheet.create({
     DateButton: {
         flexDirection: 'row',
-        backgroundColor: 'white',
+        backgroundColor: colors.secondary,
         borderColor: colors.primary,
-        width: 160,
+        width: 140,
         borderRadius: 10,
         height: 40,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
     DateButton1: {
         flexDirection: 'row',
-        backgroundColor: 'white',
-        borderColor: colors.primary,
-        width: 280,
+        backgroundColor: colors.secondary,
+        borderColor: colors.secondary,
+        width: 130,
         borderRadius: 10,
         height: 40,
         alignItems: 'center',
@@ -376,7 +386,8 @@ const styles = StyleSheet.create({
         alignContent: 'center',
         alignItems: 'center',
         fontWeight: '100',
-        fontSize: 15
+        fontSize: 15,
+        color: colors.modalText,
     },
 
     input: {
@@ -390,7 +401,46 @@ const styles = StyleSheet.create({
         color: colors.secondary,
         letterSpacing: 1
     },
-
+    modalAction: {
+        width: 60,
+        height: 60,
+        backgroundColor: 'black',
+        borderRadius: 50,
+        justifyContent: 'center',
+        alignItems: 'center',
+        alignItems: 'center',
+        position: 'absolute',
+        left: width - 104, 
+        top:  height - 330  
+    },
+    modalActionText: {
+        width: 60,
+        height: 60,
+        backgroundColor: 'black',
+        borderRadius: 50,
+        justifyContent: 'center',
+        alignItems: 'center',
+        alignItems: 'center',
+        position: 'relative',
+        marginBottom: 20
+    },
+    closeCheckContainer: {
+        flexDirection: 'row',
+        marginTop: 15,
+        alignContent: 'center',
+        justifyContent: 'space-around'
+    },
+    Close:{
+        width: 60,
+        height: 60,
+        backgroundColor: colors.secondary,
+        borderRadius: 50,
+        justifyContent: 'center',
+        alignItems: 'center',
+        alignSelf: 'center',
+        margin: 30
+        
+    }
 })
 
 

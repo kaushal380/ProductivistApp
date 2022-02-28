@@ -1,5 +1,5 @@
 import React, {useRef, useState} from 'react'
-import { TextInput, View, Text, Modal, Alert, KeyboardAvoidingView, StyleSheet, TouchableOpacity, Button } from 'react-native'
+import {View, Text, Modal, Alert, KeyboardAvoidingView, StyleSheet, TouchableOpacity, Dimensions, Image } from 'react-native'
 import {
     ModalButton,
     ModalContainer,
@@ -20,7 +20,8 @@ import {
 
 } from '../../styles/AppStyles'
 
-
+let  width  = Dimensions.get('window').width;
+let height = Dimensions.get("window").height;
 import {AntDesign, Entypo} from "@expo/vector-icons"
 import DatePicker from 'react-native-date-picker'
 import { TapGestureHandler } from 'react-native-gesture-handler';
@@ -217,11 +218,19 @@ const InputModal = ({
     return (
         <>
 
-            <View style = {{justifyContent: 'flex-end', flexDirection: 'row'}}>
-
-                <ModalAction color = {colors.tertiary} onPress = {() => {plusHandle()}}>
+            <View style = {{justifyContent: 'flex-end', flexDirection: 'row', marginTop: -100}}>
+            {todos.length == 0 && 
+                <TouchableOpacity style = {styles.modalAction} onPress = {() => {setModalVisible(true)}}>
                     <AntDesign name = "pluscircle" size = {28} color = {colors.secondary}/>
-                </ModalAction>
+                </TouchableOpacity>
+            }
+
+            {todos.length != 0 && 
+                <TouchableOpacity style = {styles.modalActionText} onPress = {() => {setModalVisible(true)}}>
+                    <AntDesign name = "pluscircle" size = {28} color = {colors.secondary}/>
+                </TouchableOpacity>
+            }
+
             </View>
             <Modal
                 animationType= "slide"
@@ -241,16 +250,16 @@ const InputModal = ({
 
                     <StyledInput
                         placeholder = "title: Add a todo"
-                        placeholderTextColor = {colors.alternative}
-                        selectionColor = {colors.secondary}
+                        placeholderTextColor = {'white'}
+                        selectionColor = {'white'}
                         autoFocus = {true}
                         onChangeText = {(text) => setTodoInputValue(text)}
                         value = {todoInputvalue}
                         // onSubmitEditing = {handleSubmit}
                     />
                     
-                    <View style = {{marginTop: 20}}>
-                    <Text style = {{fontSize: 25, color: "white", fontWeight: '700', letterSpacing: 1}}>
+                    <View style = {{marginBottom: 30, marginTop: 50}}>
+                    <Text style = {{fontSize: 25, color: 'black', fontWeight: '700', letterSpacing: 1}}>
                         importance : {todoImportance}
                     </Text>
 
@@ -262,13 +271,13 @@ const InputModal = ({
                         step={1}
                         onSlidingComplete = {(num) => {setImportance(num)}}
                         allowTouchTrack
-                        trackStyle={{ height: 10}}
-                        thumbStyle={{ height: 20, width: 20, backgroundColor: 'white' }}                    
+                        trackStyle={{ height: 10, borderRadius: 10, borderWidth: 5, borderColor: colors.secondary, backgroundColor: colors.secondary}}
+                        thumbStyle={{ height: 30, width: 30, backgroundColor: colors.secondary }}                    
                     />
-
+                    </View>
 
                     <View style = {{marginTop: 20}}>
-                    <Text style = {{fontSize: 25, color: "white", fontWeight: '700', letterSpacing: 1}}>
+                    <Text style = {{fontSize: 25, color: "black", fontWeight: '700', letterSpacing: 1}}>
                         time taken (mins) : {todoTimeTaken}
                     </Text>
 
@@ -280,18 +289,18 @@ const InputModal = ({
                         step={5}
                         onSlidingComplete = {(num) => {setTimeTaken(num)}}
                         allowTouchTrack
-                        trackStyle={{ height: 10}}
-                        thumbStyle={{ height: 20, width: 20, backgroundColor: 'white' }}                    
+                        trackStyle={{ height: 10, borderRadius: 10, borderWidth: 5, borderColor: colors.secondary, backgroundColor: colors.secondary}}
+                        thumbStyle={{ height: 30, width: 30, backgroundColor: colors.secondary }}                    
                     />
                     </View>
                 <View style = {{flexDirection: 'row'}}>
-
+                <AntDesign name= 'calendar' size={40} color = {colors.secondary} style = {{marginRight: 15, marginTop: 40}}/>
                     <TouchableOpacity style = {styles.DateButton} onPress={() => {setisDatePickerVisible(true)}}>
-                        <Text>{todoDate}</Text>
+                        <Text style = {{color: 'white'}}>{todoDate}</Text>
                     </TouchableOpacity>
                 </View>
 
-                    </View>
+                    
 
                     <DateTimePickerModal
                         isVisible = {isDatePickerVisible}
@@ -300,15 +309,15 @@ const InputModal = ({
                         onCancel = {hideDatePicker}
                     />
 
-                    <ModalActionGroup>
-                        <ModalAction color = {colors.primary} onPress = {handleCloseModal}>
-                            <AntDesign name = "close" size = {28} color={colors.tertiary}/>
-                        </ModalAction>
+                <View style = {styles.closeCheckContainer}>
+                    <TouchableOpacity style = {styles.Close} onPress = {handleCloseModal}>
+                        <AntDesign name = "close" size = {28} color={colors.primary}/>
+                    </TouchableOpacity>
+                    <TouchableOpacity style = {styles.Close} onPress = {handleSubmit}>
+                        <AntDesign name = 'check' size = {28} color={colors.primary}/>
+                    </TouchableOpacity>
+                </View>
 
-                        <ModalAction color = {colors.tertiary} onPress = {handleSubmit}>
-                            <AntDesign name = "check" size = {28} color = {colors.secondary}/>
-                        </ModalAction>
-                    </ModalActionGroup>
                     </ModalView>
                     </KeyboardAvoidingView>
                 </ModalContainer>
@@ -316,17 +325,6 @@ const InputModal = ({
 
             </Modal>
 
-            <Modal
-                animationType= "slide"
-                transparent = {false}
-                visible = {sortModalVisible}
-                onRequestClose = {sortModalClose}            
-            >
-                <ModalAction color = {colors.primary} onPress = {sortModalClose}>
-                    <AntDesign name = "close" size = {28} color={colors.tertiary}/>
-                </ModalAction>
-
-            </Modal>
         </>
 
     )
@@ -335,11 +333,9 @@ const InputModal = ({
 const styles = StyleSheet.create({
     DateButton: {
         flexDirection: 'row',
-        backgroundColor: 'white',
-        borderColor: colors.primary,
-        marginTop: 45,
+        backgroundColor: colors.secondary,
+        marginTop: 40,
         width: 160,
-        marginBottom: 30,
         borderRadius: 10,
         height: 40,
         alignItems: 'center',
@@ -354,8 +350,8 @@ const styles = StyleSheet.create({
     },
 
     input: {
-        width: 100,
-        height: 50,
+        width: 120,
+        height: 100,
         marginRight: 60,
         backgroundColor: colors.secondary,
         padding: 10,
@@ -364,7 +360,46 @@ const styles = StyleSheet.create({
         color: colors.secondary,
         letterSpacing: 1
     },
-
+    modalAction: {
+        width: 60,
+        height: 60,
+        backgroundColor: 'black',
+        borderRadius: 50,
+        justifyContent: 'center',
+        alignItems: 'center',
+        alignItems: 'center',
+        position: 'absolute',
+        left: width - 104, 
+        top:  height - 300  
+    },
+    modalActionText: {
+        width: 60,
+        height: 60,
+        backgroundColor: 'black',
+        borderRadius: 50,
+        justifyContent: 'center',
+        alignItems: 'center',
+        alignItems: 'center',
+        position: 'relative',
+        marginBottom: 20
+    },
+    closeCheckContainer: {
+        flexDirection: 'row',
+        marginTop: 15,
+        alignContent: 'center',
+        justifyContent: 'space-around'
+    },
+    Close:{
+        width: 60,
+        height: 60,
+        backgroundColor: colors.secondary,
+        borderRadius: 50,
+        justifyContent: 'center',
+        alignItems: 'center',
+        alignSelf: 'center',
+        margin: 30
+        
+    }
 
 })
 

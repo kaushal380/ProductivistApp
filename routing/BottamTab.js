@@ -37,8 +37,7 @@ const Tabs = () => {
                 },
                 tabBarShowLabel: true,
                 tabBarActiveTintColor: colors.secondary,
-                tabBarActiveBackgroundColor: 'black',
-                tabBarInactiveTintColor: 'grey',
+                tabBarInactiveTintColor: 'black',
 
             })}
             initialRouteName="Home"

@@ -15,6 +15,7 @@ export const colors = {
   secondary: "#94A285", //#4D3636
   tertiary: "black",//"#E6E6E6"
   alternative: "#999999", //
+  modalText: "white"
 };
 
 
@@ -107,7 +108,7 @@ export const TodoText = styled.Text`
 export const TodoDate = styled.Text`
   font-size: 10px;
   letter-spacing: 1px;
-  color: ${colors.alternative};
+  color: ${colors.tertiary};
   text-align: right;
   text-transform: uppercase;
 `;
@@ -121,14 +122,14 @@ export const RoutineText = styled.Text`
 export const RoutineTime = styled.Text`
   font-size: 30px;
   letter-spacing: 1px;
-  color: ${colors.alternative};
+  color: ${colors.tertiary};
   text-align: right;
   text-transform: uppercase;
 `;
 
 // Text for swiped todo row
 export const SwipedTodoText = styled(TodoText)`
-  color: ${colors.alternative};
+  color: ${colors.tertiary};
   font-style: italic;
   text-decoration: line-through;
 `;
@@ -151,12 +152,12 @@ export const ModalContainer = styled.View`
   justify-content: center;
   align-items: center;
   flex: 1;
-  background-color: ${colors.primary};
+  background-color: ${colors.secondary};
 `;
 
 export const ModalView = styled.View`
-  background-color: ${colors.secondary};
-  height: 550px;
+  background-color: ${colors.primary};
+  height: 650px;
   border-radius: 20px;
   padding: 45px;
 `;
@@ -165,11 +166,11 @@ export const StyledInput = styled.TextInput`
   
   width: 300px;
   height: 50px;
-  background-color: ${colors.tertiary};
+  background-color: ${colors.secondary};
   padding: 10px;
   font-size: 16px;
   border-radius: 10px;
-  color: ${colors.secondary};
+  color: ${colors.modalText};
   letter-spacing: 1px;
 `;
 
