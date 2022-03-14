@@ -3,6 +3,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import Home from "../screens/Home";
 import scheduler from "../screens/scheduler/CalendarDisplay";
+import allEventCalendar from "../screens/scheduler/allEventCalendar";
 import todo from "../screens/TodoPages/TabNav";
 import RoutineMaker from "../screens/Routines/RoutineMaker";
 import About from "../screens/About";
@@ -43,7 +44,7 @@ const Tabs = () => {
             initialRouteName="Home"
         >
 
-            <Tab.Screen name="Schedule" component = {scheduler}/>
+            <Tab.Screen name="Schedule" component = {allEventCalendar}/>
             <Tab.Screen name="Todo" component = {todo} />
             <Tab.Screen name="Home" component = {Home} /> 
             <Tab.Screen name="Routines" component = {RoutineMaker}/>
