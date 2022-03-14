@@ -437,8 +437,7 @@ const allEventCalendar = () => {
     ]);
     return (
         
-        <SafeAreaView style={styles.container}> 
-            <Text style = {{fontSize: 30}} onPress = {getInit}> reload </Text>
+        <SafeAreaView style={styles.container} onTouchStart = {getInit}> 
             <View style={styles.container}>
                 <EventCalendar
                     eventTapped={(event) => console.log(event)}
