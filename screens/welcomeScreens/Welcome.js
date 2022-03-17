@@ -10,8 +10,17 @@ const db = SQLite.openDatabase("user.db");
 let { width } = Dimensions.get('window');
 const Welcome = () => {
     const navigation = useNavigation()
-
+    const createTable = () => {
+      db.transaction((tx) => {
+          tx.executeSql(
+              "CREATE TABLE IF NOT EXISTS "
+              +"users "
+              +"(ID INTEGER PRIMARY KEY AUTOINCREMENT, Email TEXT, Password TEXT);"
+          )
+      })
+  }
     const checkAuth = () => {
+        createTable();
         db.transaction((tx) => {
             tx.executeSql(
                 'SELECT Email, Password FROM users', [],
