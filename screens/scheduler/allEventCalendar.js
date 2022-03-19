@@ -140,7 +140,7 @@ const allEventCalendar = () => {
 
 
 
-            missedList = getCurrentAndFutureTodos(missedList, date);
+            // missedList = getCurrentAndFutureTodos(missedList, date);
 
             let fetchFromCombine = combineTodos(Day_schedule, missedList, past, date)
 
