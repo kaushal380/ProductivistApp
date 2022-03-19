@@ -8,7 +8,6 @@ import * as Notifications from 'expo-notifications';
 const db = SQLite.openDatabase("user.db");
 import Device from 'expo-device';
 import Constants from 'expo-constants';
-import UpcomingTasks from './UpcomingTasks'
 import {RoutineText,RoutineTime, colors, TodoDate} from '../../styles/AppStyles';
 
 Notifications.setNotificationHandler({
