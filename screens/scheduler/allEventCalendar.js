@@ -54,10 +54,9 @@ const allEventCalendar = () => {
                 endDate: toDate,
                 color: '#94A285',
                 type: type
-                // ... more properties if needed,
+
               }
-            // let mylist = { id: index+1, description: description, startDate: fromDate, endDate: toDate, type: type, color: 'blue' }
-              
+            
             calendarInput = [...calendarInput, mylist]
 
             // break;
@@ -77,7 +76,7 @@ const allEventCalendar = () => {
             .get()
 
         let initialTodos = Object.values(Object.seal(documentSnapshot.data()))
-
+        initialTodos = getPendingItems(initialTodos)
         // fetching routines 
         const documentSnapshot1 = await firebase.firestore()
             .collection('users')
@@ -87,7 +86,7 @@ const allEventCalendar = () => {
             .get()
 
         let initialRoutines = Object.values(Object.seal(documentSnapshot1.data()))
-
+        initialRoutines = getPendingItems(initialRoutines)
         // fetching appointments
         const documentSnapshot2 = await firebase.firestore()
             .collection('users')
@@ -98,7 +97,7 @@ const allEventCalendar = () => {
 
         let initialApps = Object.values(Object.seal(documentSnapshot2.data()))
 
-
+        initialApps = getPendingItems(initialApps)
         setTasks(initialTodos);
         setRoutines(initialRoutines);
         setApps(initialApps);
@@ -422,6 +421,55 @@ const allEventCalendar = () => {
         return finalTodos;
     }
 
+    const markStatusDone = (event) => {
+        const firebaseAccess = firebase.firestore()
+        let accessEvents = []
+        let doc = ""
+        if(event.type === "apps"){
+          accessEvents = appsState
+          doc = "shortTerm"
+        }
+        else if(event.type === "routine"){
+          accessEvents = routinesState
+          doc = "routines"
+        }
+        else{
+          accessEvents = tasksState
+          doc = "todos"
+        }
+    
+        for (let index = 0; index < accessEvents.length; index++) {
+          if(accessEvents[index].title === event.description){
+            accessEvents[index].status = "done"
+          }
+        }
+        const resetStatus = Object.assign({}, accessEvents)
+        firebaseAccess
+            .collection('users')
+            .doc(firebase.auth().currentUser.uid)
+            .collection('userData')
+            .doc(doc)
+            .set(resetStatus)
+    
+        getInit()
+      }
+
+      const eventClicked = (event) => {
+        //On Click oC a event showing alert from here
+        Alert.alert(
+          event.description,
+          event.type,
+          [
+              {
+                  text: "cancel",
+                  onPress: () => {return},
+                  style: 'cancel'
+              },
+              {text: "mark as done", onPress: () => {markStatusDone(event)}} 
+          ]
+      );
+      }
+
     const [tasksState, setTasks] = useState()
     const [routinesState, setRoutines] = useState()
     const [appsState, setApps] = useState()
@@ -448,7 +496,7 @@ const allEventCalendar = () => {
                     formatTimeLabel={'h:mm A'}
                     showNowLine
                     nowLineColor={'black'}
-                    onEventPress={(event) => { alert(JSON.stringify(event)) }}
+                    onEventPress={(event) => { eventClicked(event)}}
                     headerStyle={styles.calendarHeaderStyle}
                     headerTextStyle={styles.headerTextStyle}
                     hourTextStyle={styles.hourTextStyle}
