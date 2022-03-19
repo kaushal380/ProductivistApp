@@ -6,7 +6,7 @@ import { firebase } from '../../firebase/config';
 import EventCalendar from 'react-native-events-calendar';
 
 let { width } = Dimensions.get('window');
-
+import WeekView, { addLocale, createFixedWeekDate } from 'react-native-week-view';
 
 const allEventCalendar = () => {
     const getDateFormat = () => {
@@ -31,26 +31,37 @@ const allEventCalendar = () => {
 
         for (let index = 0; index < initialEvents.length; index++) {
             let date = new Date(initialEvents[index].date)
-            let month = date.getMonth() + 1
+            let month = date.getMonth()
             let Date1 = date.getDate()
             let year = date.getFullYear()
-            if (month < 10) {
-                month = '0' + month
-            }
 
-            if (Date1 < 10) {
-                Date1 = '0' + date.getDate()
-            }
+            let hourFrom = Math.trunc(((initialEvents[index].fromNum) / 60))
+            let minFrom = ((initialEvents[index].fromNum) - (hourFrom * 60))
+            let hourTo = Math.trunc(((initialEvents[index].toNum) / 60))
+            let minTo = ((initialEvents[index].toNum) - (hourTo * 60))
 
-            let title = initialEvents[index].title
+            let fromDate = new Date(year, month, Date1, hourFrom, minFrom);
+            let toDate = new Date(year, month, Date1, hourTo, minTo);
+
+
+            let description = initialEvents[index].title
             let type = initialEvents[index].type
-            let from = year + '-' + month + '-' + Date1 + " " + initialEvents[index].from + ":00"
-            let to = year + '-' + month + '-' + Date1 + " " + initialEvents[index].to + ":00"
-            let mylist = { start: from, end: to, title: title, summary: "", type: type }
 
+            let mylist = {
+                id: index+1,
+                description: description,
+                startDate: fromDate,
+                endDate: toDate,
+                color: '#94A285',
+                type: type
+                // ... more properties if needed,
+              }
+            // let mylist = { id: index+1, description: description, startDate: fromDate, endDate: toDate, type: type, color: 'blue' }
+              
             calendarInput = [...calendarInput, mylist]
-        }
 
+            // break;
+        }
         return calendarInput;
     }
 
@@ -102,7 +113,9 @@ const allEventCalendar = () => {
 
         let events = getEvents(schedule)
         setEvents(events)
-        
+        // console.log(events)
+        console.log(Calendarevents)
+
     }
 
     const createSchedule = (todos, routines, apps) => {
@@ -121,51 +134,48 @@ const allEventCalendar = () => {
             let date1 = new Date()
             let past = []
             if (date.toString() === date1.toString()) {
-            
+
                 past = GetCurrentAndFutureEvents(SortElementsFromNum(Day_schedule))[1];
                 Day_schedule = GetCurrentAndFutureEvents(SortElementsFromNum(Day_schedule))[0];
             }
 
-            
-        
+
+
             missedList = getCurrentAndFutureTodos(missedList, date);
 
             let fetchFromCombine = combineTodos(Day_schedule, missedList, past, date)
 
             let currentDaySchedule = fetchFromCombine[0]
-            
-            
-            
+
+
+
             currentDaySchedule.forEach(element => {
                 element.key = keyVal;
-                
+
 
                 let elementString = JSON.stringify(element)
                 finalSchedule = finalSchedule.concat(elementString)
-                
-                
+
+
                 keyVal++;
             });
 
-           
+
             // finalSchedule = [...finalSchedule, currentDaySchedule]
             missedList = fetchFromCombine[1];
-            
-            
+
+
             var nextDay = new Date(date.getTime() + 24 * 60 * 60 * 1000);
             date = nextDay;
 
         } while (missedList.length > 0);
 
-        
-        for(let i = 0; i < 30; i++){
+
+        for (let i = 0; i < 30; i++) {
             let looping_Schedule = []
-            console.log(routines)
             for (let index = 0; index < routines.length; index++) {
                 routines[index].date = date.toDateString();
-                console.log(routines[index])
                 let elementString = JSON.stringify(routines[index])
-                console.log(elementString)
                 looping_Schedule = [...looping_Schedule, elementString];
             }
 
@@ -176,19 +186,18 @@ const allEventCalendar = () => {
                 looping_Schedule = [...looping_Schedule, elementString]
             }
 
-            // console.log("looping array: ", looping_Schedule)
+
             finalSchedule = finalSchedule.concat(looping_Schedule)
 
             var nextDay = new Date(date.getTime() + 24 * 60 * 60 * 1000);
             date = nextDay;
         }
-        
+
         let conversionArray = []
         for (let index = 0; index < finalSchedule.length; index++) {
             let object = JSON.parse(finalSchedule[index])
             conversionArray = [...conversionArray, object]
         }
-        // console.log(conversionArray)
         return conversionArray;
     }
 
@@ -217,7 +226,7 @@ const allEventCalendar = () => {
         let finalCombo = []
         let pastEvents = pastArray
         let missedList = []
-        
+
         // layer one algorithm: combines tasks of current date
         for (let index = 0; index < todo.length; index++) {
 
@@ -344,7 +353,7 @@ const allEventCalendar = () => {
     // get the events starting from current time with index 0
     // get the past events from index 1
     const GetCurrentAndFutureEvents = (array) => {
-        
+
         let date = new Date();
         let time = (date.getHours() * 60) + (date.getMinutes());
         let timeArray = []
@@ -357,8 +366,8 @@ const allEventCalendar = () => {
                 pastArray = [...pastArray, array[index]]
             }
         }
-        
-    
+
+
         let finalArray = [timeArray, pastArray]
         return finalArray;
     }
@@ -419,40 +428,30 @@ const allEventCalendar = () => {
     const [dateFormat, setDateFormat] = useState();
     const [Calendarevents, setEvents] = useState([
         {
-            start: '2020-01-01 00:00:00',
-            end: '2020-01-01 02:00:00',
-            title: 'New Year Party',
-            summary: 'xyz Location',
-        }, {
-            start: '2020-01-01 03:00:00',
-            end: '2020-01-01 04:00:00',
-            title: 'New Year Party',
-            summary: 'xyz Location',
-        }, {
-            start: '2020-01-01 04:00:00',
-            end: '2020-01-01 05:00:00',
-            title: 'New Year Party',
-            summary: 'xyz Location',
-        },
+            id: 1,
+            description: 'Event',
+            startDate: new Date(),
+            endDate: new Date(2022, 2, 18, 19, 30),
+            color: '#ff005d',
+            // ... more properties if needed,
+          },
     ]);
     return (
-        
-        <SafeAreaView style={styles.container} onTouchStart = {getInit}> 
-            <View style={styles.container}>
-                <EventCalendar
-                    eventTapped={(event) => console.log(event)}
-                    //Function on event press
+
+        <SafeAreaView style={styles.container} onTouchStart={getInit}>
+            <View style={styles.calendarContainer}>
+                <WeekView
                     events={Calendarevents}
-                    //passing the Array of event
-                    width={width}
-                    //Container width
-                    size={60}
-                    //number of date will render before and after initDate
-                    //(default is 30 will render 30 day before initDate and 29 day after initDate)
-                    initDate={dateFormat}
-                    //show initial date (default is today)
-                    scrollToFirst
-                //scroll to first event of the day (default true)
+                    selectedDate={new Date()}
+                    numberOfDays={1}
+                    timeStep={30}
+                    formatTimeLabel={'h:mm A'}
+                    showNowLine
+                    nowLineColor={'black'}
+                    onEventPress={(event) => { alert(JSON.stringify(event)) }}
+                    headerStyle={styles.calendarHeaderStyle}
+                    headerTextStyle={styles.headerTextStyle}
+                    hourTextStyle={styles.hourTextStyle}
                 />
             </View>
         </SafeAreaView>
@@ -467,4 +466,21 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
+    calendarContainer: {
+        marginHorizontal: 30,
+        marginBottom: 20, 
+        marginTop: 30
+    },  
+    calendarHeaderStyle: {
+        backgroundColor: '#94A285', 
+        color: '#fff', 
+        borderColor: '#fff'
+      },
+      headerTextStyle: {
+        fontSize: 15,
+        color: 'white'
+      },
+      hourTextStyle: {
+        color: '#94A285'
+      }
 })
