@@ -409,7 +409,7 @@ const Home = () => {
     let todo = Alltodo
 
     let finalCombo = []
-    let pastEvents = pastArray
+    let pastEvents = []
     let missedList = []
 
     // layer one algorithm: combines tasks of current date
@@ -623,7 +623,10 @@ const Home = () => {
           style={{
             marginVertical: 40,
             fontSize: 40,
-            fontWeight: 'bold'
+            fontWeight: 'bold',
+            alignSelf: 'flex-start', 
+            marginHorizontal: 30,
+            color: 'black'
           }}
         >
           Hello {userdata}
@@ -639,7 +642,7 @@ const Home = () => {
                 radius={65}
                 textColor={'black'}
                 activeStrokeColor={colors.secondary}
-                inActiveStrokeColor={'#9b59b6'}
+                inActiveStrokeColor={colors.secondarySageGreen} 
                 inActiveStrokeOpacity={0.5}
                 inActiveStrokeWidth={10}
                 activeStrokeWidth={20}
@@ -655,7 +658,7 @@ const Home = () => {
                 radius={65}
                 textColor={'black'}
                 activeStrokeColor={colors.secondary}
-                inActiveStrokeColor={'#9b59b6'}
+                inActiveStrokeColor={colors.secondarySageGreen}
                 inActiveStrokeOpacity={0.5}
                 inActiveStrokeWidth={10}
                 activeStrokeWidth={20}
@@ -672,7 +675,7 @@ const Home = () => {
                 radius={65}
                 textColor={'black'}
                 activeStrokeColor={colors.secondary}
-                inActiveStrokeColor={'#9b59b6'}
+                inActiveStrokeColor={colors.secondarySageGreen}
                 inActiveStrokeOpacity={0.5}
                 inActiveStrokeWidth={10}
                 activeStrokeWidth={20}
@@ -707,12 +710,12 @@ const Home = () => {
               }
             </>
           </View>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={handleSignout}
             style={[styles.button, styles.buttonOutline]}
           >
             <Text style={styles.buttonOutlineText}>SignOut</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
 
         </View>
       </View>

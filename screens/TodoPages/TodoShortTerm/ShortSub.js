@@ -24,7 +24,8 @@ const RoutineSub = () => {
             .get()
         
             initialTodos = Object.values(Object.seal(documentSnapshot.data()))
-    
+        
+        initialTodos = getCurrentAndFutureAppointments(initialTodos, new Date());
             // console.log(initialTodos)
         for (let index = 0; index < initialTodos.length; index++) {
             initialTodos[index].key = index+1;
@@ -33,6 +34,46 @@ const RoutineSub = () => {
         
         setTodos(initialTodos);
             
+    }
+
+    const getCurrentAndFutureAppointments = (todos, date) => {
+        let finalTodos = []
+        let initialTodos = todos;
+        // let date = new Date();
+        initialTodos.forEach(element => {
+            let selectedDate = new Date(element.date);
+            let dateCheck = true;
+
+            if (selectedDate.getFullYear() > date.getFullYear()) {
+                dateCheck = true;
+
+            }
+            else if (selectedDate.getFullYear() === date.getFullYear()) {
+                if (selectedDate.getMonth() > date.getMonth()) {
+                    dateCheck = true;
+
+                }
+                else if (selectedDate.getMonth() === date.getMonth()) {
+                    if (selectedDate.getDate() >= date.getDate()) {
+                        dateCheck = true;
+                    }
+                    else {
+                        dateCheck = false;
+                    }
+                }
+                else {
+                    dateCheck = false;
+                }
+            }
+            else {
+                dateCheck = false;
+            }
+
+            if (dateCheck) {
+                finalTodos = [...finalTodos, element]
+            }
+        });
+        return finalTodos;
     }
     
     useEffect(() => {

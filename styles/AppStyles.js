@@ -15,7 +15,8 @@ export const colors = {
   secondary: "#94A285", //#4D3636
   tertiary: "black",//"#E6E6E6"
   alternative: "#999999", //
-  modalText: "white"
+  modalText: "white",
+  secondarySageGreen: '#BBC6B0'
 };
 
 
