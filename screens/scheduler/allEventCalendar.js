@@ -48,15 +48,15 @@ const allEventCalendar = () => {
             let type = initialEvents[index].type
 
             let mylist = {
-                id: index+1,
+                id: index + 1,
                 description: description,
                 startDate: fromDate,
                 endDate: toDate,
                 color: '#94A285',
                 type: type
 
-              }
-            
+            }
+
             calendarInput = [...calendarInput, mylist]
 
             // break;
@@ -425,23 +425,23 @@ const allEventCalendar = () => {
         const firebaseAccess = firebase.firestore()
         let accessEvents = []
         let doc = ""
-        if(event.type === "apps"){
-          accessEvents = appsState
-          doc = "shortTerm"
+        if (event.type === "apps") {
+            accessEvents = appsState
+            doc = "shortTerm"
         }
-        else if(event.type === "routine"){
-          accessEvents = routinesState
-          doc = "routines"
+        else if (event.type === "routine") {
+            accessEvents = routinesState
+            doc = "routines"
         }
-        else{
-          accessEvents = tasksState
-          doc = "todos"
+        else {
+            accessEvents = tasksState
+            doc = "todos"
         }
-    
+
         for (let index = 0; index < accessEvents.length; index++) {
-          if(accessEvents[index].title === event.description){
-            accessEvents[index].status = "done"
-          }
+            if (accessEvents[index].title === event.description) {
+                accessEvents[index].status = "done"
+            }
         }
         const resetStatus = Object.assign({}, accessEvents)
         firebaseAccess
@@ -450,25 +450,25 @@ const allEventCalendar = () => {
             .collection('userData')
             .doc(doc)
             .set(resetStatus)
-    
-        getInit()
-      }
 
-      const eventClicked = (event) => {
+        getInit()
+    }
+
+    const eventClicked = (event) => {
         //On Click oC a event showing alert from here
         Alert.alert(
-          event.description,
-          event.type,
-          [
-              {
-                  text: "cancel",
-                  onPress: () => {return},
-                  style: 'cancel'
-              },
-              {text: "mark as done", onPress: () => {markStatusDone(event)}} 
-          ]
-      );
-      }
+            event.description,
+            event.type,
+            [
+                {
+                    text: "cancel",
+                    onPress: () => { return },
+                    style: 'cancel'
+                },
+                { text: "mark as done", onPress: () => { markStatusDone(event) } }
+            ]
+        );
+    }
 
     const [tasksState, setTasks] = useState()
     const [routinesState, setRoutines] = useState()
@@ -482,7 +482,7 @@ const allEventCalendar = () => {
             endDate: new Date(2022, 2, 18, 19, 30),
             color: '#ff005d',
             // ... more properties if needed,
-          },
+        },
     ]);
     return (
 
@@ -496,7 +496,7 @@ const allEventCalendar = () => {
                     formatTimeLabel={'h:mm A'}
                     showNowLine
                     nowLineColor={'black'}
-                    onEventPress={(event) => { eventClicked(event)}}
+                    onEventPress={(event) => { eventClicked(event) }}
                     headerStyle={styles.calendarHeaderStyle}
                     headerTextStyle={styles.headerTextStyle}
                     hourTextStyle={styles.hourTextStyle}
@@ -516,19 +516,19 @@ const styles = StyleSheet.create({
     },
     calendarContainer: {
         marginHorizontal: 30,
-        marginBottom: 20, 
+        marginBottom: 20,
         marginTop: 30
-    },  
+    },
     calendarHeaderStyle: {
-        backgroundColor: '#94A285', 
-        color: '#fff', 
+        backgroundColor: '#94A285',
+        color: '#fff',
         borderColor: '#fff'
-      },
-      headerTextStyle: {
+    },
+    headerTextStyle: {
         fontSize: 15,
         color: 'white'
-      },
-      hourTextStyle: {
+    },
+    hourTextStyle: {
         color: '#94A285'
-      }
+    }
 })

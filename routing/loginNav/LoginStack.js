@@ -9,6 +9,7 @@ import DrawerNav from '../TabNav';
 // import Home from './screens/Home';
 import SignupScreen from '../../screens/loginsScreens/SignupScreen';
 import Welcome from '../../screens/welcomeScreens/Welcome';
+import About from '../../screens/About';
 const Stack = createNativeStackNavigator();
 
 export default function loginUI() {

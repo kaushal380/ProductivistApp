@@ -13,7 +13,7 @@ import {Entypo, AntDesign} from "@expo/vector-icons"
 const Header = ({handleClearTodos, getInit}) => {
     return (
         <HeaderView>
-            <HeaderTitle>Routines</HeaderTitle>
+            <Text style = {{fontFamily: 'FontsFree-Net-PlaylistScript', fontSize: 35}}>Routines</Text>
             <HeaderButton
                 onPress = {handleClearTodos}
             >

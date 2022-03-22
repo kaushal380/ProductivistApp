@@ -16,7 +16,7 @@ export const colors = {
   tertiary: "black",//"#E6E6E6"
   alternative: "#999999", //
   modalText: "white",
-  secondarySageGreen: '#BBC6B0'
+  secondarySageGreen: '#94A285'
 };
 
 
@@ -49,6 +49,7 @@ export const HeaderTitle = styled.Text`
   color: ${colors.tertiary};
   letter-spacing: 2px;
   font-style: italic;
+  font-family: Oswald-Regular;
 `;
 export const HeaderButton = styled.TouchableOpacity`
   font-weight: bold;
@@ -104,6 +105,7 @@ export const TodoText = styled.Text`
   font-size: 16px;
   letter-spacing: 1px;
   color: ${colors.tertiary};
+  font-family: Oswald-Regular;
 `;
 
 export const TodoDate = styled.Text`
@@ -112,12 +114,14 @@ export const TodoDate = styled.Text`
   color: ${colors.tertiary};
   text-align: right;
   text-transform: uppercase;
+  font-family: Oswald-Regular;
 `;
 
 export const RoutineText = styled.Text`
   font-size: 20px;
   letter-spacing: 1px;
   color: ${colors.tertiary};
+  font-family: Oswald-Regular;
 `;
 
 export const RoutineTime = styled.Text`
@@ -126,6 +130,7 @@ export const RoutineTime = styled.Text`
   color: ${colors.tertiary};
   text-align: right;
   text-transform: uppercase;
+  font-family: Oswald-Regular;
 `;
 
 // Text for swiped todo row

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { Button, View, Text, StyleSheet, TouchableOpacity, ScrollView, Dimensions } from 'react-native';
+import { Button, View, Text, StyleSheet, TouchableOpacity, ScrollView, Dimensions, Image } from 'react-native';
 import { firebase } from '../../firebase/config';
 import { useNavigation } from '@react-navigation/core';
 import * as SQLite from 'expo-sqlite';
@@ -8,7 +8,9 @@ import * as Notifications from 'expo-notifications';
 const db = SQLite.openDatabase("user.db");
 import Device from 'expo-device';
 import Constants from 'expo-constants';
-import {RoutineText,RoutineTime, colors, TodoDate} from '../../styles/AppStyles';
+import { RoutineText, RoutineTime, colors, TodoDate } from '../../styles/AppStyles';
+import AppLoading from 'expo-app-loading';
+import { useFonts } from 'expo-font';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -18,14 +20,13 @@ Notifications.setNotificationHandler({
   }),
 });
 
-  let {width} = Dimensions.get('window')
+let { width } = Dimensions.get('window')
 const Home = () => {
   const firebaseAccess = firebase.firestore();
   const [expoPushToken, setExpoPushToken] = useState('');
   const [notification, setNotification] = useState(false);
   const notificationListener = useRef();
   const responseListener = useRef();
-
   const navigation = useNavigation()
   // const {state} = props.navigation
   const [userdata, setUserdata] = useState()
@@ -56,6 +57,7 @@ const Home = () => {
         navigation.navigate('Login')
       })
   }
+
   const GetDaysApps = (array) => {
     let date = new Date();
     let filteredArray = []
@@ -211,27 +213,8 @@ const Home = () => {
     configProgress()
     fetchUpcomingTasks()
   }
-  useEffect(() => {
-    getUser()
-    configProgress()
-    fetchUpcomingTasks()
-    registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
 
-    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-      setNotification(notification);
-    });
 
-    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-      console.log(response);
-    });
-
-    schedulePushNotification()
-
-    return () => {
-      Notifications.removeNotificationSubscription(notificationListener.current);
-      Notifications.removeNotificationSubscription(responseListener.current);
-    };
-  }, []);
 
   async function schedulePushNotification() {
     await Notifications.scheduleNotificationAsync({
@@ -607,6 +590,27 @@ const Home = () => {
     return finalTodos;
   }
 
+  useEffect(() => {
+    getUser()
+    configProgress()
+    fetchUpcomingTasks()
+    registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+
+    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+      setNotification(notification);
+    });
+
+    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+      console.log(response);
+    });
+
+    //schedulePushNotification()
+
+    return () => {
+      Notifications.removeNotificationSubscription(notificationListener.current);
+      Notifications.removeNotificationSubscription(responseListener.current);
+    };
+  }, []);
 
   const [UpcomingTasks, setUpcomingTasks] = useState([])
 
@@ -614,35 +618,47 @@ const Home = () => {
     <ScrollView
       showsVerticalScrollIndicator={false}
       onTouchStart={onTouchFunction}
-      style = {{backgroundColor: colors.primary}}
+      style={{ backgroundColor: colors.primary }}
     >
+      <Image
+        style={{ width: 340, height: 150 }}
+        source={require('../../assets/upperDesign.png')}
+      />
       <View
         style={styles.container}
       >
+        <Image
+          style = {{width: 300, height: 100, alignSelf: 'center', marginTop: -100}}
+          source = {require('../../assets/updatedLogoName.png')}
+        />
         <Text
           style={{
-            marginVertical: 40,
-            fontSize: 40,
-            fontWeight: 'bold',
-            alignSelf: 'flex-start', 
+            
+            marginBottom: 10,
+            fontSize: 23,
+            // fontWeight: 'bold',
+            alignSelf: 'center',
             marginHorizontal: 30,
-            color: 'black'
+            // color: colors.secondary,
+            color: '#596849',
+            fontFamily: 'Oswald-Regular',
+            
           }}
         >
-          Hello {userdata}
+          HELLO {userdata}, LET'S GET WORKING!
         </Text>
         <View style={styles.buttonContainer}>
 
           <View style={{ flexDirection: 'row' }}>
             <View>
-              <Text style={{ alignSelf: 'center' }}>Routines</Text>
+              <Text style={{ alignSelf: 'center', fontFamily: 'Oswald-Regular', fontSize: 20}}>ROUTINES</Text>
               <CircularProgress
                 value={doneRoutines}
                 maxValue={routinesTotal}
                 radius={65}
                 textColor={'black'}
                 activeStrokeColor={colors.secondary}
-                inActiveStrokeColor={colors.secondarySageGreen} 
+                inActiveStrokeColor={colors.secondarySageGreen}
                 inActiveStrokeOpacity={0.5}
                 inActiveStrokeWidth={10}
                 activeStrokeWidth={20}
@@ -651,7 +667,7 @@ const Home = () => {
               />
             </View>
             <View>
-              <Text style={{ alignSelf: 'center' }}>tasks</Text>
+              <Text style={{ alignSelf: 'center', fontFamily: 'Oswald-Regular', fontSize: 20 }}>TASKS</Text>
               <CircularProgress
                 value={todoDone}
                 maxValue={todoTotal}
@@ -668,7 +684,7 @@ const Home = () => {
             </View>
 
             <View>
-              <Text style={{ alignSelf: 'center' }}>appointments</Text>
+              <Text style={{ alignSelf: 'center', fontFamily: 'Oswald-Regular', fontSize: 20}}>APPOINTMENTS</Text>
               <CircularProgress
                 value={appsDone}
                 maxValue={appsTotal}
@@ -681,14 +697,19 @@ const Home = () => {
                 activeStrokeWidth={20}
                 subtitle={appsSubtitle}
                 subtitleColor='black'
+                
 
               />
             </View>
           </View>
-          <View style = {styles.upcomingList}>
-            <Text style = {{alignSelf: 'flex-start', fontSize: 30}}>your upcoming tasks:</Text>
+          <View style={styles.upcomingList}>
+            <Text style={{ alignSelf: 'flex-start', fontSize: 25, fontFamily: 'Oswald-Regular'}}>YOUR UPCOMING TASKS:</Text>
             <>
-              {UpcomingTasks.length == 0 && <Text style = {{alignSelf: 'center', margin: 30, fontSize: 20}}>yayy! you don't have any tasks today!</Text>}
+              {UpcomingTasks.length == 0 && 
+                <TouchableOpacity style = {styles.item}>
+                <Text style={{ alignSelf: 'center', fontSize: 20, fontFamily: 'Oswald-Regular' }}>Yayy, You don't have any tasks today!</Text>
+                </TouchableOpacity>}
+
               {UpcomingTasks.length != 0 &&
                 <ScrollView>
                   {
@@ -710,15 +731,13 @@ const Home = () => {
               }
             </>
           </View>
-          {/* <TouchableOpacity
-            onPress={handleSignout}
-            style={[styles.button, styles.buttonOutline]}
-          >
-            <Text style={styles.buttonOutlineText}>SignOut</Text>
-          </TouchableOpacity> */}
 
         </View>
       </View>
+      <Image
+        style={{ width: 340, height: 150, alignSelf: 'flex-end', marginTop: -80 }}
+        source={require('../../assets/lowerDesign.png')}
+      />
     </ScrollView>
   )
 }
@@ -766,6 +785,12 @@ const styles = StyleSheet.create({
     margin: 10,
     borderRadius: 20
   },
+  // item1: {
+  //   backgroundColor: colors.secondary,
+  //   padding: 20,
+  //   margin: 10,
+  //   borderRadius: 20
+  // },
   text: {
     fontSize: 20,
     color: 'black',
@@ -773,7 +798,7 @@ const styles = StyleSheet.create({
   },
   upcomingList: {
     margin: 30,
-    width: width-30,
+    width: width - 30,
     alignSelf: 'center',
 
   }

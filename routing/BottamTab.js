@@ -2,7 +2,7 @@ import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import Home from "../screens/homeScreens/Home";
-import scheduler from "../screens/scheduler/CalendarDisplay";
+import fontTest from "../screens/homeScreens/fontTest";
 import allEventCalendar from "../screens/scheduler/allEventCalendar";
 import todo from "../screens/TodoPages/TabNav";
 import RoutineMaker from "../screens/Routines/RoutineMaker";

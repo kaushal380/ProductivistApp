@@ -1,10 +1,11 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import { useNavigation } from '@react-navigation/core';
-import { Platform, KeyboardAvoidingView, StyleSheet, Text, View, TextInput, TouchableOpacity, Image, Dimensions } from 'react-native'
+import { Platform, KeyboardAvoidingView, StyleSheet, Text, View, TextInput, TouchableOpacity, Image, Dimensions, Linking } from 'react-native'
 import { firebase } from '../../firebase/config';
-import { doc, setDoc, Timestamp } from "firebase/firestore"; 
+import { doc, setDoc, Timestamp } from "firebase/firestore";
 import * as SQLite from 'expo-sqlite';
 import { colors } from '../../styles/AppStyles';
+import { CheckBox } from 'react-native-elements'
 
 const db = SQLite.openDatabase("user.db");
 let { width } = Dimensions.get('window');
@@ -14,23 +15,24 @@ const SignupScreen = () => {
     const [confirm_password, setconfirm_password] = useState('')
     const [email, setEmail] = useState('')
     const [Name, setName] = useState('')
+    const [isDisabled, setIsDisabled] = useState(false)
     const createTable = () => {
         db.transaction((tx) => {
             tx.executeSql(
                 "CREATE TABLE IF NOT EXISTS "
-                +"users "
-                +"(ID INTEGER PRIMARY KEY AUTOINCREMENT, Email TEXT, Password TEXT);"
+                + "users "
+                + "(ID INTEGER PRIMARY KEY AUTOINCREMENT, Email TEXT, Password TEXT);"
             )
         })
     }
     const navigation = useNavigation()
-    if(Platform.OS === 'ios'){
+    if (Platform.OS === 'ios') {
         type = "padding";
     }
-    else if(Platform.OS === 'android'){
+    else if (Platform.OS === 'android') {
         type = "height";
     }
-    else{type = "height"}
+    else { type = "height" }
     const registerUser = (Name, email, password, confirm_password) => {
         createTable();
 
@@ -57,7 +59,7 @@ const SignupScreen = () => {
                     password,
                 ];
                 const vData = {}
-                
+
                 const usersRef = firebase.firestore()
                 usersRef
                     .collection('users')
@@ -88,12 +90,26 @@ const SignupScreen = () => {
                     .doc(uid)
                     .collection('userData')
                     .doc('shortTerm')
-                    .set(vData)                   
+                    .set(vData)
                 usersRef
                     .collection('users')
                     .doc(uid)
                     .collection('userData')
                     .doc('currentTime')
+                    .set(vData)
+
+                usersRef
+                    .collection('users')
+                    .doc(uid)
+                    .collection('settings')
+                    .doc('StartTime')
+                    .set(vData)
+
+                usersRef
+                    .collection('users')
+                    .doc(uid)
+                    .collection('settings')
+                    .doc('endTime')
                     .set(vData)
                     .then(() => {
                         db.transaction((tx) => {
@@ -109,68 +125,105 @@ const SignupScreen = () => {
             })
             .catch((error) => {
                 alert(error)
-        });
-      }
-      
+            });
+    }
+
 
 
 
     return (
 
         <KeyboardAvoidingView
-            style = {styles.container}
-            behavior = {type}
+            style={styles.container}
+            behavior={type}
         >
-            <View style = {styles.inputContainer}>
+            <View style={styles.inputContainer}>
                 <Image
-                    style = {styles.appName}
-                    source = {require("../../assets/appName.png")}
+                    style={styles.appName}
+                    source={require("../../assets/updatedLogoName.png")}
+                />
+                <Text
+                    style={{
+                        marginBottom: 30,
+                        fontSize: 20,
+                        marginTop: -20,
+                        // fontWeight: 'bold',
+                        alignSelf: 'center',
+                        marginHorizontal: 30,
+                        color: colors.secondary,
+                        fontFamily: 'Oswald-SemiBold',
+                    }}
+                >
+                    PULL YOURSELF TOGETHER
+                </Text>
+                <TextInput
+                    placeholder="name"
+                    value={Name}
+                    onChangeText={text => setName(text)}
+                    style={styles.input}
                 />
                 <TextInput
-                    placeholder = "name"
-                    value = {Name}
-                    onChangeText = {text => setName(text)}
-                    style = {styles.input}                   
+                    placeholder="Email"
+                    value={email}
+                    onChangeText={text => setEmail(text)}
+                    style={styles.input}
                 />
                 <TextInput
-                    placeholder = "Email"
-                    value = {email}
-                    onChangeText = {text => setEmail(text)}
-                    style = {styles.input}                   
+                    placeholder="Password"
+                    value={password}
+                    onChangeText={text => setPassword(text)}
+                    style={styles.input}
+                    secureTextEntry
                 />
                 <TextInput
-                    placeholder = "Password"
-                    value = {password}
-                    onChangeText = {text => setPassword(text)}
-                    style = {styles.input}                   
-                />
-                <TextInput
-                    placeholder = "Confirm Password"
-                    value = { confirm_password}
-                    onChangeText = {text => setconfirm_password(text)}
-                    style = {styles.input}
-                    // secureTextEntry
+                    placeholder="Confirm Password"
+                    value={confirm_password}
+                    onChangeText={text => setconfirm_password(text)}
+                    style={styles.input}
+                    secureTextEntry
                 />
 
             </View>
 
-            <View style = {styles.buttonContainer}>
+            <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
+                <CheckBox
+                    title=''
+                    checked={isDisabled}
+                    onPress={() => setIsDisabled(!isDisabled)}
+                />
+                <View style = {{marginTop: 15}}>
+                <View style = {{marginLeft: -14, flexDirection: 'row'}}>
+                    <Text >I agree to the </Text>
+                    <Text 
+                        style = {{textDecorationLine: 'underline'}}
+                        onPress = {() => {Linking.openURL("https://docs.google.com/document/d/1W3kQ6CECfipK6oZCu7rVG4hpiDGuCN_ejUHrmiQ-jcI/edit?usp=sharing")}}
+                    >terms and conditions </Text>
+                    
+                </View>
+                <View style = {{marginLeft: -14,flexDirection: 'row'}}>
+                    <Text >and the </Text>
+                    <Text style = {{textDecorationLine: 'underline'}}>privacy policy</Text>
+                </View>
+                </View>
+            </View>
+            <View style={styles.buttonContainer}>
 
                 <TouchableOpacity
-                    onPress = {() => {registerUser(Name, email, password, confirm_password)}}
-                    style = {styles.button}
+                    onPress={() => { registerUser(Name, email, password, confirm_password) }}
+                    style={styles.button}
+                    disabled={!isDisabled}
                 >
-                   <Text style = {styles.buttonText}>Register</Text>
+                    <Text style={styles.buttonText}>Register</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                    onPress = {() => {navigation.navigate('Login')}}
-                    style = {[styles.button, styles.buttonOutline]}
+                    onPress={() => { navigation.navigate('Login') }}
+                    style={[styles.button, styles.buttonOutline]}
                 >
-                    <Text style = {styles.buttonOutlineText}>Back to login</Text>
+                    <Text style={styles.buttonOutlineText}>Back to login</Text>
                 </TouchableOpacity>
 
             </View>
-        </KeyboardAvoidingView> 
+        </KeyboardAvoidingView>
     )
 }
 
@@ -182,12 +235,12 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: colors.primary
-        
+
     },
     inputContainer: {
         width: "80%",
         // height: "50%"
-        
+
     },
     input: {
         backgroundColor: 'white',
@@ -198,13 +251,13 @@ const styles = StyleSheet.create({
         width: 320,
         height: 50,
     },
-    
+
     buttonContainer: {
         width: '60%',
         justifyContent: 'center',
         alignItems: 'center',
         marginTop: 40,
-    }, 
+    },
     button: {
         backgroundColor: colors.secondary,//#0782F9 -> blue
         width: '100%',
@@ -219,7 +272,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
     },
 
-    buttonOutline:{
+    buttonOutline: {
         backgroundColor: 'white',
         marginTop: 5,
         borderColor: colors.secondary,

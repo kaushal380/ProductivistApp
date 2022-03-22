@@ -13,7 +13,8 @@ import {Entypo, AntDesign} from "@expo/vector-icons"
 const Header = ({handleClearTodos, getInit}) => {
     return (
         <HeaderView>
-            <HeaderTitle>Appointments</HeaderTitle>
+            {/* <HeaderTitle>Appointments</HeaderTitle> */}
+            <Text style = {{fontFamily: 'FontsFree-Net-PlaylistScript', fontSize: 35}}>Appointments</Text>
             <HeaderButton
                 onPress = {handleClearTodos}
             >

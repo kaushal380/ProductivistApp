@@ -98,47 +98,64 @@ const LoginScreen = (props) => {
 
     return (
         <>
-                <KeyboardAvoidingView
-                    style={styles.container}
-                    behavior={type} // try padding for ios maybe?
-                >
+            <KeyboardAvoidingView
+                style={styles.container}
+                behavior={type} // try padding for ios maybe?
+            >
 
-                    <View style={styles.inputContainer}>
-                        <Image
-                            style={styles.appName}
-                            source={require("../../assets/appName.png")}
-                        />
-                        <TextInput
-                            placeholder="Email"
-                            value={email}
-                            onChangeText={text => setEmail(text)}
-                            style={styles.input}
-                        />
-                        <TextInput
-                            placeholder="Password"
-                            value={password}
-                            onChangeText={text => setPassword(text)}
-                            style={styles.input}
-                            secureTextEntry
-                        />
-                    </View>
+                <View style={styles.inputContainer}>
+                    <Image
+                        style={styles.appName}
+                        source={require("../../assets/updatedLogoName.png")}
+                    />
 
-                    <View style={styles.buttonContainer}>
+                    <Text
+                        style={{
 
-                        <TouchableOpacity
-                            onPress={() => { handleLogin(email, password) }}
-                            style={styles.button}
-                        >
-                            <Text style={styles.buttonText}>Login</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            onPress={() => { navigation.navigate('Signup') }}
-                            style={[styles.button, styles.buttonOutline]}
-                        >
-                            <Text style={styles.buttonOutlineText}>Signup</Text>
-                        </TouchableOpacity>
-                    </View>
-                </KeyboardAvoidingView>
+                            marginBottom: 50,
+                            fontSize: 20,
+                            marginTop: -20,
+                            // fontWeight: 'bold',
+                            alignSelf: 'center',
+                            marginHorizontal: 30,
+                            color: colors.secondary,
+                            fontFamily: 'Oswald-SemiBold',
+
+                        }}
+                    >
+                        PULL YOURSELF TOGETHER
+                    </Text>
+                    <TextInput
+                        placeholder="Email"
+                        value={email}
+                        onChangeText={text => setEmail(text)}
+                        style={styles.input}
+                    />
+                    <TextInput
+                        placeholder="Password"
+                        value={password}
+                        onChangeText={text => setPassword(text)}
+                        style={styles.input}
+                        secureTextEntry
+                    />
+                </View>
+
+                <View style={styles.buttonContainer}>
+
+                    <TouchableOpacity
+                        onPress={() => { handleLogin(email, password) }}
+                        style={styles.button}
+                    >
+                        <Text style={styles.buttonText}>Login</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => { navigation.navigate('Signup') }}
+                        style={[styles.button, styles.buttonOutline]}
+                    >
+                        <Text style={styles.buttonOutlineText}>Signup</Text>
+                    </TouchableOpacity>
+                </View>
+            </KeyboardAvoidingView>
         </>
     )
 }
