@@ -66,7 +66,8 @@ const InputModal = ({
     const [isTimeTo, setIsTimeTo] = useState(false)
     const [isTimeFrom, setIsTimeFrom] = useState(false)
     const [isDateOpen, setDateOpen] = useState(false)
-
+    const [from12Format, setFrom12format] = useState()
+    const [to12Format, setTo12Format] = useState();
     const handleConfirm = ( selectedDate) => {
         setDateOpen(false)
         const selectDate = new Date(selectedDate)
@@ -117,6 +118,7 @@ const InputModal = ({
         const time = new Date(selectedTime)
         let hours = time.getHours()
         let minutes = time.getMinutes()
+        let toUsehours = hours
         const fromNumMin = (hours*60) + minutes
         if(hours < 10){
             hours = "0" + hours
@@ -127,7 +129,19 @@ const InputModal = ({
         const format = hours + ":" + minutes
         setRoutineFrom(format)
         setFromNum(fromNumMin)
-        
+
+        if(toUsehours > 12){
+            toUsehours = toUsehours - 12;
+            toUsehours = toUsehours + ":" + minutes + " PM";
+        }
+        else if (toUsehours < 10){
+            toUsehours = "0" + toUsehours + ":" + minutes + " AM";
+        }
+        else{
+            toUsehours = toUsehours + ":" + minutes + " AM";
+        }
+
+        setFrom12format(toUsehours)
     }
 
     const handleConfirmTo = (selectedTime) => {
@@ -136,6 +150,7 @@ const InputModal = ({
         let hours = time.getHours()
         let minutes = time.getMinutes()
         const toNumMin = (hours*60) + minutes
+        let toUsehours = hours
         if(hours < 10){
             hours = "0" + hours
         }
@@ -146,6 +161,18 @@ const InputModal = ({
         setRoutineTo(format)
         setToNum(toNumMin)
         
+        if(toUsehours > 12){
+            toUsehours = toUsehours - 12;
+            toUsehours = toUsehours + ":" + minutes + " PM";
+        }
+        else if (toUsehours < 10){
+            toUsehours = "0" + toUsehours + ":" + minutes + " AM";
+        }
+        else{
+            toUsehours = toUsehours + ":" + minutes + " AM";
+        }
+
+        setTo12Format(toUsehours)
     }
 
     const hideTimePicker = () => {
@@ -187,6 +214,8 @@ const InputModal = ({
                 toNum: toNum,
                 importance: shortImportance,
                 date: shortDate,
+                fromDisplay: from12Format,
+                toDisplay: to12Format,
                 key: key,
                 type: 'apps', 
                 status: "pending"
@@ -221,7 +250,9 @@ const InputModal = ({
                 fromNum: fromNum,
                 toNum: toNum,       
                 importance: shortImportance,   
-                date: shortDate,      
+                date: shortDate,
+                fromDisplay: from12Format,
+                toDisplay: to12Format,      
                 key: todoToBeEdited.key,
                 type: 'apps',
                 status: "pending"

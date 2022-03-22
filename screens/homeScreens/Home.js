@@ -719,7 +719,7 @@ const Home = () => {
                           {element.title}
                         </RoutineText>
                         <RoutineTime>
-                          {element.from} - {element.to}
+                          {element.fromDisplay} - {element.toDisplay}
                         </RoutineTime>
                         <TodoDate>
                           type: {element.type}

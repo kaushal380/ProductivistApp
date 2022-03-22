@@ -49,13 +49,14 @@ const Listitems = ({todos, setTodos, handleTriggerEdit}) => {
                 >
                     <>
                         <RowText>{data.item.title}</RowText>
-                        <RoutineTime>{data.item.from} - {data.item.to}</RoutineTime>
-                        <TodoDate>{data.item.fromNum} - {data.item.toNum}</TodoDate>
-                        <TodoDate>importance: {data.item.importance}</TodoDate>
                         <TodoDate>date: {data.item.date}</TodoDate>
-                        <TodoDate>type: {data.item.type}</TodoDate>
-                        <TodoDate>Status: {data.item.status}</TodoDate>
-                        <TodoDate>Key: {data.item.key}</TodoDate>
+                        <TodoDate>time: {data.item.fromDisplay} - {data.item.toDisplay}</TodoDate>
+                        {/* <TodoDate>{data.item.fromNum} - {data.item.toNum}</TodoDate> */}
+                        <TodoDate>importance: {data.item.importance}</TodoDate>
+                        
+                        {/* <TodoDate>type: {data.item.type}</TodoDate> */}
+                        {/* <TodoDate>Status: {data.item.status}</TodoDate> */}
+                        {/* <TodoDate>Key: {data.item.key}</TodoDate> */}
                         
                     </>
                 </ListView>

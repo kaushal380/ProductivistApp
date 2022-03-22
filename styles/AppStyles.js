@@ -109,7 +109,7 @@ export const TodoText = styled.Text`
 `;
 
 export const TodoDate = styled.Text`
-  font-size: 10px;
+  font-size: 15px;
   letter-spacing: 1px;
   color: ${colors.tertiary};
   text-align: right;

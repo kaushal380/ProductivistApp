@@ -55,7 +55,8 @@ const InputModal = ({
         setTodoToBeEdited(null);
     }
 
-
+    const [Fromin12Format, setFrom12Fromat] = useState()
+    const [to12Format, setTo12Format] = useState()
     const newTodos = todos;
     const [isTimeTo, setIsTimeTo] = useState(false)
     const [isTimeFrom, setIsTimeFrom] = useState(false)
@@ -66,6 +67,7 @@ const InputModal = ({
         const time = new Date(selectedTime)
         let hours = time.getHours()
         let minutes = time.getMinutes()
+        let toUsehours = hours
         const fromNumMin = (hours*60) + minutes
         if(hours < 10){
             hours = "0" + hours
@@ -77,6 +79,19 @@ const InputModal = ({
         setRoutineFrom(format)
         setFromNum(fromNumMin)
         
+        if(toUsehours > 12){
+            toUsehours = toUsehours - 12;
+            toUsehours = toUsehours + ":" + minutes + " PM";
+        }
+        else if (toUsehours < 10){
+            toUsehours = "0" + toUsehours + ":" + minutes + " AM";
+        }
+        else{
+            toUsehours = toUsehours + ":" + minutes + " AM";
+        }
+
+        setFrom12Fromat(toUsehours)
+
     }
 
     const handleConfirmTo = (selectedTime) => {
@@ -84,6 +99,7 @@ const InputModal = ({
         const time = new Date(selectedTime)
         let hours = time.getHours()
         let minutes = time.getMinutes()
+        let toUsehours = hours
         const toNumMin = (hours*60) + minutes
         if(hours < 10){
             hours = "0" + hours
@@ -94,6 +110,20 @@ const InputModal = ({
         const format = hours + ":" + minutes
         setRoutineTo(format)
         setToNum(toNumMin)
+
+        if(toUsehours > 12){
+            toUsehours = toUsehours - 12;
+            toUsehours = toUsehours + ":" + minutes + " PM";
+        }
+        else if (toUsehours < 10){
+            toUsehours = "0" + toUsehours + ":" + minutes + " AM";
+        }
+        else{
+            toUsehours = toUsehours + ":" + minutes + " AM";
+        }
+
+        setTo12Format(toUsehours)
+
         
     }
 
@@ -134,6 +164,8 @@ const InputModal = ({
                 fromNum: fromNum,
                 toNum: toNum,
                 key: key,
+                fromDisplay: Fromin12Format,
+                toDisplay: to12Format,
                 importance: routineImportance,
                 type: 'routine',
                 status: "pending"
@@ -165,7 +197,9 @@ const InputModal = ({
                 to: routineTo,
                 from: routineFrom,
                 fromNum: fromNum,
-                toNum: toNum,                
+                toNum: toNum,      
+                fromDisplay: Fromin12Format,
+                toDisplay: to12Format,          
                 key: todoToBeEdited.key,
                 importance: routineImportance,
                 type: 'routine',

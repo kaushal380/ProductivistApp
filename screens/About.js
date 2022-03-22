@@ -205,6 +205,10 @@ const About = () => {
           </Text>
 
           <Text style={styles.Linkitems}>
+            Privacy Policy
+          </Text>
+
+          <Text style={styles.Linkitems}>
             Send feedback
           </Text>
 

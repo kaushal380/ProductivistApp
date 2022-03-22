@@ -177,7 +177,7 @@ const Todosub = () => {
                 finalTodos = [...finalTodos, element]
             }
         });
-    
+    finalTodos = getPendingItems(finalTodos)
     finalTodos = sortThings(finalTodos) 
     for (let index = 0; index < finalTodos.length; index++) {
         finalTodos[index].key = index+1;
@@ -186,6 +186,16 @@ const Todosub = () => {
     console.log(finalTodos)
     setTodos(finalTodos)
            
+    }
+    const getPendingItems = (list) => {
+        let finalList = []
+        for (let index = 0; index < list.length; index++) {
+            if (list[index].status !== "done") {
+                finalList = [...finalList, list[index]]
+            }
+        }
+
+        return finalList;
     }
     
     useEffect(() => {
