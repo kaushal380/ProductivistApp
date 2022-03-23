@@ -28,7 +28,7 @@ const statusBarHeight = Constants.statusBarHeight;
 
 export const Container = styled.SafeAreaView`
   background-color: ${colors.primary};
-  padding: 20px;
+  padding: 30px;
   padding-bottom: 0px;
   flex: 1;
   padding-top: ${statusBarHeight}px;

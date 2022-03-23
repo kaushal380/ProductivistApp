@@ -99,7 +99,7 @@ const Listitems = ({todos, setTodos, handleTriggerEdit, editStatus}) => {
             renderHiddenItem={(data, rowMap) => {
               return(  
                 <View 
-                    style = {{backgroundColor: 'white', height: 100, justifyContent: 'center', borderRadius: 10}}    
+                    style = {{backgroundColor: 'black', height: 100, justifyContent: 'center', borderRadius: 10}}    
                 >
                     <View style = {{flexDirection: 'row', justifyContent: 'flex-start',}}>
 

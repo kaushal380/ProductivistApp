@@ -221,13 +221,13 @@ const InputModal = ({
 
             {todos.length == 0 && 
                 <TouchableOpacity style = {styles.modalAction} onPress = {() => {setModalVisible(true)}}>
-                    <AntDesign name = "pluscircle" size = {28} color = {colors.secondary}/>
+                    <AntDesign name = 'plus' size = {40} color = {colors.secondary}/>
                 </TouchableOpacity>
             }
 
             {todos.length != 0 && 
                 <TouchableOpacity style = {styles.modalActionText} onPress = {() => {setModalVisible(true)}}>
-                    <AntDesign name = "pluscircle" size = {28} color = {colors.secondary}/>
+                    <AntDesign name = 'plus' size = {40} color = {colors.secondary}/>
                 </TouchableOpacity>
             }       
             </View>

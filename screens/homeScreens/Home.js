@@ -212,6 +212,7 @@ const Home = () => {
   const onTouchFunction = () => {
     configProgress()
     fetchUpcomingTasks()
+    getUser()
   }
 
 
@@ -315,7 +316,51 @@ const Home = () => {
         finalUpcomingTasks = [...finalUpcomingTasks, schedule[index]]
       }
     }
+    for (let index = 0; index < finalUpcomingTasks.length; index++) {
+      if (finalUpcomingTasks[index].type === 'todo') {
+        let hours = Math.trunc(finalUpcomingTasks[index].fromNum / 60)
+        let mins = finalUpcomingTasks[index].fromNum - (hours * 60);
 
+        if(mins < 10){
+          mins = "0"+ mins;
+        }
+
+        if (hours > 12) {
+          hours = hours - 12;
+          hours = hours + ":" + mins + " PM";
+        }
+        else if (hours < 10) {
+          hours = "0" + hours + ":" + mins + " AM";
+        }
+        else {
+          hours = hours + ":" + mins + " AM";
+        }
+
+        finalUpcomingTasks[index].fromDisplay = hours;
+
+
+        let Tohours = Math.trunc(finalUpcomingTasks[index].toNum / 60)
+        let Tomins = finalUpcomingTasks[index].toNum - (Tohours * 60);
+
+        if(Tomins < 10){
+          Tomins = "0"+ Tomins;
+        }
+
+        if (Tohours > 12) {
+          Tohours = Tohours - 12;
+          Tohours = Tohours + ":" + Tomins + " PM";
+        }
+        else if (Tohours < 10) {
+          Tohours = "0" + Tohours + ":" + Tomins + " AM";
+        }
+        else {
+          Tohours = Tohours + ":" + Tomins + " AM";
+        }
+
+        finalUpcomingTasks[index].toDisplay = Tohours;
+      }
+    }
+    // console.log(finalUpcomingTasks)
     setUpcomingTasks(finalUpcomingTasks);
   }
 
@@ -628,12 +673,12 @@ const Home = () => {
         style={styles.container}
       >
         <Image
-          style = {{width: 300, height: 100, alignSelf: 'center', marginTop: -100}}
-          source = {require('../../assets/updatedLogoName.png')}
+          style={{ width: 300, height: 100, alignSelf: 'center', marginTop: -100 }}
+          source={require('../../assets/updatedLogoName.png')}
         />
         <Text
           style={{
-            
+
             marginBottom: 10,
             fontSize: 23,
             // fontWeight: 'bold',
@@ -642,7 +687,7 @@ const Home = () => {
             // color: colors.secondary,
             color: '#596849',
             fontFamily: 'Oswald-Regular',
-            
+
           }}
         >
           HELLO {userdata}, LET'S GET WORKING!
@@ -650,7 +695,7 @@ const Home = () => {
         <View style={styles.buttonContainer}>
 
           <View style={{ flexDirection: 'row' }}>
-            <View>
+            {/* <View>
               <Text style={{ alignSelf: 'center', fontFamily: 'Oswald-Regular', fontSize: 20}}>ROUTINES</Text>
               <CircularProgress
                 value={doneRoutines}
@@ -665,9 +710,9 @@ const Home = () => {
                 subtitle={RoutineSubtitle}
                 subtitleColor='black'
               />
-            </View>
-            <View>
-              <Text style={{ alignSelf: 'center', fontFamily: 'Oswald-Regular', fontSize: 20 }}>TASKS</Text>
+            </View> */}
+            <View style={{ marginRight: 20 }}>
+              <Text style={{ alignSelf: 'center', fontFamily: 'Oswald-Regular', fontSize: 20, }}>TASKS</Text>
               <CircularProgress
                 value={todoDone}
                 maxValue={todoTotal}
@@ -683,8 +728,8 @@ const Home = () => {
               />
             </View>
 
-            <View>
-              <Text style={{ alignSelf: 'center', fontFamily: 'Oswald-Regular', fontSize: 20}}>APPOINTMENTS</Text>
+            <View style={{ marginLeft: 20 }}>
+              <Text style={{ alignSelf: 'center', fontFamily: 'Oswald-Regular', fontSize: 20 }}>APPOINTMENTS</Text>
               <CircularProgress
                 value={appsDone}
                 maxValue={appsTotal}
@@ -697,17 +742,15 @@ const Home = () => {
                 activeStrokeWidth={20}
                 subtitle={appsSubtitle}
                 subtitleColor='black'
-                
-
               />
             </View>
           </View>
           <View style={styles.upcomingList}>
-            <Text style={{ alignSelf: 'flex-start', fontSize: 25, fontFamily: 'Oswald-Regular'}}>YOUR UPCOMING TASKS:</Text>
+            <Text style={{ alignSelf: 'flex-start', fontSize: 25, fontFamily: 'Oswald-Regular' }}>YOUR UPCOMING TASKS:</Text>
             <>
-              {UpcomingTasks.length == 0 && 
-                <TouchableOpacity style = {styles.item}>
-                <Text style={{ alignSelf: 'center', fontSize: 20, fontFamily: 'Oswald-Regular' }}>Yayy, You don't have any tasks today!</Text>
+              {UpcomingTasks.length == 0 &&
+                <TouchableOpacity style={styles.item}>
+                  <Text style={{ alignSelf: 'center', fontSize: 20, fontFamily: 'Oswald-Regular' }}>Yayy, You don't have any tasks today!</Text>
                 </TouchableOpacity>}
 
               {UpcomingTasks.length != 0 &&

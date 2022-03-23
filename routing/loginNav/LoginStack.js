@@ -5,7 +5,7 @@ import {View, Text, StyleSheet, LogBox} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import LoginScreen from '../../screens/loginsScreens/LoginScreen';
-import DrawerNav from '../TabNav';
+import TabNav from '../TabNav';
 // import Home from './screens/Home';
 import SignupScreen from '../../screens/loginsScreens/SignupScreen';
 import Welcome from '../../screens/welcomeScreens/Welcome';
@@ -18,7 +18,7 @@ export default function loginUI() {
       <Stack.Screen options = {{headerShown: false}} name = "welcome" component = {Welcome} />
       <Stack.Screen options = {{headerShown: false}} name = "Login" component = {LoginScreen} />
       <Stack.Screen options = {{headerShown: false}} name = "Signup" component = {SignupScreen} />
-      <Stack.Screen options = {{headerShown: false}} name = "AppRoute" component = {DrawerNav} />
+      <Stack.Screen options = {{headerShown: false}} name = "AppRoute" component = {TabNav} />
     </Stack.Navigator>
   );
 }

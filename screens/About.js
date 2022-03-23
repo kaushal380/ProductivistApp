@@ -92,9 +92,16 @@ const About = () => {
   }
 
   const openTerms = () => {
-    Linking.openURL("https://docs.google.com/document/d/1W3kQ6CECfipK6oZCu7rVG4hpiDGuCN_ejUHrmiQ-jcI/edit?usp=sharing")
+    Linking.openURL("https://docs.google.com/document/d/1YpjIoFfji-uGzAni7BkCxLtr2SfG-TE4IluAYS3XvmE/edit?usp=sharing")
   }
 
+  const openPP = () => {
+    Linking.openURL('https://docs.google.com/document/d/1YYObK6L81yX53PYPNpZas5A3WKeEo-EHYgrRECZz9-Q/edit?usp=sharing')
+  }
+
+  const openFeedback = () => {
+    Linking.openURL('https://forms.gle/ayKSyxHKG3uNE2UE7')
+  }
   const submitStartTime = (time) => {
     setOpenStartTime(false)
     let selectedTime = new Date(time)
@@ -204,11 +211,11 @@ const About = () => {
             Terms and conditions
           </Text>
 
-          <Text style={styles.Linkitems}>
+          <Text style={styles.Linkitems} onPress = {openPP}>
             Privacy Policy
           </Text>
 
-          <Text style={styles.Linkitems}>
+          <Text style={styles.Linkitems} onPress = {openFeedback}>
             Send feedback
           </Text>
 

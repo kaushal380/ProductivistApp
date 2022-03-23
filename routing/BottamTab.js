@@ -44,11 +44,11 @@ const Tabs = () => {
             initialRouteName="Home"
         >
 
-            <Tab.Screen name="Schedule" component = {allEventCalendar}/>
-            <Tab.Screen name="Todo" component = {todo} />
-            <Tab.Screen name="Home" component = {Home} /> 
-            <Tab.Screen name="Routines" component = {RoutineMaker}/>
-            <Tab.Screen name="Settings" component = {About}/>
+            <Tab.Screen name="Schedule" options={{headerShown: true,}} component = {allEventCalendar}/>
+            <Tab.Screen name="Todo" options={{headerShown: true}} component = {todo} />
+            <Tab.Screen name="Home" options={{headerShown: true}} component = {Home} /> 
+            <Tab.Screen name="Routines" options={{headerShown: true}} component = {RoutineMaker}/>
+            <Tab.Screen name="Settings" options={{headerShown: true}} component = {About}/>
         </Tab.Navigator>
     )
 }
