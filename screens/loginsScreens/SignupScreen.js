@@ -196,13 +196,17 @@ const SignupScreen = () => {
                     <Text >I agree to the </Text>
                     <Text 
                         style = {{textDecorationLine: 'underline'}}
-                        onPress = {() => {Linking.openURL("https://docs.google.com/document/d/1W3kQ6CECfipK6oZCu7rVG4hpiDGuCN_ejUHrmiQ-jcI/edit?usp=sharing")}}
+                        onPress = {() => {Linking.openURL("https://docs.google.com/document/d/1YpjIoFfji-uGzAni7BkCxLtr2SfG-TE4IluAYS3XvmE/edit?usp=sharing")
+                    }}
                     >terms and conditions </Text>
                     
                 </View>
                 <View style = {{marginLeft: -14,flexDirection: 'row'}}>
                     <Text >and the </Text>
-                    <Text style = {{textDecorationLine: 'underline'}}>privacy policy</Text>
+                    <Text 
+                        style = {{textDecorationLine: 'underline'}} 
+                        onPress = {() => {Linking.openURL('https://docs.google.com/document/d/1YYObK6L81yX53PYPNpZas5A3WKeEo-EHYgrRECZz9-Q/edit?usp=sharing')}}
+                    >privacy policy</Text>
                 </View>
                 </View>
             </View>
