@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { Container } from '../../styles/AppStyles';
+import { Container } from '../../../styles/AppStyles';
 import Todosub from './Todosub';
 
 const todo = () => {

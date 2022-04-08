@@ -26,12 +26,6 @@ const LoginScreen = (props) => {
     }
     else { type = "height" }
 
-    const CheckLogIn = () => {
-        alert("checkLog")
-        firebase.auth().onAuthStateChanged(function (user) {
-            console.log(user);
-        })
-    }
     const createTable = () => {
         db.transaction((tx) => {
             tx.executeSql(
@@ -54,7 +48,6 @@ const LoginScreen = (props) => {
                             .auth()
                             .signInWithEmailAndPassword(results.rows.item(0)['Email'], results.rows.item(0)['Password'])
                             .then((response) => {
-                                // alert("success")
                                 const uid = response.user.uid
                                 console.log(uid)
                                 navigation.navigate('AppRoute')
@@ -65,6 +58,7 @@ const LoginScreen = (props) => {
     }
     const handleLogin = (email, password) => {
 
+
         createTable()
 
         db.transaction((tx) => {
@@ -72,6 +66,9 @@ const LoginScreen = (props) => {
                 "DELETE FROM users"
             )
         })
+
+        while (email.endsWith(" ")) email = email.substr(0, email.length - 1)
+        while (password.endsWith(" ")) password = password.substr(0, password.length - 1)
 
         firebase
             .auth()
@@ -87,7 +84,8 @@ const LoginScreen = (props) => {
                 navigation.navigate('AppRoute')
             })
             .catch((error) => {
-                alert(error)
+                alert("There was an error while logging in. Please make sure your username and password are correct.")
+                // alert(error)
             });
     }
 

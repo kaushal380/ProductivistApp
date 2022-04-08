@@ -4,17 +4,12 @@ import { View, Text, Button, Alert } from 'react-native'
 import Header from './Header'
 import Listitems from './Listitems'
 import InputModal from './InputModal'
-import todo from './Todo'
-import { DrawerContent } from '@react-navigation/drawer'
-import {colors} from '../../styles/AppStyles';
-import {AntDesign} from "@expo/vector-icons"
-import { firebase } from '../../firebase/config'
-import { Row } from 'native-base'
+import { firebase } from '../../../firebase/config'
 
 
 const Todosub = () => {
-    const firebaseAccess = firebase.firestore() 
-       
+    const firebaseAccess = firebase.firestore()
+
     const sortThings = (array) => {
         let date = new Date()
         let DateArray = []
@@ -70,11 +65,11 @@ const Todosub = () => {
                 }
             })
         })
-        
+
         // 1) importance ranks: importanceList
         // 2) urgency ranks: timeLeftList
         // 3) effor ranks: timeTakenList
-        // algorithm below 
+        // algorithm below
         let ObjTitles = []
         let ObjtoElements = []
         for (let index = 0; index < timeLeftList.length; index++) {
@@ -82,7 +77,7 @@ const Todosub = () => {
                 if(timeLeftList[index] === importanceList[i]){
                     let MyList = {title: timeLeftList[index].title, value: index+i}
                     ObjTitles = [...ObjTitles, MyList]
-                }  
+                }
             }
         }
         let valSort = []
@@ -152,16 +147,16 @@ const Todosub = () => {
 
             if(selectedDate.getFullYear() > date.getFullYear()){
                 dateCheck = true;
-                
+
             }
             else if (selectedDate.getFullYear() === date.getFullYear()){
                 if(selectedDate.getMonth() > date.getMonth()){
                     dateCheck = true;
-                    
+
                 }
                 else if(selectedDate.getMonth() === date.getMonth()){
                     if(selectedDate.getDate() >= date.getDate()){
-                        dateCheck = true;     
+                        dateCheck = true;
                     }
                     else{ dateCheck = false;
                     }
@@ -178,14 +173,14 @@ const Todosub = () => {
             }
         });
     finalTodos = getPendingItems(finalTodos)
-    finalTodos = sortThings(finalTodos) 
+    finalTodos = sortThings(finalTodos)
     for (let index = 0; index < finalTodos.length; index++) {
         finalTodos[index].key = index+1;
         // finalTodos[index].timeleft = Math.round(finalTodos[index].timeleft)
     }
     console.log(finalTodos)
     setTodos(finalTodos)
-           
+
     }
     const getPendingItems = (list) => {
         let finalList = []
@@ -197,14 +192,14 @@ const Todosub = () => {
 
         return finalList;
     }
-    
+
     useEffect(() => {
         getInit("init")
       }, [])
-    
+
     const [todos, setTodos] = useState([{}])
 
- 
+
     // clearing all todos
     const handleClearTodos = () => {
         setTodos([]);
@@ -220,11 +215,11 @@ const Todosub = () => {
     const [modalVisible, setModalVisible] = useState(false);
     const [todoInputvalue, setTodoInputValue] = useState();
     const [todoImportance, setImportance] = useState(1);
-    const [todoDate, setDate] = useState("select a date");
+    const [todoDate, setDate] = useState("Select a Due Date");
     const [todoTimeTaken, setTimeTaken] = useState(0);
     const [todoTimeLeft, settodoTimeLeft] = useState();
     const [sortModalVisible, setSortModal] = useState(false);
- 
+
     const createDeleteAlert = () => {
         Alert.alert(
             "Delete Alert",
@@ -235,7 +230,7 @@ const Todosub = () => {
                     onPress: () => {return},
                     style: 'cancel'
                 },
-                {text: "yes", onPress: () => {handleClearTodos()}} 
+                {text: "yes", onPress: () => {handleClearTodos()}}
             ]
         );
     }
@@ -282,17 +277,17 @@ const Todosub = () => {
     return (
         <>
 
-        <Header 
+        <Header
             handleClearTodos = {createDeleteAlert}
             getInit = {getInit}
             />
-        <Listitems 
+        <Listitems
             // displayed = {selectranking}
             todos = {todos}
             setTodos = {setTodos}
             handleTriggerEdit = {handleTriggerEdit}
             editStatus={handleEditTodo}
-            
+
         />
 
         {/* <AntDesign style = {{marginBottom: 20, marginTop:0}} name= 'pluscircle' size={25} color={'white'}/> */}
@@ -300,7 +295,7 @@ const Todosub = () => {
             <AntDesign style = {{marginBottom: 5, marginTop: -70}} name= 'pluscircle' size={55} color={'white'}/>
         </View> */}
         <InputModal
-            getInit={getInit} 
+            getInit={getInit}
             modalVisible = {modalVisible}
             setModalVisible = {setModalVisible}
             sortModalVisible = {sortModalVisible}
@@ -322,9 +317,9 @@ const Todosub = () => {
             sortThings = {sortThings}
             todos = {todos}
 
-        /> 
+        />
 
-     
+
         </>
     )
 }

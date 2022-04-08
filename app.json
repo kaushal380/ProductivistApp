@@ -1,14 +1,14 @@
 {
   "expo": {
-    "name": "ProductivistAppCheck",
-    "slug": "ProductivistAppCheck",
+    "name": "Productivist",
+    "slug": "Productivist",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/launcherIcon.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/appName.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#000000"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -17,13 +17,21 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.pyst.productivist",
+      "buildNumber": "1.0.1",
+      "infoPlist": {
+        "NSCalendarsUsageDescription": "Productivist uses calendar functionality to schedule tasks, routines, appts, etc."
+      }
     },
     "android": {
+      "package": "com.pyst.productivist",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/launcherIcon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "versionCode": 3,
+      "permissions": []
     },
     "web": {
       "favicon": "./assets/favicon.png"

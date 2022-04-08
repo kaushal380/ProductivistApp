@@ -118,14 +118,14 @@ export const TodoDate = styled.Text`
 `;
 
 export const RoutineText = styled.Text`
-  font-size: 20px;
+  font-size: 24px;
   letter-spacing: 1px;
   color: ${colors.tertiary};
   font-family: Oswald-Regular;
 `;
 
 export const RoutineTime = styled.Text`
-  font-size: 30px;
+  font-size: 26px;
   letter-spacing: 1px;
   color: ${colors.tertiary};
   text-align: right;

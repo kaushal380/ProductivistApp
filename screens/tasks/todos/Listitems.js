@@ -9,12 +9,12 @@ import {
     SwipedTodoText,
     colors,
     ListViewHidden
-} from "../../styles/AppStyles";
+} from '../../../styles/AppStyles';
 
 import { SwipeListView } from 'react-native-swipe-list-view'
 import {Entypo} from "@expo/vector-icons"
 import todo from './Todo';
-import { firebase } from '../../firebase/config'
+import { firebase } from '../../../firebase/config'
 import { View } from 'react-native';
 
 const Listitems = ({todos, setTodos, handleTriggerEdit, editStatus}) => {
@@ -27,7 +27,7 @@ const Listitems = ({todos, setTodos, handleTriggerEdit, editStatus}) => {
         newTodos.splice(todoIndex, 1);
         setTodos(newTodos);
         const deleteTodos = Object.assign({}, newTodos)
-        
+
         firebaseAccess
             .collection('users')
             .doc(firebase.auth().currentUser.uid)
@@ -69,9 +69,9 @@ const Listitems = ({todos, setTodos, handleTriggerEdit, editStatus}) => {
     return (
         <>
         {todos.length == 0 && <TodoText>You have no todos today</TodoText>}
-        {todos.length != 0 &&<SwipeListView 
+        {todos.length != 0 &&<SwipeListView
             data = {todos}
-            
+
             renderItem = {(data) => {
                 const RowText = data.item.key == swipedRow? SwipedTodoText: TodoText;
             return(
@@ -84,11 +84,11 @@ const Listitems = ({todos, setTodos, handleTriggerEdit, editStatus}) => {
                     <>
                         <RowText>{data.item.title}</RowText>
                         <TodoDate>{data.item.date}</TodoDate>
-                        {/* <TodoDate>time: {data.item.time}</TodoDate> */}
+                         <TodoDate>Duration: {data.item.time} Mins</TodoDate>
                         {/* <TodoDate>timeleft: {data.item.timeleft}</TodoDate> */}
                         <TodoDate>importance: {data.item.importance}</TodoDate>
                         {/* <TodoDate>key: {data.item.key}</TodoDate>  */}
-                        <TodoDate>status: {data.item.status}</TodoDate>
+                        {/*<TodoDate>status: {data.item.status}</TodoDate>*/}
                         {/* <TodoDate>type: {data.item.type}</TodoDate> */}
                         {/* <TodoDate>{data.item.fromNum} - {data.item.toNum}</TodoDate> */}
                         {/* <TodoDate>{data.item.from} - {data.item.to}</TodoDate> */}
@@ -97,29 +97,29 @@ const Listitems = ({todos, setTodos, handleTriggerEdit, editStatus}) => {
             )
             }}
             renderHiddenItem={(data, rowMap) => {
-              return(  
-                <View 
-                    style = {{backgroundColor: 'black', height: 100, justifyContent: 'center', borderRadius: 10}}    
+              return(
+                <View
+                    style = {{backgroundColor: 'black', height: 100, justifyContent: 'center', borderRadius: 10}}
                 >
                     <View style = {{flexDirection: 'row', justifyContent: 'flex-start',}}>
 
-                    <Entypo 
-                        style = {{marginLeft: 20, marginRight: 25}} 
-                        name = "trash" 
-                        size = {35} 
-                        color = {colors.secondary} 
+                    <Entypo
+                        style = {{marginLeft: 20, marginRight: 25}}
+                        name = "trash"
+                        size = {35}
+                        color = {colors.secondary}
                         onPress = {() => handleDeleteTodo(rowMap, data.item.key)}
                     />
 
-                    
-                    <Entypo 
-                        style = {{marginRight: 30}} 
-                        name = 'check' 
-                        size = {35} 
+
+                    <Entypo
+                        style = {{marginRight: 30}}
+                        name = 'check'
+                        size = {35}
                         color = {checkColor(rowMap, data.item)}
                         onPress = {() => UpdateStatus(rowMap, data.item)}
-                    />     
-              
+                    />
+
                     </View>
                 </View>
               )
@@ -143,7 +143,7 @@ const Listitems = ({todos, setTodos, handleTriggerEdit, editStatus}) => {
         </>
 
     )
-        
+
 }
 
 export default Listitems

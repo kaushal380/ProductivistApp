@@ -1,13 +1,20 @@
-import React, { useEffect, useState } from 'react'
-import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, Linking } from 'react-native'
-import { colors } from '../styles/AppStyles'
+import React, {useEffect, useState} from 'react'
+import {Image, Linking, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native'
+import {colors} from '../../styles/AppStyles'
 import * as SQLite from 'expo-sqlite';
-import { firebase } from '../firebase/config'
+import {firebase} from '../../firebase/config'
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import { useNavigation } from '@react-navigation/core';
+import {useNavigation} from '@react-navigation/core';
+import {
+  AdMobBanner,
+  AdMobInterstitial,
+  PublisherBanner,
+  AdMobRewarded,
+} from 'react-native-admob'
+
 const db = SQLite.openDatabase("user.db");
 
-const About = () => {
+const Settings = () => {
   const navigation = useNavigation()
   const [UserName, setUserName] = useState("random guy")
   const [userEmail, setUserEmail] = useState("random@random.com")
@@ -47,8 +54,8 @@ const About = () => {
 
     let endTime = Object.values(Object.seal(documentSnapshot2.data()))
 
-    let formatStart = conevertTimeformat(startTime[0])
-    let formatEnd = conevertTimeformat(endTime[0])
+    let formatStart = convertTimeFormat(startTime[0])
+    let formatEnd = convertTimeFormat(endTime[0])
 
 
     setStartTime(formatStart)
@@ -65,30 +72,21 @@ const About = () => {
             "DELETE FROM users"
           )
         })
-        navigation.navigate('Login')
+        navigation.pop()
       })
   }
-
-  const conevertTimeformat = (timeNum) => {
-
+  const convertTimeFormat = (timeNum) => {
     let hours = Math.trunc(timeNum / 60)
-    let mins = timeNum - (hours * 60)
+    let minutes = timeNum % 60
+    return format12Hour(hours, minutes)
+  }
 
-    if (hours < 10) {
-      hours = "0" + hours
-    }
-    else {
-      hours = hours.toString()
-    }
-    if (mins < 0) {
-      mins = "0" + mins
-    }
-    else {
-      mins = mins.toString()
-    }
-
-    let format = hours + ":" + mins;
-    return format;
+  const format12Hour = (hours, minutes) => {
+    let pm = hours > 11
+    hours %= 12
+    if (hours === 0) hours = 12
+    if (minutes < 10) minutes = "0" + minutes
+    return hours + ":" + minutes + " " + (pm ? "PM" : "AM")
   }
 
   const openTerms = () => {
@@ -118,15 +116,7 @@ const About = () => {
       .doc('startTime')
       .set(obj)
 
-    if (hours < 10) {
-      hours = "0" + hours
-    }
-    if (minutes < 10) {
-      minutes = "0" + minutes
-    }
-
-    const format = hours + ":" + minutes;
-    setStartTime(format);
+    setStartTime(format12Hour(hours, minutes));
   }
 
   const submitEndTime = (time) => {
@@ -145,15 +135,7 @@ const About = () => {
       .doc('endTime')
       .set(obj)
 
-    if (hours < 10) {
-      hours = "0" + hours
-    }
-    if (minutes < 10) {
-      minutes = "0" + minutes
-    }
-
-    const format = hours + ":" + minutes;
-    setEndTime(format);
+    setEndTime(format12Hour(hours, minutes))
   }
 
 
@@ -168,7 +150,7 @@ const About = () => {
         <View style={styles.logoContainer}>
           <Image
             style={{ width: 150, height: 150 }}
-            source={require('../assets/updatedLogo.png')}
+            source={require('../../assets/updatedLogo.png')}
           />
         </View>
         <View style={styles.itemContainer}>
@@ -238,12 +220,20 @@ const About = () => {
         >
           <Text style={styles.buttonText}>SIGN OUT</Text>
         </TouchableOpacity>
+
+        <AdMobBanner
+            adSize="fullBanner"
+            adUnitID="your-admob-unit-id"
+            testDevices={[AdMobBanner.simulatorId]}
+            onAdFailedToLoad={error => console.log("Error: " + error)}
+        />
+
       </View>
     </ScrollView>
   )
 }
 
-export default About
+export default Settings
 
 const styles = StyleSheet.create({
   container: {
@@ -262,9 +252,8 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: 40,
-    fontFamily: 'arial',
     color: 'black',
-    marginVertical: 20, 
+    marginVertical: 20,
     fontFamily: 'Oswald-Regular'
   },
   items: {
@@ -285,7 +274,7 @@ const styles = StyleSheet.create({
   },
   timeContainer: {
     backgroundColor: colors.secondary,
-    width: 70,
+    width: 90,
     height: 30,
     borderRadius: 10,
     marginLeft: 10,

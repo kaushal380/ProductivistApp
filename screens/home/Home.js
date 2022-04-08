@@ -44,19 +44,6 @@ const Home = () => {
   const [rawRoutine, setRawRoutine] = useState()
   const [rawApps, setRawApps] = useState()
 
-  const handleSignout = () => {
-    firebase
-      .auth()
-      .signOut()
-      .then(() => {
-        db.transaction((tx) => {
-          tx.executeSql(
-            "DELETE FROM users"
-          )
-        })
-        navigation.navigate('Login')
-      })
-  }
 
   const GetDaysApps = (array) => {
     let date = new Date();
@@ -151,7 +138,7 @@ const Home = () => {
     let firebaseTime = new Date(time[0])
 
     console.log(firebaseTime.getFullYear() + "-" + firebaseTime.getMonth() + "-" + firebaseTime.getDate());
-    if ((firebaseTime.getFullYear() != currentTime.getFullYear()) || (firebaseTime.getMonth() != currentTime.getMonth()) || (firebaseTime.getDate() != currentTime.getDate())) {
+    if ((firebaseTime.getFullYear() !== currentTime.getFullYear()) || (firebaseTime.getMonth() !== currentTime.getMonth()) || (firebaseTime.getDate() !== currentTime.getDate())) {
       for (let index = 0; index < routines.length; index++) {
         routines[index].status = "pending";
       }
@@ -238,13 +225,13 @@ const Home = () => {
         finalStatus = status;
       }
       if (finalStatus !== 'granted') {
-        alert('Failed to get push token for push notification!');
+        // alert('Failed to get push token for push notification!');
         return;
       }
       token = (await Notifications.getExpoPushTokenAsync()).data;
       console.log(token);
     } else {
-      alert('Must use physical device for Push Notifications');
+      // alert('Must use physical device for Push Notifications');
     }
 
     if (Platform.OS === 'android') {
@@ -417,7 +404,7 @@ const Home = () => {
   /**
   so the way it works:
   1. we have 3 @param initSchedule, Alltodo, pastArray
-  
+
   2. if the initSchedule is null, it is populated with the first item on todo
   3. based on the schedule, it keeps adding the tasks to the next available spot
   4. if all the tasks cannot be added, they are added to the missed lists
@@ -748,12 +735,12 @@ const Home = () => {
           <View style={styles.upcomingList}>
             <Text style={{ alignSelf: 'flex-start', fontSize: 25, fontFamily: 'Oswald-Regular' }}>YOUR UPCOMING TASKS:</Text>
             <>
-              {UpcomingTasks.length == 0 &&
+              {UpcomingTasks.length === 0 &&
                 <TouchableOpacity style={styles.item}>
                   <Text style={{ alignSelf: 'center', fontSize: 20, fontFamily: 'Oswald-Regular' }}>Yayy, You don't have any tasks today!</Text>
                 </TouchableOpacity>}
 
-              {UpcomingTasks.length != 0 &&
+              {UpcomingTasks.length !== 0 &&
                 <ScrollView>
                   {
                     UpcomingTasks.map((element) =>

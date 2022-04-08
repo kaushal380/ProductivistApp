@@ -28,16 +28,16 @@ const scheduler = ({navigation}) => {
     let initialApps = []
     let initialSchedule = []
 
-    
+
         const documentSnapshot = await firebase.firestore()
             .collection('users')
             .doc(firebase.auth().currentUser.uid)
             .collection('userData')
             .doc('todos')
             .get()
-        
+
             initialTodos = Object.values(Object.seal(documentSnapshot.data()))
-        
+
 
         const documentSnapshot1 = await firebase.firestore()
             .collection('users')
@@ -45,8 +45,8 @@ const scheduler = ({navigation}) => {
             .collection('userData')
             .doc('routines')
             .get()
-        
-            initialRoutines = Object.values(Object.seal(documentSnapshot1.data()))  
+
+            initialRoutines = Object.values(Object.seal(documentSnapshot1.data()))
 
         const documentSnapshot2 = await firebase.firestore()
             .collection('users')
@@ -54,19 +54,19 @@ const scheduler = ({navigation}) => {
             .collection('userData')
             .doc('shortTerm')
             .get()
-        
-            initialApps = Object.values(Object.seal(documentSnapshot2.data()))  
+
+            initialApps = Object.values(Object.seal(documentSnapshot2.data()))
 
     // console.log(sortedInitialRoutines)
     initialRoutines = SortElementsFromNum(initialRoutines);
     initialSchedule = initialRoutines;
-    initialApps = GetDaysApps(initialApps);    
+    initialApps = GetDaysApps(initialApps);
     initialSchedule = GetCurrentAndFutureEvents(SortElementsFromNum(initialSchedule.concat(initialApps)));
-    
+
     initialSchedule = SortElementsFromNum(combineTodos(initialSchedule, initialTodos))
     // console.log(initialSchedule)
     for (let index = 0; index < initialSchedule.length; index++) {
-        initialSchedule[index].key = index+1 
+        initialSchedule[index].key = index+1
     }
     setSchedule(initialSchedule)
 }
@@ -76,7 +76,7 @@ const SortElementsFromNum = (array) => {
     let timeSort = []
     let sortedArray = []
     for (let index = 0; index < array.length; index++) {
-        timeSort = [...timeSort,array[index].fromNum] 
+        timeSort = [...timeSort,array[index].fromNum]
     }
 
     timeSort = timeSort.sort(function(a,b) {return a-b})
@@ -87,7 +87,7 @@ const SortElementsFromNum = (array) => {
             if(array[i].fromNum === timeSort[index]){
                 sortedArray = [...sortedArray,array[i]]
             }
-        }  
+        }
     }
 
     return sortedArray;
@@ -98,7 +98,7 @@ const GetDaysApps = (array) => {
     let filteredArray = []
     for (let index = 0; index < array.length; index++) {
         let selectedDate = new Date(array[index].date);
-        if((date.getFullYear() === selectedDate.getFullYear()) && 
+        if((date.getFullYear() === selectedDate.getFullYear()) &&
         (date.getMonth() === selectedDate.getMonth()) &&
         (date.getDate() === selectedDate.getDate())){
             filteredArray = [...filteredArray, array[index]]
@@ -117,7 +117,7 @@ const GetCurrentAndFutureEvents = (array) => {
     for (let index = 0; index < array.length; index++) {
         if(array[index].toNum > time){
             timeArray = [...timeArray, array[index]];
-        }  
+        }
     }
 
     return timeArray;
@@ -139,7 +139,7 @@ const SortBasedOnTime = (array) => {
                 sortedArray = [...sortedArray, array[i]]
                 console.log(sortedArray)
             }
-        } 
+        }
     }
     return sortedArray;
 }
@@ -159,7 +159,7 @@ const combineTodos = (initSchedule, Alltodo) => {
         let start = Starttime;
         for (let i = 0; i < schedule.length; i++) {
             if((start + todo[index].time + 5) <= schedule[i].fromNum){
-                todo[index].fromNum = start + 5; 
+                todo[index].fromNum = start + 5;
                 todo[index].toNum = todo[index].fromNum + todo[index].time;
                 todo[index].from = convertNumToTime(todo[index])[0];
                 todo[index].to = convertNumToTime(todo[index])[1];
@@ -167,7 +167,7 @@ const combineTodos = (initSchedule, Alltodo) => {
                 schedule = SortElementsFromNum(schedule)
                 // console.log(schedule)
                 break;
-            }       
+            }
             start = schedule[i].toNum;
             // console.log(i)
             if(i === (schedule.length-1)){
@@ -175,7 +175,7 @@ const combineTodos = (initSchedule, Alltodo) => {
                 // console.log("last schedule" + i)
                 let end = start+5 + todo[index].time;
                 if(end <= endTime){
-                    todo[index].fromNum = start + 5; 
+                    todo[index].fromNum = start + 5;
                     todo[index].toNum = todo[index].fromNum + todo[index].time;
                     todo[index].from = convertNumToTime(todo[index])[0];
                     todo[index].to = convertNumToTime(todo[index])[1];
@@ -186,11 +186,11 @@ const combineTodos = (initSchedule, Alltodo) => {
                     // console.log("adding to missed task")
                     missedList = [...missedList, todo[index]];
                 }
-                break; 
+                break;
             }
-            // console.log(start)  
-           // continue;           
-        }  
+            // console.log(start)
+           // continue;
+        }
     }
     finalCombo = schedule;
     return finalCombo;
@@ -237,22 +237,22 @@ const handleAddSchedule = (add) => {
         if(((customSchedule[index].fromNum <= add.fromNum) && (add.fromNum <= customSchedule[index].toNum))
         ||((customSchedule[index].fromNum <= add.toNum) && (add.toNum <= customSchedule[index].toNum)))
         {
-            alert("sorry! there is already a task scheduled at that time")
+            alert("Sorry! There is already a task scheduled at that time.")
             setModalVisible(false)
             return;
         }
-        
+
     }
     for (let index = 0; index < customSchedule.length; index++) {
 
         if((( add.fromNum <= customSchedule[index].fromNum) && (customSchedule[index].fromNum <= add.toNum))
         ||((add.fromNum <=  customSchedule[index].toNum) && (customSchedule[index].toNum <= add.toNum)))
         {
-            alert("sorry! there is already a task scheduled at that time")
+            alert("Sorry! There is already a task scheduled at that time.")
             setModalVisible(false)
             return;
         }
-        
+
     }
 
 
@@ -262,8 +262,8 @@ const handleAddSchedule = (add) => {
         .doc(firebase.auth().currentUser.uid)
         .collection('userData')
         .doc('schedule')
-        .set(Object.assign({}, newSchedule)) 
-    
+        .set(Object.assign({}, newSchedule))
+
     setSchedule(newSchedule)
     setModalVisible(false)
 
@@ -280,26 +280,26 @@ const handleEditSchedule = (editedTodo) => {
         if(((debugList[index].fromNum <= editedTodo.fromNum) && (editedTodo.fromNum <= debugList[index].toNum))
         ||((debugList[index].fromNum <= editedTodo.toNum) && (editedTodo.toNum <= debugList[index].toNum)))
         {
-            alert("sorry! there is already a task scheduled at that time")
+            alert("Sorry! There is already a task scheduled at that time.")
             setModalVisible(false)
             return;
         }
-        
+
     }
     for (let index = 0; index < debugList.length; index++) {
 
         if((( editedTodo.fromNum <= debugList[index].fromNum) && (debugList[index].fromNum <= editedTodo.toNum))
         ||((editedTodo.fromNum <=  debugList[index].toNum) && (debugList[index].toNum <= editedTodo.toNum)))
         {
-            alert("sorry! there is already a task scheduled at that time")
+            alert("Sorry! There is already a task scheduled at that time.")
             setModalVisible(false)
             return;
         }
-        
+
     }
 
 
-    
+
     newTodos.splice(todoIndex, 1, editedTodo)
 
     firebaseAccess
@@ -347,7 +347,7 @@ useEffect(() => {
         deleteSchedule={deleteSchedule}
         />
 
-    <SchedularList  
+    <SchedularList
         todos = {customSchedule}
         setTodos={setSchedule}
         handleTriggerEdit = {handleTriggerEdit}

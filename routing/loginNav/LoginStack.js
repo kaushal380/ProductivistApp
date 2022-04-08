@@ -1,15 +1,10 @@
-// import 'react-native-gesture-handler';
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import {View, Text, StyleSheet, LogBox} from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import LoginScreen from '../../screens/loginsScreens/LoginScreen';
+import LoginScreen from '../../screens/login/LoginScreen';
 import TabNav from '../TabNav';
-// import Home from './screens/Home';
-import SignupScreen from '../../screens/loginsScreens/SignupScreen';
-import Welcome from '../../screens/welcomeScreens/Welcome';
-import About from '../../screens/About';
+import SignupScreen from '../../screens/login/SignupScreen';
+import Welcome from '../../screens/login/Welcome';
+
 const Stack = createNativeStackNavigator();
 
 export default function loginUI() {

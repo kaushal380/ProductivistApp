@@ -4,12 +4,12 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import Home from '../screens/Home';
-import About from '../screens/About';
+import Settings from '../screens/Settings';
 import calTab from '../screens/scheduler/CalTab';
-import Routine from '../screens/Routines/RoutineMaker';
-import Todo from '../screens/TodoPages/Todo';
+import Routine from '../screens/routines/RoutineMaker';
+import Todo from '../screens/tasks/Todo';
 import { NavigationContainer } from '@react-navigation/native';
-import TabNav from '../screens/TodoPages/TabNav'
+import TabNav from '../screens/tasks/TabNav'
 
 const Drawer = createDrawerNavigator();
 export default function DrawerNav() {
@@ -19,7 +19,7 @@ export default function DrawerNav() {
       <Drawer.Screen name = "Scheduler" component = {calTab} />
       <Drawer.Screen name = "Todo" component = {TabNav} />
       <Drawer.Screen name = "Routines" component = {Routine}/>
-      <Drawer.Screen name = "About" component = {About}/>
+      <Drawer.Screen name = "About" component = {Settings}/>
     </Drawer.Navigator>
   );
 }
