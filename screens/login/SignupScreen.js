@@ -41,6 +41,10 @@ const SignupScreen = () => {
                 "DELETE FROM users"
             )
         })
+
+        while (email.endsWith(" ")) email = email.substr(0, email.length - 1)
+        while (password.endsWith(" ")) password = password.substr(0, password.length - 1)
+
         // alert("clicked register!")
         if (password !== confirm_password) {
             alert("Passwords don't match.")
@@ -120,11 +124,11 @@ const SignupScreen = () => {
                         navigation.navigate('AppRoute')
                     })
                     .catch((error) => {
-                        alert(error)
+                        // alert(error)
                     });
             })
             .catch((error) => {
-                alert(error)
+                alert("Sorry, there was an error while creating your account. Ensure that an account for this email doesn't already exist. If this error persists, contact productivist.pyst@gmail.com.")
             });
     }
 
@@ -157,7 +161,7 @@ const SignupScreen = () => {
                     PULL YOURSELF TOGETHER
                 </Text>
                 <TextInput
-                    placeholder="name"
+                    placeholder="Name"
                     value={Name}
                     onChangeText={text => setName(text)}
                     style={styles.input}
@@ -173,14 +177,14 @@ const SignupScreen = () => {
                     value={password}
                     onChangeText={text => setPassword(text)}
                     style={styles.input}
-                    secureTextEntry
+                    secureTextEntry={true}
                 />
                 <TextInput
                     placeholder="Confirm Password"
                     value={confirm_password}
                     onChangeText={text => setconfirm_password(text)}
                     style={styles.input}
-                    secureTextEntry
+                    secureTextEntry={true}
                 />
 
             </View>
@@ -194,17 +198,17 @@ const SignupScreen = () => {
                 <View style = {{marginTop: 15}}>
                 <View style = {{marginLeft: -14, flexDirection: 'row'}}>
                     <Text >I agree to the </Text>
-                    <Text 
+                    <Text
                         style = {{textDecorationLine: 'underline'}}
                         onPress = {() => {Linking.openURL("https://docs.google.com/document/d/1YpjIoFfji-uGzAni7BkCxLtr2SfG-TE4IluAYS3XvmE/edit?usp=sharing")
                     }}
                     >terms and conditions </Text>
-                    
+
                 </View>
                 <View style = {{marginLeft: -14,flexDirection: 'row'}}>
                     <Text >and the </Text>
-                    <Text 
-                        style = {{textDecorationLine: 'underline'}} 
+                    <Text
+                        style = {{textDecorationLine: 'underline'}}
                         onPress = {() => {Linking.openURL('https://docs.google.com/document/d/1YYObK6L81yX53PYPNpZas5A3WKeEo-EHYgrRECZz9-Q/edit?usp=sharing')}}
                     >privacy policy</Text>
                 </View>

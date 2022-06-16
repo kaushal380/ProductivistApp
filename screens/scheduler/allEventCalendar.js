@@ -77,7 +77,7 @@ const allEventCalendar = () => {
 
         let initialTodos = Object.values(Object.seal(documentSnapshot.data()))
         initialTodos = getPendingItems(initialTodos)
-        // fetching routines 
+        // fetching routines
         const documentSnapshot1 = await firebase.firestore()
             .collection('users')
             .doc(firebase.auth().currentUser.uid)
@@ -203,7 +203,7 @@ const allEventCalendar = () => {
     /**
  so the way it works:
 1. we have 3 @param initSchedule, Alltodo, pastArray
- 
+
 2. if the initSchedule is null, it is populated with the first item on todo
 3. based on the schedule, it keeps adding the tasks to the next available spot
 4. if all the tasks cannot be added, they are added to the missed lists
@@ -425,7 +425,7 @@ const allEventCalendar = () => {
         const firebaseAccess = firebase.firestore()
         let accessEvents = []
         let doc = ""
-        if (event.type === "apps") {
+        if (event.type === "appt") {
             accessEvents = appsState
             doc = "shortTerm"
         }
@@ -457,8 +457,8 @@ const allEventCalendar = () => {
     const eventClicked = (event) => {
         //On Click oC a event showing alert from here
         Alert.alert(
+            capitalize(event.type),
             event.description,
-            event.type,
             [
                 {
                     text: "cancel",
@@ -468,6 +468,13 @@ const allEventCalendar = () => {
                 { text: "mark as done", onPress: () => { markStatusDone(event) } }
             ]
         );
+    }
+
+    const capitalize = (string) => {
+        if(string.charCodeAt(0) > 96 && string.charCodeAt(0) < 123) {
+            string = String.fromCharCode(string.charCodeAt(0) - 32) + string.substring(1)
+        }
+        return string
     }
 
     const [tasksState, setTasks] = useState()

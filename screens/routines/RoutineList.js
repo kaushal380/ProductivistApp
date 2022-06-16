@@ -31,15 +31,15 @@ const Listitems = ({todos, setTodos, handleTriggerEdit}) => {
             .doc(firebase.auth().currentUser.uid)
             .collection('userData')
             .doc('routines')
-            .set(deleteTodos)        
+            .set(deleteTodos)
     }
     return (
         <>
-        {todos.length == 0 && <RoutineText>You have not added any routines</RoutineText>}
-        {todos.length != 0 &&<SwipeListView 
+        {todos.length === 0 && <RoutineText>You have not added any routines</RoutineText>}
+        {todos.length !== 0 &&<SwipeListView
             data = {todos}
             renderItem = {(data) => {
-                const RowText = data.item.key == swipedRow? SwipedTodoText: RoutineText;
+                const RowText = data.item.key === swipedRow? SwipedTodoText: RoutineText;
             return(
                 <ListView
                     underlayColor = {colors.primary}//
@@ -55,13 +55,13 @@ const Listitems = ({todos, setTodos, handleTriggerEdit}) => {
                         {/* <TodoDate>key: {data.item.key}</TodoDate> */}
                         {/* <TodoDate>type: {data.item.type}</TodoDate> */}
                         {/* <TodoDate>status: {data.item.status}</TodoDate> */}
-                        
+
                     </>
                 </ListView>
             )
             }}
             renderHiddenItem={(data, rowMap) => {
-              return(  
+              return(
                 <ListViewHidden>
                     <HiddenButton
                         onPress = {() => handleDeleteTodo(rowMap, data.item.key)}
@@ -90,7 +90,7 @@ const Listitems = ({todos, setTodos, handleTriggerEdit}) => {
         </>
 
     )
-        
+
 }
 
 export default Listitems

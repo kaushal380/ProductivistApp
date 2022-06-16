@@ -13,7 +13,7 @@ const SignupScreen = () => {
 
     const navigation = useNavigation()
 
-    
+
     const createTable = () => {
         db.transaction((tx) => {
             tx.executeSql(
@@ -31,15 +31,15 @@ const SignupScreen = () => {
                 (tx, results) => {
 
                     if (results.rows.length > 0) {
-                        
+
                         for (let i = 0; i < results.rows.length; ++i)
                         {
                             console.log("DB: ", results.rows.item(i))
-                           
+
                         }
                       } else console.log('Failed....');
                 }
-                    
+
             )
         })
     }
@@ -51,29 +51,29 @@ const SignupScreen = () => {
             tx.executeSql(
                 'SELECT Username, Email FROM users', [],
                 (tx, results) => {
-                console.log('results length: ', results.rows.length); 
+                console.log('results length: ', results.rows.length);
                 console.log("Query successful")
                 if (results.rows.length > 0) {
                     for (let i = 0; i < results.rows.length; ++i)
                     {
                     if (results.rows.item(i)['Email'] === email){
-                        alert("The email already exists")
+                        alert("An account for this email already exists.")
                         return
                     }
-                    else if(results.rows.item(i)['Username'] === username){
-                        alert("The username already exists")
-                        return
-                    }
+                    // else if(results.rows.item(i)['Username'] === username){
+                    //     alert("The username already exists")
+                    //     return
+                    // }
 
                     }
-                  } 
+                  }
                 registerUser(email, username, password)
             })
-            
+
         })
     }
     const registerUser = (email, username, password) => {
-        // createTable();  
+        // createTable();
 
         db.transaction((tx) => {
             tx.executeSql(
@@ -81,10 +81,10 @@ const SignupScreen = () => {
             )
         })
         navigation.navigate('Home')
-    }      
+    }
 
     const DeleteUser = (email, username) => {
-        // createTable();  
+        // createTable();
 
         db.transaction((tx) => {
             tx.executeSql(
@@ -93,7 +93,7 @@ const SignupScreen = () => {
         })
         // navigation.navigate('Home')""
         alert("deleated user")
-    }      
+    }
 
     return (
 
@@ -106,13 +106,13 @@ const SignupScreen = () => {
                     placeholder = "Email"
                     value = {email}
                     onChangeText = {text => setEmail(text)}
-                    style = {styles.input}                   
+                    style = {styles.input}
                 />
                 <TextInput
                     placeholder = "Username"
                     value = {username}
                     onChangeText = {text => setUsername(text)}
-                    style = {styles.input}                   
+                    style = {styles.input}
                 />
                 <TextInput
                     placeholder = "Password"
@@ -151,7 +151,7 @@ const SignupScreen = () => {
                     <Text style = {styles.buttonOutlineText}>DeleteUser</Text>
                 </TouchableOpacity>
             </View>
-        </KeyboardAvoidingView> 
+        </KeyboardAvoidingView>
     )
 }
 
@@ -162,11 +162,11 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        
+
     },
     inputContainer: {
         width: "80%",
-        
+
     },
     input: {
         backgroundColor: 'white',
@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         marginTop: 40,
-    }, 
+    },
     button: {
         backgroundColor: '#0782F9',
         width: '100%',

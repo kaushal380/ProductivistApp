@@ -2,8 +2,8 @@ import * as React from 'react';
 import { View, useWindowDimensions, StyleSheet } from 'react-native';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import todo from './Todo';
-import ShortMaker from './TodoShortTerm/ShortMaker';
-import { colors } from '../../styles/AppStyles';
+import { colors } from '../../../styles/AppStyles';
+import ShortMaker from '../appts/ShortMaker';
 
 const renderScene = SceneMap({
   first: todo,
@@ -16,7 +16,7 @@ const renderTabBar = props => (
     indicatorStyle={{ backgroundColor: 'white' }}
     style={{ backgroundColor: colors.secondary }} // "#4D3636"
     labelStyle = {{color: "white"}}
-    
+
   />
 );
 export default function TabViewExample() {
@@ -30,13 +30,13 @@ export default function TabViewExample() {
 
   return (
     <TabView
-      navigationState={{ index, routes }} 
-      tabBarPosition='top' 
+      navigationState={{ index, routes }}
+      tabBarPosition='top'
       renderTabBar = {renderTabBar}
-      swipeEnabled = {false} 
-      renderScene={renderScene} 
-      onIndexChange={setIndex} 
-      initialLayout={{ width: layout.width }} 
+      swipeEnabled = {false}
+      renderScene={renderScene}
+      onIndexChange={setIndex}
+      initialLayout={{ width: layout.width }}
     />
   );
 }

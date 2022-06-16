@@ -15,25 +15,25 @@ const RoutineSub = () => {
 
     const getInit = async () => {
         let initialTodos
-        
+
         const documentSnapshot = await firebase.firestore()
             .collection('users')
             .doc(firebase.auth().currentUser.uid)
             .collection('userData')
             .doc('shortTerm')
             .get()
-        
+
             initialTodos = Object.values(Object.seal(documentSnapshot.data()))
-        
+
         initialTodos = getCurrentAndFutureAppointments(initialTodos, new Date());
             // console.log(initialTodos)
         for (let index = 0; index < initialTodos.length; index++) {
             initialTodos[index].key = index+1;
         }
         // disregard past appointments
-        
+
         setTodos(initialTodos);
-            
+
     }
 
     const getCurrentAndFutureAppointments = (todos, date) => {
@@ -75,14 +75,14 @@ const RoutineSub = () => {
         });
         return finalTodos;
     }
-    
+
     useEffect(() => {
         getInit()
       }, [])
-    
+
     const [todos, setTodos] = useState([{}])
 
-    
+
     // clearing all todos
     const handleClearTodos = () => {
         setTodos([]);
@@ -97,13 +97,13 @@ const RoutineSub = () => {
 
     const [modalVisible, setModalVisible] = useState(false);
     const [todoInputvalue, setTodoInputValue] = useState();
-    const [routineTo, setRoutineTo] = useState("end time");
-    const [routineFrom, setRoutineFrom] = useState("start time");
+    const [routineTo, setRoutineTo] = useState("End Time");
+    const [routineFrom, setRoutineFrom] = useState("Start Time");
     const [fromNum, setFromNum] = useState(0)
     const [toNum, setToNum] = useState(0)
     const [shortImportance, setImportance] = useState(0);
-    const [shortDate, setDate] = useState("select date")
- 
+    const [shortDate, setDate] = useState("Select Date")
+
     const handleAddTodo = (todo) =>{
         const newTodos = [...todos, todo];
         setTodos(newTodos)
@@ -116,7 +116,7 @@ const RoutineSub = () => {
             .set(addTodo)
         setModalVisible(false)
     }
-     
+
     const createDeleteAlert = () => {
         Alert.alert(
             "Delete Alert",
@@ -127,7 +127,7 @@ const RoutineSub = () => {
                     onPress: () => {return},
                     style: 'cancel'
                 },
-                {text: "yes", onPress: () => {handleClearTodos()}} 
+                {text: "yes", onPress: () => {handleClearTodos()}}
             ]
         );
     }
@@ -164,17 +164,17 @@ const RoutineSub = () => {
     return (
         <>
         <View style = {{height: '100%', width: '100%'}}
-        
+
         >
-        <Header 
+        <Header
             handleClearTodos = {createDeleteAlert}
             getInit = {getInit}
             />
-        <Listitems 
+        <Listitems
             todos = {todos}
             setTodos = {setTodos}
             handleTriggerEdit = {handleTriggerEdit}
-            
+
         />
         <InputModal
             getInit= {getInit}

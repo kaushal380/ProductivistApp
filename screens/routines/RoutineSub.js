@@ -1,23 +1,23 @@
 import React, {useState, useEffect} from 'react'
-import { View, Text, Button, Alert } from 'react-native'
-import { Slider } from 'react-native-elements'
+import {View, Text, Button, Alert} from 'react-native'
+import {Slider} from 'react-native-elements'
 //components
 import Header from './RoutineHeader'
 import Listitems from './RoutineList'
 import InputModal from './RoutineInput'
-import { DrawerContent } from '@react-navigation/drawer'
+import {DrawerContent} from '@react-navigation/drawer'
 import {colors} from '../../styles/AppStyles';
 import {AntDesign} from "@expo/vector-icons"
-import { firebase } from '../../firebase/config'
+import {firebase} from '../../firebase/config'
 import * as Notifications from 'expo-notifications';
 
 Notifications.setNotificationHandler({
     handleNotification: async () => ({
-      shouldShowAlert: true,
-      shouldPlaySound: true,
-      shouldSetBadge: false,
+        shouldShowAlert: true,
+        shouldPlaySound: true,
+        shouldSetBadge: false,
     }),
-  });
+});
 
 const RoutineSub = () => {
     const firebaseAccess = firebase.firestore()
@@ -30,60 +30,38 @@ const RoutineSub = () => {
             .collection('userData')
             .doc('routines')
             .get()
-        
-            initialTodos = Object.values(Object.seal(documentSnapshot.data()))
-    
-            // console.log(initialTodos)
-            setTodos(initialTodos);
-            
+
+        initialTodos = Object.values(Object.seal(documentSnapshot.data()))
+
+        // console.log(initialTodos)
+        setTodos(initialTodos);
+
     }
-    
+
     useEffect(() => {
         getInit()
-        
-      }, [])
-    
+
+    }, [])
+
     const [todos, setTodos] = useState([{}])
 
-    async function schedulePushNotification(list) {
-        alert("scheduled!")
-        let hours = new Date().getHours();
-        let min = new Date().getMinutes();
-        let secs = new Date().getSeconds();
-        let seconds = (((hours*60)+min) * 60)+secs;
-        let secondsOfRoutines = (list.fromNum - 5) * 60
-        let title = list.title;
-        let triggerSeconds = secondsOfRoutines - seconds
+    async function schedulePushNotification (list) {
+        let date = new Date();
+        let hours = date.getHours();
+        let min = date.getMinutes();
+        let currentSeconds = ((hours * 60) + min) * 60 + date.getSeconds();
+        let triggerDifference = (list.fromNum - 5) * 60 - currentSeconds;
+
         await Notifications.scheduleNotificationAsync({
-          content: {
-            title: title,//"You've got routines! 📬",
-            body: 'there is a routine due!',
-            data: { data: 'goes here' },
-          },
-          trigger: {seconds: triggerSeconds},
+            content: {
+                title: list.title,
+                body: 'A routine is about to start!',
+                data: {data: 'goes here'},
+            },
+            trigger: {seconds: triggerDifference},
         });
-      }
+    }
 
-      async function scheduleEditedNotification(list) {
-        let hours = new Date().getHours();
-        let min = new Date().getMinutes();
-        let secs = new Date().getSeconds();
-        let seconds = (((hours*60)+min) * 60)+secs;
-        let secondsOfRoutines = (list.fromNum - 5) * 60
-        let title = list.title;
-        let triggerSeconds = secondsOfRoutines - seconds
-
-          alert(list.title)
-          await Notifications.scheduleNotificationAsync({
-              content: {
-                  title: list.title,
-                  body: 'there is a routine due!',
-                  data: {data: 'goes here'},
-              },
-              trigger: {seconds: triggerSeconds},
-          });
-      }
-    
     // clearing all todos
     const handleClearTodos = () => {
         setTodos([]);
@@ -103,8 +81,8 @@ const RoutineSub = () => {
     const [fromNum, setFromNum] = useState(0)
     const [toNum, setToNum] = useState(0)
     const [routineImportance, setImportance] = useState(1);
- 
-    const handleAddTodo = (todo) =>{
+
+    const handleAddTodo = (todo) => {
         schedulePushNotification(todo)
         const newTodos = [...todos, todo];
         setTodos(newTodos)
@@ -118,8 +96,8 @@ const RoutineSub = () => {
         setModalVisible(false)
     }
 
-    const handleEditTodo = (editedTodo) =>{
-        scheduleEditedNotification(editedTodo)
+    const handleEditTodo = (editedTodo) => {
+        schedulePushNotification(editedTodo)
         console.log(editedTodo)
         const newTodos = [...todos]
         const todoIndex = todos.findIndex((todo) => todo.key === editedTodo.key)
@@ -143,10 +121,16 @@ const RoutineSub = () => {
             [
                 {
                     text: "cancel",
-                    onPress: () => {return},
+                    onPress: () => {
+                        return
+                    },
                     style: 'cancel'
                 },
-                {text: "yes", onPress: () => {handleClearTodos()}} 
+                {
+                    text: "yes", onPress: () => {
+                        handleClearTodos()
+                    }
+                }
             ]
         );
     }
@@ -164,38 +148,38 @@ const RoutineSub = () => {
     }
     return (
         <>
-        <Header 
-            handleClearTodos = {createDeleteAlert}
-            getInit = {getInit}
+            <Header
+                handleClearTodos={createDeleteAlert}
+                getInit={getInit}
             />
-        <Listitems 
-            todos = {todos}
-            setTodos = {setTodos}
-            handleTriggerEdit = {handleTriggerEdit}
-            
-        />
-        <InputModal
-            modalVisible = {modalVisible}
-            setModalVisible = {setModalVisible}
-            todoInputvalue = {todoInputvalue}
-            setTodoInputValue = {setTodoInputValue}
-            handleAddTodo = {handleAddTodo}
-            todoToBeEdited = {todoToBeEdited}
-            setTodoToBeEdited = {setTodoToBeEdited}
-            routineTo = {routineTo}
-            setRoutineTo = {setRoutineTo}
-            routineFrom = {routineFrom}
-            setRoutineFrom = {setRoutineFrom}
-            fromNum={fromNum}
-            setFromNum={setFromNum}
-            toNum={toNum}
-            setToNum={setToNum}
-            routineImportance={routineImportance}
-            setImportance= {setImportance}
-            handleEditTodo = {handleEditTodo}
-            todos = {todos}
+            <Listitems
+                todos={todos}
+                setTodos={setTodos}
+                handleTriggerEdit={handleTriggerEdit}
 
-        />
+            />
+            <InputModal
+                modalVisible={modalVisible}
+                setModalVisible={setModalVisible}
+                todoInputvalue={todoInputvalue}
+                setTodoInputValue={setTodoInputValue}
+                handleAddTodo={handleAddTodo}
+                todoToBeEdited={todoToBeEdited}
+                setTodoToBeEdited={setTodoToBeEdited}
+                routineTo={routineTo}
+                setRoutineTo={setRoutineTo}
+                routineFrom={routineFrom}
+                setRoutineFrom={setRoutineFrom}
+                fromNum={fromNum}
+                setFromNum={setFromNum}
+                toNum={toNum}
+                setToNum={setToNum}
+                routineImportance={routineImportance}
+                setImportance={setImportance}
+                handleEditTodo={handleEditTodo}
+                todos={todos}
+
+            />
 
 
         </>

@@ -1,14 +1,11 @@
 import React, {useState} from 'react'
-import { View, Text, Modal, Alert, KeyboardAvoidingView, StyleSheet } from 'react-native'
+import {Modal, KeyboardAvoidingView} from 'react-native'
 import {
-    ModalButton,
     ModalContainer,
     ModalView,
     StyledInput,
-    StyledInput_imp,
     ModalAction,
     ModalActionGroup,
-    TextRowStyle,
     ModalIcon,
     HeaderTitle,
     colors,
@@ -18,18 +15,14 @@ import {
 } from '../../styles/AppStyles'
 
 import {AntDesign} from "@expo/vector-icons"
-// import DateTimePickerModal from "react-native-modal-datetime-picker";
 import DateTimePickerModal from 'react-native-modal-datetime-picker'
-import { TapGestureHandler } from 'react-native-gesture-handler';
-import DateTimePicker from '@react-native-community/datetimepicker';
-
 
 const InputModal = ({
-    modalVisible, 
+    modalVisible,
     setModalVisible,
-    todoInputvalue, 
-    setTodoInputValue, 
-    handleAddTodo, 
+    todoInputvalue,
+    setTodoInputValue,
+    handleAddTodo,
     routineTo,
     setRoutineTo,
     routineFrom,
@@ -38,8 +31,8 @@ const InputModal = ({
     setFromNum,
     toNum,
     setToNum,
-    todoToBeEdited, 
-    setTodoToBeEdited, 
+    todoToBeEdited,
+    setTodoToBeEdited,
     handleEditTodo,
     todos}) => {
 
@@ -127,7 +120,7 @@ const InputModal = ({
             })
             setTodoInputValue()
             setRoutineFrom("select start time")
-            setRoutineTo("select end time")        
+            setRoutineTo("select end time")
         } else {
 
             if(todoInputvalue + "" === ""){
@@ -147,12 +140,12 @@ const InputModal = ({
                 to: routineTo,
                 from: routineFrom,
                 fromNum: fromNum,
-                toNum: toNum,                
+                toNum: toNum,
                 key: todoToBeEdited.key
             })
             setTodoInputValue()
             setRoutineFrom("select start time")
-            setRoutineTo("select end time")       
+            setRoutineTo("select end time")
         }
         }
 
@@ -176,10 +169,10 @@ const InputModal = ({
 
                 <ModalContainer >
                     <KeyboardAvoidingView>
-                    <ModalView> 
+                    <ModalView>
 
                     <ModalIcon>
-                        <HeaderTitle>task entry</HeaderTitle>
+                        <HeaderTitle>Task Entry</HeaderTitle>
                         <AntDesign name = "edit" size = {30} color = {colors.tertiary}/>
                     </ModalIcon>
 
@@ -192,10 +185,10 @@ const InputModal = ({
                         value = {todoInputvalue}
                     />
 
-        
+
                     <ModalLeftview>
-                    <StyledInput_Time                        
-                        placeholder = {routineFrom}                        
+                    <StyledInput_Time
+                        placeholder = {routineFrom}
                         placeholderTextColor = {colors.alternative}
                         selectionColor = {colors.secondary}
                         autoFocus = {true}
@@ -207,22 +200,22 @@ const InputModal = ({
 
                     <ModalLeftview>
                     <StyledInput_Time
-                    
+
                         placeholder = {routineTo}
                         placeholderTextColor = {colors.alternative}
                         selectionColor = {colors.secondary}
                         autoFocus = {true}
                         value = {routineTo}
                     />
-                    
+
                     <AntDesign name = "clockcircle" size = {35} color={colors.tertiary} onPress = {() => {setIsTimeTo(true)}}/>
                     </ModalLeftview>
-         
+
                     <DateTimePickerModal
                         isVisible = {isTimeTo}
                         mode='time'
                         onConfirm = {(date) => {handleConfirmTo(date)}}
-                        onCancel = {hideTimePicker} 
+                        onCancel = {hideTimePicker}
                     />
                     <DateTimePickerModal
                         isVisible = {isTimeFrom}
@@ -244,7 +237,7 @@ const InputModal = ({
                     </ModalView>
                     </KeyboardAvoidingView>
                 </ModalContainer>
-                
+
 
             </Modal>
 
